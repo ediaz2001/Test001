@@ -1,0 +1,12 @@
+C:\_projects\ERP\Current\Deployment\Server\Assemblies\Erp.Internal.PE.ValidationRule.deps.json
+C:\_projects\ERP\Current\Deployment\Server\Assemblies\Erp.Internal.PE.ValidationRule.dll
+C:\_projects\ERP\Current\Deployment\Server\Assemblies\Erp.Internal.PE.ValidationRule.pdb
+C:\_projects\ERP\Current\Source\Server\Internal\Pe\ValidationRule\obj\Debug\Erp.Internal.PE.ValidationRule.csproj.AssemblyReference.cache
+C:\_projects\ERP\Current\Source\Server\Internal\Pe\ValidationRule\obj\Debug\Erp.Internal.PE.Resources.Strings.resources
+C:\_projects\ERP\Current\Source\Server\Internal\Pe\ValidationRule\obj\Debug\Erp.Internal.PE.ValidationRule.csproj.GenerateResource.cache
+C:\_projects\ERP\Current\Source\Server\Internal\Pe\ValidationRule\obj\Debug\Erp.Internal.PE.ValidationRule.GeneratedMSBuildEditorConfig.editorconfig
+C:\_projects\ERP\Current\Source\Server\Internal\Pe\ValidationRule\obj\Debug\Erp.Internal.PE.ValidationRule.csproj.CoreCompileInputs.cache
+C:\_projects\ERP\Current\Source\Server\Internal\Pe\ValidationRule\obj\Debug\Erp.Internal.PE.ValidationRule.dll
+C:\_projects\ERP\Current\Source\Server\Internal\Pe\ValidationRule\obj\Debug\refint\Erp.Internal.PE.ValidationRule.dll
+C:\_projects\ERP\Current\Source\Server\Internal\Pe\ValidationRule\obj\Debug\Erp.Internal.PE.ValidationRule.pdb
+C:\_projects\ERP\Current\Source\Server\Internal\Pe\ValidationRule\obj\Debug\ref\Erp.Internal.PE.ValidationRule.dll

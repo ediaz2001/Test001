@@ -1,0 +1,111 @@
+<Translation>
+  <Ignored>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="BalTransactionsLevel">SegValue</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="BalTransactionsLevel">BalSegValue</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="BalTransactionsLevel">OffSegValue</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="BalTransactionsLevel">Balancing transaction. Level - </Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="AccInactive_Err">GLAccount</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="AccInactive_Err">COACode</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="AccInactive_Err">Company</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="AccInactive_Err">JEDate</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="AccInactive_Err">  Company {0}.  COACode {1}. Account {2}.</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="AccNotDefinedAsCurAcc_Err">BookID</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="AccountIsActive">select * from Erp.GLAccount where GLAccount.Company ='</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="AccountIsActive">' and GLAccount.COACode = '</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="AccountIsActive">SegValue</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="AccountIsActive"> and Erp.GLAccount.</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="AccountIsActive"> = '</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="AccountIsActive"> and (Erp.GLAccount.</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="AccountIsActive"> or Erp.GLAccount.</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="AccountIsActive"> = ?)</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="AccountIsActive"> and GLAccount.Active = 1</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="AccountIsActive">EffFrom</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="AccountIsActive">EffTo</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="CombControlSegInvalid_Err">Company</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="CombControlSegInvalid_Err">COACode</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="CombControlSegInvalid_Err">select GLAccount from Erp.GLAccount where Erp.GLAccount.Company ='</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="CombControlSegInvalid_Err">' and Erp.GLAccount.COACode = '</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="CombControlSegInvalid_Err">SegValue</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="CombControlSegInvalid_Err"> and GLAccount.</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="CombControlSegInvalid_Err"> = '</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="CombControlSegInvalid_Err">  Company {0}.  COACode {1}. Account {2}.</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="CombControlSegInvalid_Err">GLAccount</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="CurNotConformCurAccDef_Err">SegValue1</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="CurNotConformCurAccDef_Err"> COACode {0}. SegmentCode {1}. Currency {2}.</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="fpApplyDateOutOfRange">CM</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="fpApplyDateOutOfRange">GL</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="fpApplyDateOutOfRange">GJ</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="fpApplyDateOutOfRange">Earliest apply date is not defined.</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="fpApplyDateOutOfRange"> BookID {0}. FiscalCalendarID {1}. FiscalYear {2}. FiscalPeriod {3}. EntryDate {4}. </Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="fpApplyDateOutOfRange">Apply Date was shifted to {0}.</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="fpClosed"> BookID {0}. FiscalCalendarID {1}. FiscalYear {2}. FiscalPeriod {3}.</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="fpClosed"> Fiscal Period was shifted to {0}.</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="fpClosed"> Opened Fiscal Period for Book {0} was not found.</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="fpClosingPeriodNotExists"> BookID {0}. FiscalCalendarID {1}. FiscalYear {2}. ClosingPeriod {3}.</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="fpNotBasedOnApplyDate"> BookID {0}. FiscalCalendarID {1}. FiscalYear {2}. FiscalPeriod {3}. ApplyDate {4}</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="GetErrorMessage">Error desription was not found</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="GLAccountValid">Company</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="GLAccountValid">CoaCode</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="GLAccountValid">GLAccount</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="GLAccountValid">BookID</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="GLAccountValid">JEDate</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="GLAccountValid">FiscalCalendarID</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="GLAccountValid">ControlType {0} Context {1} BookID {2} Reference Info {3} Key1 {4} Key2 {5} Key3 {6} Key4 {7} Key5 {8}.  </Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="GLAccountValid">SysGlControltype</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="GLAccountValid">GLAcctContext</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="GLAccountValid">RelatedToFile</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="GLAccountValid">key1</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="GLAccountValid">key2</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="GLAccountValid">key3</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="GLAccountValid">key4</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="GLAccountValid">key5</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="GLAccountValid">JournalLine</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="GLAccountValid">SegValue</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="glbTransNotBalance">Rounding difference amount</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="glbTransNotBalance">RndSegValue</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="glbTransNotBalance">SegValue</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="IsSelfBalSegNotBal">BookID</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="IsTransNotBiLine">BookID</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="IsTransNotBiLine">TranSeq</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="isValidTrHeader">AP Void Logged Invoice</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="isValidTrHeader">CompleteStorno</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="isValidTrHeader">GL Allocations</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="isValidTrHeader">GLRevaluation</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="isValidTrHeader">PeriodicConsolidation</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="isValidTrHeader">Posted Invoice Update</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="isValidTrHeader">Revaluation</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="isValidTrHeader">Reverse Cash Receipt</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="isValidTrHeader">SingleGLJrn</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="isValidTrHeader">Bank Funds Transfer</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="isValidTrHeader">Fixed Asset</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="isValidTrHeader">Payroll Check</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="isValidTrHeader">AP PI Write-off</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="isValidTrHeader">AR PI Write-off</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="IsValidTrLine"> [Line {0}]</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="REAccountNotMatchToMask_Err">Retained Earnings account is wrong: </Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="REAccountNotMatchToMask_Err">RE</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="REAccountNotMatchToMask_Err">TgtSegValue</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="REAccountNotMatchToMask_Err">SegValue</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="REAccountNotMatchToMask_Err"> - {0} - </Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="REAccountNotMatchToMask_Err">RESegValue</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="REAccountWrongForOB_Err">GLAccount1</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="REAccountWrongForOB_Err">GLAccount</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="REAccountWrongForOB_Err">COACode</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="REAccountWrongForOB_Err">Company</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="ReqDynSegNotSpec_Err">Company</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="ReqDynSegNotSpec_Err">COACode</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="ReqDynSegNotSpec_Err">SegValue</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="ReqDynSegNotSpec_Err">  COACode {0}. SegmentNumber {1}. 'RE' Account {2}</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="ReqDynSegNotSpec_Err">GLAccount</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="SegmentNotUsed_Err">Company</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="SegmentNotUsed_Err">COACode</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="SegmentNotUsed_Err">SegValue</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="SegmentValue_Err">SegValue</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="SegmentValue_Err">JEDate</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="SegmentValue_Err">Company</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="SegmentValue_Err">COACode</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="SegmentValue_Err">  COACode {0}. SegmentNumber {1}. SegmentValue {2}</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="WrongSignOfAmountForDbtOrCrt_Err">Credit</Ignore>
+    <Ignore file="ValidationRule.cs" class="ValidationRule" method="WrongSignOfAmountForDbtOrCrt_Err">Debit</Ignore>
+  </Ignored>
+</Translation>

@@ -1,0 +1,150 @@
+History:
+05/08/13 VladimirD SCR 120968 - added bookID parameter for RuleException errors.
+07/04/13 VladimirD SCR 124257 - added FiscalPeriod validation exempt for Opening period and 'Manual Journal Update' Book. 
+07/24/13 IrinaY    SCR 125058 - modified BalTransactionsLevel to correct value of new GLAccount.
+08/21/13 VladimirD SCR 125348 - corrected self-balancing logic for the lines with Ext company data.
+09/10/13 VladimirD SCR 127774 - corrected Account caching logic. Now it also include peerrors.
+09/13/13 VladimirD SCR 127024 - corrected WrongSignOfAmountForRedStorno_Err validation rule.
+09/16/13 IrinaY    scr 117442 - BVRule.cs - modified AddBRValidationRules() for performance 
+09/16/13 VadimV    SCR 128273 - Fixed Asset EAD validation; string comparison conversion issues
+10/03/13 JuliaK    SCR 130014 - Validation for tranglc duplicate has been restored.
+10/09/13 Juliak    SCR 128196 - Common procedure RunSQLCommand that open connection has been added(peabt, validationrule,pelock)
+10/15/13 JuliaK    SCR 130484 - Some CSF types excluded from Duplicate Tranglc validation.
+01/21/13 IrinaY    SCR 129748 - Remove information about Line from Validations based on AppLy Date to not repeate the same message for all lines of one transaction.
+10/29/13 ElsaM	   SCR 128255 - Remove timestamp from the validation Error Message Date, use MM/dd/yyyy.
+12/23/13 SergeyK   SCR 105089 - Transaction is not valid with appropriate error message in case segment defined as Not Used (Natural segment options).
+01/23/14 scottr    scr 130392 - Modified validations of earliest apply date.
+02/07/14 VladimirD SCR 135787 - corrected BVRule selection filter.
+02/13/14 VladimirD SCR 136371 - minor changes for trigger compatibility calls.
+02/18/14 IrinaY    SCR 136763 - corrected setting BVRule.IsDefault flag.
+03/25/14 JulaiK    SCR 138591 - have not download whole records when we need only several fields
+03/30/14 VladimirD SCR 138887 - corrected rounding account calculation
+03/30/14 JulaiK    SCR 138591 - in most of cases we don't find records. Any() works faster.
+03/30/14 IrinsY    SCR 138947 - corrected GetRuleLevelAction()
+04/25/14 ValeryZ   SCR 139480 - CoaCode property renamed to COACode.
+05/08/14 IrinaY    SCR 133786 - corrected fpNotBasedOnApplyDate to not allow posting with incorrect data.  
+05/13/14 VladimirD SCR 141438 - corrected REAccount validation logic for mandatory/account control COA setup. 
+05/21/14 ValeryZ   SCR 139480 - added JEDate calculating in REAccountNotMatchToMask_Err() method. Modified account inactive error message.
+05/29/14 SergeyK   SCR 141446 - Message was modified in ReqDynSegNotSpec_Err rule.
+05/30/14 ValeryZ   SCR 139480 - REAccount is validated on first day of next fiscal year. Date is added to SegmentValue error message.
+06/10/14 JuliaK    SCR 124084 - added message to log if rounding transaction has been created.
+07/15/14 ValeryZ   SCR 144256 - removed Patch Fields.
+08/05/14 SergeyK   SCR 145889 - Removed constructor parameterless constructor.
+10/01/14 JuliaK    SCR 144682 - added 2 new rules: 1)	Non-zero statistical amount for a non-statistical account
+												   2)	Non-zero financial amount for a statistical account
+10/06/14 Juliak    SCR 144682 - Modified Zero Amount GlbalValidation rule for Stat only amount line
+10/09/14 Juliak    SCR 144682 - corrected validation rule for mixed statamount
+10/10/14 Juliak    SCR 103450 - performance
+10/13/14 Juliak    SCR 103450 - Correct GLAccountWithJEDate as IGLAccount.
+12/08/14 IrinaY    SCR 150573 - corrected check on currency account
+12/21/14 Juliak    SCR 153265 - corrected logic if period is closed.
+02/19/15 IrinaY    SCR 155464 - corrected order actions for Validation Rules
+02/26/15 SergeyK   SCR 157521 - Added Company to queries.
+03/05/15 SergeyK   SCR 146771 - Added GlobLevel_LookupTableNotFound validation type. Code was cleaned up according Analyzer.
+03/13/15 ValeryZ   SCR 159050 - used explicit cast instead of Convert object to get JEData.
+03/17/15 SergeyK   SCR 146771 - Rolled back changes with Compatibility.Convert.ToString for segment numbers.
+04/20/15 VladimirD SCR 161426 - Corrected reference account masks validation.
+06/29/15 JuliaK    SCR 165347 - Dispose added.
+07/06/15 Juliak    SCR 165347 - tranglcexists optimization(perf)+using for wrappers
+07/10/15 IrinaY    SCR 165269 - remove static fields
+07/14/15 VladimirD SCR 166476 - added TranSeq indication for Self-Balancing lines.
+07/14/15 JuliaK    SCR 164142 - performance for glaccount validation, called from a rules.
+07/06/15 Juliak    SCR 165347 - corrected dispose for ValidationRuleTypeRows list.
+07/15/15 SergeyK   SCR 164142 - Performance. Queries optimization.
+08/05/15 JuliaK    SCR 167715 - memory and perfomance
+08/17/15 juliaK    SCR 167715 - exists tranglc works in 2 times faster using storage procedure.
+08/21/15 VladimirD SCR 169344 - Corrected currency account validation.
+08/25/15 VladimirD SCR 169344 - removed uncalled query.
+09/11/15 TatyanaK  SCR 169764 - Search fiscal periods is performed using fiscal year suffix.
+11/05/15 MBaranov  SCR 173911 - Two obsolete Validation Rules (Book Level) are removed.
+11/17/15 VladimirD SCR 171487 - modified validation rules caching logic.
+11/17/15 IrinaY    SCR 174845 - corrected creation summarize lines for RedStorno
+11/19/15 VladimirD SCR 171487 - corrected CodeCop issue and fixed datetime conversion format.
+11/20/15 VladimirD SCR 171487 - Fixed IsValid in cache data issue.
+12/01/15 LuisZ	   SCR 175408 - AR PI Payment and AR PI Voiding were included to TranGLC Duplicate because this transaction can go back and forth.
+12/14/15 SergeyK   SCR 176280 - Modified SQL queries to use parameters.
+12/24/15 ValeryZ   SCR 177897 - Fixed validation of REAccount with dynamic mandatory segment.
+03/22/16 IrinaY    SCR 178865 - Corrected method REAccountNotMatchToMask_Err to avoid error ' Index and length must refer to a location within the string.'
+03/24/16 ValeryZ   SCR 181298 - fixed Not Used segment correction if validation on book set to "Autocorrect with Warning" or "Autocorrect". Minor code optimization.
+03/25/16 IrinaY    SCR 178865 - corrected calculation REAccount by mask
+03/25/16 ValeryZ   SCR 181298 - fixed FindLastCoaSegment query to avoid System.ArgumentException.
+03/28/16 IrinaY    SCR 178865 - modified REAccountNotMatchToMask_Err to not skip validation REAccount for several lines if Book.REAccount contains masked segments
+04/11/16 Juliak    SCR 179257 - First Phase to implement GLAccountValidList()
+04/12/16 SergeyK   SCR 182808 - SQL Injections and analyzer issues were fixed.
+05/15/16 VladimirD SCR 179257 - posting engine performance optimization. Bulk insert logic.
+04/27/16 ValeryZ   SCR 178226 - added isBalanceAccount parameter to GLAccountValid() method to validate balance accounts.
+04/27/16 ValeryZ   SCR 178226 - added comment to GLAccountValid() method. Fixed error message for CheckStatData() method.
+05/05/16 IrinaY    SCR 178223 - modified show error messages about incorrect REAccount for each line with income statement account 
+05/10/16 IrinaY    SCR 178223 - modified to not show duplicate lines for one transaction for inactive Segment 
+05/10/16 IrinaY    SCR 184166 - modified to not copy Statistical amount from original line for self-balancing lines
+05/13/16 IrinaY    SCR 184227 - modified to check separately Book amounts and transaction amounts in Validation Rules "Amount is negative (not for red storno)" and "Red storno amount is positive"
+06/15/16 VladimirD SCR 187277 - Added validation and error message about duplicating GLBook validations.
+06/23/16 SergeyK   SCR 187871 - CurAmountZeroForCurAcc_Err was modified - warning should not fail transaction.
+07/01/16 VladimirD SCR 187767 - fixed autocorrection logic for 'Closing Period is specified, but does not exist' validation rule.
+08/15/16 SergeyK   SCR 185334 - Added validations for UD fields.
+08/19/16 SergeyK   SCR 185334 - Improved validations for UD fields.
+08/31/16 VladimirD SCR 169010 - Corrected errors output logic for multibook posting.
+10/10/16 SergeyK   SCR 192674 - Modified validations for UD fields.
+10/10/16 ValeryZ   SCR 189009 - SegmentValue_Err - method returns false if COASegValue not exists.
+11/17/16 VladimirD SCR 194918 - performance optimization.
+11/11/16 JuliaK    SCR 190268 - Trace for PDT, first version
+03/12/16 JuliaK    SCR 190268 - Trace for PDT, second version
+20/12/16 JuliaK    SCR 190268 - Trace for PDT, 3th version, hierarchical
+01/18/17 SergeyK   SCR 195479 - Earliest Apply Date should be validated against Cash Management for Cash Rec, Reverse Cash Receipt, Payment, Void Payment
+01/23/17 ValeryZ   SCR 197078 - CSF Vietnam - added VNCheckAccountCorrespondence validation rule.
+01/27/17 ValeryZ   SCR 197078 - CSF Vietnam - fixed issue with summarized lines. Added more informative error messages.
+01/30/17 ValeryZ   SCR 197078 - CSF Vietnam - corrected error messages.
+02/07/17 VVishlenkov   SCR 198354 - Added SystemCode to ZDataField query
+02/07/17 ValeryZ   SCR 197078 - CSF Vietnam - fixed multibook validation.
+02/14/17 ValeryZ   SCR 198879 - CSF Vietnam - fixed skipping accounts correspondence validation if previous rules return errors.
+02/17/17 ValeryZ   SCR 198940 - fixed skipping header rules validation if previous rules return errors.
+02/17/17 ValeryZ   SCR 198881 - CSF Vietnam - fixed accounting correspondence for segment self-balancing lines.
+02/20/17 ValeryZ   SCR 198881 - fixed PR remarks.
+02/21/17 VladimirD SCR 193147 - GLAcctDisp calculation should be processed in separate transaction.
+03/16/17 VladimirD SCR 178214 - corrected self-balancing rule error behavior.
+03/29/17 Juliak    SCR 200038 - optimized cache for BVRULE.Remove not used code.
+04/11/17 SergeyK   SCR 175932 - modified checks of existance UD fields in DB and there formats.
+04/26/17 SergeyK   SCR 175932 - modified checks of existance UD fields in DB and there formats. Analyzer issues.
+05/15/17 SergeyK   SCR 202836 - Fixed issue with format warnings.
+06/05/17 SergeyK   SCR 175932 - modified checks of existance UD fields in DB and there formats. 
+06/06/17 SergeyK   SCR 175932 - modified checks of existance UD fields in DB and there formats. 
+06/13/17 SergeyK   SCR 175932 - modified checks of existance UD fields in DB and there formats for large strings. 
+07/28/17 ValeryZ   SCR 193471 - LegalNumber will be empty for COSAndWip transaction if line is generated by validation rule.
+10/19/17 Juliak	   SCR 208569 - IF PE calculates valid GLAccount in prepost with dynamic segment, records in glacctDisp should be added like it is during standard posting.
+01/24/18 TatyanaK  SCR 176597 - Algorithm creating balancing transactions is changed. 
+01/25/18 TatyanaK  SCR 176597 - Minor changes. 
+01/30/18 TatyanaK  SCR 176597 - Peer Review notes were implemented.
+03/23/18 VVishlenkov ERPS-77696 Enhanced tracing API
+05/03/18 VDenisov  ERPS-90092 - Fixed EAD validation for Inventory transactions.
+05/31/18 TatyanaK  ERPS-92302 - Error which occurs in case self-balancing setup was eliminated.  
+07/09/18 TatyanaK  ERPS-76758 - Statistical data validation error messages contain source line number now.
+07/09/18 TatyanaK  ERPS-76758 - Changes made to eliminate Code Analysis warnings.
+09/20/18 IrinaY    ERPS-96695 - Modified to correct assign BIGINT UDField
+10/26/18 IrinaY    ERPS-99899 - Corrected validation GL Account by GL Reference Type
+10/31/18 SergeyK   ERPS-75116 - BVRule.cs - modified some strings with quotes and rule names.
+11/02/18 SergeyK   ERPS-75116 - ValidationRule.cs - Fixed messages with line numbers.
+11/12/18 SergeyK   ERPS-75116 - ValidationRule.cs - Revalidate all tests for revalidation.
+11/12/18 SergeyK   ERPS-75116 - ValidationRule.cs - Revalidate all tests for revalidation.
+11/27/18 SergeyK   ERPS-75116 - ValidationRule.cs - isValidTrHeader - Added check of persistent errors.
+11/29/18 TatyanaK  ERPS-103522 - Error message in case posting to inactive book is expanded.
+12/10/18 SergeyK   ERPS-75116  -  BVRule.cs - Description of "Rule produced single transaction line" was modified.
+12/12/18 IrinaY    ERPS-105939 - ValidationRule.cs - modified to correct check that account matched to mask
+12/18/18 SergeyK   ERPS-75116  - ValidationRule.cs - Fixed error messages for cached accounts.
+12/28/18 SergeyK   ERPS-101608 - ValidationRule.cs - CurAmntZeroBookCurAmntNotZero_Err - was fixed to correct handling error setting.
+02/06/18 SergeyK   ERPS-103981 - ValidationRule.cs - ProcessDataExceptions method extracted.
+03/01/19 VladimirD ERPS-110078 - added Apply Credit Memo transaction type to exclude duplicate TranGLC records list.
+06/10/19 SergeyK   ERPS-115517 - ClosingPeriodNum was renamed to CloseFiscalPeriod.
+06/22/19 VladimirD ERPS-117443 - Added dynamic, controlled COA segments setup support.
+07/16/19 VladimirD ERPS-118287 - Corrected TranGLC duplicate validation. Modified message text.
+07/29/19 JuliaK    ERPS-120183 - Added filter for Bookid for HeaderValidation.  
+08/27/19 JuliaK    ERPS-121165 - added validation for abtwork_UD and RvLock_UD 
+02/12/20 PavelE	   ERP-15867 - Allow TranGLC Duplicates for “AR PI Reverse Endorsement” GL Transaction Type.
+12/02/20 TatyanaK  ERPS-151301 - Posting in a book that is not configured to update future balances automatically 
+                                 should not validate the retained earnings account for IS accounts.
+07/05/21 VladimirD ERP-35663   - Added Site restriction validation.
+07/09/21 VladimirD ERP-35649   - Added Inter-Site validation logic.
+11/17/21 VladimirD ERP-38613   - Fixed issue when site segment code value doesn't exist.
+12/21/21 VladimirD ERP-38669   - Fixed issue with incorrect Doc amount calculation for site-balancing transactions.
+02/01/22 TatyanaK  ERPS-175349 - Performance: excessive cycle was removed.
+03/29/22 scottr    ERP-40130 - Site balancing accounts per pairs of sites
+09/21/22 MSantaCruz	ERP-43508 - Code correction to comply the 'Server Side String comparison should be case insensitive' CodeCopAnalyzer rule.
