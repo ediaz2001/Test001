@@ -1,0 +1,832 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="LaborEquipRecordHasNotChanged" xml:space="preserve">
+    <value>Labor Equipment record has not changed.</value>
+  </data>
+  <data name="EquipIDDoesNotExist" xml:space="preserve">
+    <value>EquipID does not exist.</value>
+  </data>
+  <data name="EquipIDIsInactive" xml:space="preserve">
+    <value>EquipID is Inactive.</value>
+  </data>
+  <data name="LaborHasNotChanged" xml:space="preserve">
+    <value>Labor has not changed.</value>
+  </data>
+  <data name="LaborDetailHasNotChanged" xml:space="preserve">
+    <value>Labor Detail has not changed.</value>
+  </data>
+  <data name="ResourceID" xml:space="preserve">
+    <value>Resource ID</value>
+  </data>
+  <data name="TheResouIsInactAndMayNotBeSelec" xml:space="preserve">
+    <value>The Resource is inactive and may not be selected.</value>
+  </data>
+  <data name="TheResouIsNotALocatAndMayNotBeSelec" xml:space="preserve">
+    <value>The Resource {0} is not a location and may not be selected.</value>
+  </data>
+  <data name="ResouBelongsToADiffeResouResouWillBeChangedDoYou" xml:space="preserve">
+    <value>Resource {0} belongs to a different ResourceGroup.  ResourceGroup will be changed.  Do you wish to continue?</value>
+  </data>
+  <data name="EmploIsAlreadyActiveOnThisSeque" xml:space="preserve">
+    <value>Employee is already active on this sequence.</value>
+  </data>
+  <data name="UnableToStartProduUntilFirstArticleInspeHasBeen" xml:space="preserve">
+    <value>Unable to start production until First Article inspection has been approved.</value>
+  </data>
+  <data name="DoYouWantToContinue" xml:space="preserve">
+    <value>Do you want to continue?</value>
+  </data>
+  <data name="NoLaborDtlRecordAvailable" xml:space="preserve">
+    <value>No LaborDtl record available</value>
+  </data>
+  <data name="InvalidResource" xml:space="preserve">
+    <value>Invalid Resource.</value>
+  </data>
+  <data name="ResouBelongsToAnotherResouGroupOKToSwitchTheResou" xml:space="preserve">
+    <value>Resource {0} belongs to another Resource Group. OK to switch the Resource Group?</value>
+  </data>
+  <data name="TheQuantEnteredWillResultInANegatTotalQuantPosted" xml:space="preserve">
+    <value>The quantity entered will result in a negative total quantity posted to this job operation.  Entry not allowed.</value>
+  </data>
+  <data name="TheHoursEnteredWillResultInANegatTotalHoursPosted" xml:space="preserve">
+    <value>The hours entered will result in a negative total hours posted to this job operations.  Entry not allowed.</value>
+  </data>
+  <data name="TheHoursEnteredWillResultInANegatTotalReworkHours" xml:space="preserve">
+    <value>The hours entered will result in a negative total rework hours posted to this job operation.  Entry not allowed.</value>
+  </data>
+  <data name="TheTotalCoPartsProduQuantAndLaborQuantDoNotBalance" xml:space="preserve">
+    <value>The total co-parts production quantity and labor quantity do not balance.</value>
+  </data>
+  <data name="ThisEmploIsNotAssigToAnyRoleCodeRequiByThisJob" xml:space="preserve">
+    <value>This employee is not assigned to any Role Code required by this Job Operation.</value>
+  </data>
+  <data name="OneRecordCanBeSelectedToCopy" xml:space="preserve">
+    <value>One record can be selected to Copy.</value>
+  </data>
+  <data name="EmploSAreAlreadyWorkingOnThisOpera" xml:space="preserve">
+    <value>{0} Employee(s) are already working on this operation</value>
+  </data>
+  <data name="LaborHeaderHasNotChanged" xml:space="preserve">
+    <value>Labor Header has not changed.</value>
+  </data>
+  <data name="InvalidDiscrepancyReasonCode" xml:space="preserve">
+    <value>Invalid Discrepancy Reason Code.</value>
+  </data>
+  <data name="ThisJobHasBeenClosedEntryNotAllowed" xml:space="preserve">
+    <value>This Job has been closed. Entry not allowed.</value>
+  </data>
+  <data name="ThisJobHasNotBeenReleaEntryNotAllowed" xml:space="preserve">
+    <value>This Job has not been released.  Entry not allowed.</value>
+  </data>
+  <data name="ThisJobIsAJobTypeOfProjectEntryNotAllowedForNon" xml:space="preserve">
+    <value>This Job is a job type of Project.  Entry not allowed for non-project related transactions.</value>
+  </data>
+  <data name="JobNumber" xml:space="preserve">
+    <value>Job Number</value>
+  </data>
+  <data name="LaborQtyShouldNotBeDirecUpdatedThereAreCoParts" xml:space="preserve">
+    <value>Labor Qty should not be directly updated. There are co-parts</value>
+  </data>
+  <data name="ThisIsAQuantOnlyOperaReworkNotAllowed" xml:space="preserve">
+    <value>This is a Quantity Only Operation. Rework not allowed.</value>
+  </data>
+  <data name="InvalidProjectPhase" xml:space="preserve">
+    <value>Invalid Project Phase.</value>
+  </data>
+  <data name="InvalidJobOperationSequence" xml:space="preserve">
+    <value>Invalid Job Operation Sequence.</value>
+  </data>
+  <data name="InvalidProject" xml:space="preserve">
+    <value>Invalid Project.</value>
+  </data>
+  <data name="ProjectMustBeActive" xml:space="preserve">
+    <value>Project must be active.</value>
+  </data>
+  <data name="InvalidResourceForCapability" xml:space="preserve">
+    <value>Invalid Resource for capability.</value>
+  </data>
+  <data name="RoleCodeCannotBeEnteredProjectBillingIsNotLicen" xml:space="preserve">
+    <value>Role Code cannot be entered, Project Billing is not licensed.</value>
+  </data>
+  <data name="RoleCodeCannotBeEnteredForIndirLabor" xml:space="preserve">
+    <value>Role Code cannot be entered for indirect labor.</value>
+  </data>
+  <data name="JobHeadIsNotAvailable" xml:space="preserve">
+    <value>JobHead is not available.</value>
+  </data>
+  <data name="RoleCodeIsNotValidForThisEmploAndOpera" xml:space="preserve">
+    <value>Role Code is not valid for this employee and operation.</value>
+  </data>
+  <data name="InvalidScrapReasonCode" xml:space="preserve">
+    <value>Invalid Scrap Reason Code.</value>
+  </data>
+  <data name="ThePerceCannotBeGreaterThan" xml:space="preserve">
+    <value>The percentage cannot be greater than 100.</value>
+  </data>
+  <data name="Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="TimeTypeCodeCannotBeEnteredForIndirLabor" xml:space="preserve">
+    <value>Time Type Code cannot be entered for indirect labor.</value>
+  </data>
+  <data name="LaborDetailRecordHasNotChanged" xml:space="preserve">
+    <value>Labor Detail record has not changed.</value>
+  </data>
+  <data name="LaborRecordNotFound" xml:space="preserve">
+    <value>Labor record not found.</value>
+  </data>
+  <data name="LaborDetailRecordNotFound" xml:space="preserve">
+    <value>Labor Detail record not found.</value>
+  </data>
+  <data name="InvalidOperationSeqence" xml:space="preserve">
+    <value>Invalid Operation Seqence.</value>
+  </data>
+  <data name="LaborHeaderDoesNotExist" xml:space="preserve">
+    <value>Labor Header does not exist.</value>
+  </data>
+  <data name="TtLaborDtlRecordNotFound" xml:space="preserve">
+    <value>ttLaborDtl record not found.</value>
+  </data>
+  <data name="JobAsmblRecordNotFound" xml:space="preserve">
+    <value>JobAsmbl record not found.</value>
+  </data>
+  <data name="Scrap" xml:space="preserve">
+    <value>Scrap</value>
+  </data>
+  <data name="Nonconformance" xml:space="preserve">
+    <value>Nonconformance</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="TimeManagLicenseNotActiveAddNotAllowed" xml:space="preserve">
+    <value>Time Management License not active.  Add not allowed</value>
+  </data>
+  <data name="EmployeeNotFound" xml:space="preserve">
+    <value>Employee not found.</value>
+  </data>
+  <data name="YouHaveChosenToRetriRecordsByDayWeeklyTimeView" xml:space="preserve">
+    <value>You have chosen to retrieve records by day.  Weekly time view is not enabled with this option selected.</value>
+  </data>
+  <data name="JobAsNotFoundCannotRetriSerialNumbers" xml:space="preserve">
+    <value>JobAsmbl not found, cannot retrieve serial numbers.</value>
+  </data>
+  <data name="AValidAssemblyIsRequired" xml:space="preserve">
+    <value>A valid Assembly is required.</value>
+  </data>
+  <data name="InvalidToDeleteAnActiveTrans" xml:space="preserve">
+    <value>Invalid to delete an active transaction.</value>
+  </data>
+  <data name="CanTUpdateRecordAfterInforHasBeenTransToPayroll" xml:space="preserve">
+    <value>Can't update record after information has been transferred to payroll.</value>
+  </data>
+  <data name="InvalidToModifyAnActiveTrans" xml:space="preserve">
+    <value>Invalid to modify an active transaction.</value>
+  </data>
+  <data name="InvalidLaborTypeWhenAllowToBookToDirectJobsFlag" xml:space="preserve">
+    <value>Invalid Labor Type when Allow to book to direct jobs flag is false for this employee.</value>
+  </data>
+  <data name="InvalidToModifyATransThatHasBeenSubmiForAppro" xml:space="preserve">
+    <value>Invalid to modify a transaction that has been Submitted for Approval.</value>
+  </data>
+  <data name="RoleCodeCannotBeEntered" xml:space="preserve">
+    <value>Role Code cannot be entered.</value>
+  </data>
+  <data name="NotEnoughSerialNumbersAssigned" xml:space="preserve">
+    <value>Not enough serial numbers assigned.</value>
+  </data>
+  <data name="TotalLaborHoursCannotBeNegat" xml:space="preserve">
+    <value>Total Labor Hours Cannot Be Negative.</value>
+  </data>
+  <data name="ResourceGroupIsMandatory" xml:space="preserve">
+    <value>Resource Group is Mandatory.</value>
+  </data>
+  <data name="SetupPercentComplCanTBeGreaterThan" xml:space="preserve">
+    <value>Setup Percent complete can't be greater than 100.</value>
+  </data>
+  <data name="ExpenseCodeIsMandatory" xml:space="preserve">
+    <value>Expense Code is mandatory.</value>
+  </data>
+  <data name="InvalidLaborExpenseCode" xml:space="preserve">
+    <value>Invalid Labor Expense Code.</value>
+  </data>
+  <data name="TheResouGroupIsInactAndMayNotBeSelec" xml:space="preserve">
+    <value>The Resource Group is inactive and may not be selected.</value>
+  </data>
+  <data name="LaborCommentsCannotBeDeleted" xml:space="preserve">
+    <value>Labor Comments cannot be deleted.</value>
+  </data>
+  <data name="CommentTypeCannotBeChanged" xml:space="preserve">
+    <value>Comment Type cannot be changed.</value>
+  </data>
+  <data name="AnInvoiceCommentTypeAlreadyExistsForThisTimeRecord" xml:space="preserve">
+    <value>An Invoice comment type already exists for this time record.</value>
+  </data>
+  <data name="EmployeeID" xml:space="preserve">
+    <value>Employee ID</value>
+  </data>
+  <data name="EmployeeNotActive" xml:space="preserve">
+    <value>Employee not Active</value>
+  </data>
+  <data name="LaborTimeNotFound" xml:space="preserve">
+    <value>Labor Time not found.</value>
+  </data>
+  <data name="LaborMethodNotToBeUsedLaborRecordsWillBeCreated" xml:space="preserve">
+    <value>LaborPartGetNew method not to be used. LaborPart records will be created automatically as part of the LaborDtl.</value>
+  </data>
+  <data name="LaborNotFound" xml:space="preserve">
+    <value>Labor not found.</value>
+  </data>
+  <data name="QuickEntryCodeDoesNotExist" xml:space="preserve">
+    <value>Quick Entry Code does not exist.</value>
+  </data>
+  <data name="QuickEntryCodeMustHaveALaborTypeOfIndirOrService" xml:space="preserve">
+    <value>Quick Entry Code must have a Labor Type of Indirect or Service as this employee is set to Allow to book to direct labor = false.</value>
+  </data>
+  <data name="InvalidResourceGroup" xml:space="preserve">
+    <value>Invalid Resource Group.</value>
+  </data>
+  <data name="TheResouGroupIsNotALocatAndMayNotBeSelec" xml:space="preserve">
+    <value>The Resource Group is not a location and may not be selected.</value>
+  </data>
+  <data name="CanTAddTimeToARowWithARejecStatus" xml:space="preserve">
+    <value>Can't add time to a row with a rejected status.</value>
+  </data>
+  <data name="HoursForAtLeastOneDayOfTheWeekMustBeEnteredToSave" xml:space="preserve">
+    <value>Hours for at least one day of the week must be entered to save a new row in Weekly Time.</value>
+  </data>
+  <data name="CanOnlyModifyTimeThatHasnTBeenSubmi" xml:space="preserve">
+    <value>Can only modify time that hasn't been submitted.</value>
+  </data>
+  <data name="TimeWeeklyFieldWithCorrectYourWeeklyTimeBefore" xml:space="preserve">
+    <value>Time Weekly field with {0} Correct your Weekly Time before saving or use Daily Time Tab.</value>
+  </data>
+  <data name="CannotBuildQuery" xml:space="preserve">
+    <value>Cannot build query.</value>
+  </data>
+  <data name="SelecMethodIsForMESOnly" xml:space="preserve">
+    <value>SelectForWork method is for MES only.</value>
+  </data>
+  <data name="ResouGroupChangeHasNotBeenAppro" xml:space="preserve">
+    <value>Resource Group change has not been approved.</value>
+  </data>
+  <data name="JobOperation" xml:space="preserve">
+    <value>Job Operation</value>
+  </data>
+  <data name="LaborType" xml:space="preserve">
+    <value>Labor Type</value>
+  </data>
+  <data name="OneRetriOptionMustBeSelec" xml:space="preserve">
+    <value>One retrieve option must be selected.</value>
+  </data>
+  <data name="InvalidLaborHeaderRecord" xml:space="preserve">
+    <value>Invalid Labor Header record.</value>
+  </data>
+  <data name="TheLaborHeaderRecordIsInactive" xml:space="preserve">
+    <value>The Labor Header record is inactive.</value>
+  </data>
+  <data name="AnIndirLaborActivAlreadyExists" xml:space="preserve">
+    <value>An indirect labor activity already exists.</value>
+  </data>
+  <data name="LaborTypeMustBeIndirEmploIsNotAllowedToBookDirect" xml:space="preserve">
+    <value>Labor Type must be Indirect. Employee is not allowed to book direct labor.</value>
+  </data>
+  <data name="CapabNotFoundInCompanyPlantID" xml:space="preserve">
+    <value>Capability '{0}' not found
+in Company '{1}'  Plant ID '{2}'</value>
+  </data>
+  <data name="IndirectCodeIsMandatory" xml:space="preserve">
+    <value>Indirect code is mandatory.</value>
+  </data>
+  <data name="InvalidIndirectCode" xml:space="preserve">
+    <value>Invalid indirect code.</value>
+  </data>
+  <data name="LaborCannotBeReporToANonLocatResou" xml:space="preserve">
+    <value>Labor cannot be reported to a non-location resource.</value>
+  </data>
+  <data name="ServiceCallJobNumber" xml:space="preserve">
+    <value>Service Call Job Number</value>
+  </data>
+  <data name="TheServiceCallHasBeenInvoiEntryNotAllowed" xml:space="preserve">
+    <value>The Service Call has been invoiced.  Entry not allowed.</value>
+  </data>
+  <data name="InvalidAssemblySequenceNumber" xml:space="preserve">
+    <value>Invalid Assembly Sequence Number ...</value>
+  </data>
+  <data name="InvalideMachineID" xml:space="preserve">
+    <value>Invalide Machine ID.</value>
+  </data>
+  <data name="ReasonCode" xml:space="preserve">
+    <value>Reason Code</value>
+  </data>
+  <data name="ScrapQuantityCannotBeNegative" xml:space="preserve">
+    <value>Scrap Quantity Cannot Be Negative</value>
+  </data>
+  <data name="NonConformQuantCannotBeNegat" xml:space="preserve">
+    <value>Non-Conform Quantity Cannot Be Negative</value>
+  </data>
+  <data name="ReworkReasonCode" xml:space="preserve">
+    <value>Rework Reason Code</value>
+  </data>
+  <data name="JobOperationSequence" xml:space="preserve">
+    <value>Job Operation Sequence</value>
+  </data>
+  <data name="ThisIsABackfOperaEntryNotAllowed" xml:space="preserve">
+    <value>This is a Backflush Operation.  Entry Not Allowed.</value>
+  </data>
+  <data name="JobOperaSubcoSequeEntryNotAllowed" xml:space="preserve">
+    <value>Job Operation Subcontract Sequence.  Entry Not Allowed.</value>
+  </data>
+  <data name="DefaultJobOperationDetail" xml:space="preserve">
+    <value>Default Job Operation Detail</value>
+  </data>
+  <data name="InvalidOperationCode" xml:space="preserve">
+    <value>Invalid operation code.</value>
+  </data>
+  <data name="InvalidLaborType" xml:space="preserve">
+    <value>Invalid Labor Type.</value>
+  </data>
+  <data name="TheJobIsForATimeAndMaterProjectOrPhaseRoleCode" xml:space="preserve">
+    <value>The job is for a time and materials Project or Phase, Role Code is required.</value>
+  </data>
+  <data name="ThisEntryHasAlreadyBeenProceByProjectBillingRole" xml:space="preserve">
+    <value>This entry has already been processed by Project Billing, Role Code cannot be changed.</value>
+  </data>
+  <data name="ThisEntryHasAlreadyBeenProceByProjectBillingTime" xml:space="preserve">
+    <value>This entry has already been processed by Project Billing, Time Type Code cannot be changed.</value>
+  </data>
+  <data name="SerialNumberCannotBeBlank" xml:space="preserve">
+    <value>Serial Number cannot be blank.</value>
+  </data>
+  <data name="NotEnoughScrapSerialNumbersSpeci" xml:space="preserve">
+    <value>Not enough scrap serial numbers specified.</value>
+  </data>
+  <data name="TooManyScrapSerialNumbersSpeci" xml:space="preserve">
+    <value>Too many scrap serial numbers specified.</value>
+  </data>
+  <data name="NotEnoughNoncoSerialNumbersSpeci" xml:space="preserve">
+    <value>Not enough nonconformance serial numbers specified.</value>
+  </data>
+  <data name="TooManyNoncoSerialNumbersSpeci" xml:space="preserve">
+    <value>Too many noncomformance serial numbers specified.</value>
+  </data>
+  <data name="NotEnoughComplSerialNumbersSpeci" xml:space="preserve">
+    <value>Not enough complete serial numbers specified.</value>
+  </data>
+  <data name="TooManyComplSerialNumbersSpeci" xml:space="preserve">
+    <value>Too many complete serial numbers specified.</value>
+  </data>
+  <data name="JobNotFound" xml:space="preserve">
+    <value>Job not found.</value>
+  </data>
+  <data name="SerialTrackIsNotEnabledInThisPlant" xml:space="preserve">
+    <value>Serial tracking is not enabled in this site.</value>
+  </data>
+  <data name="PartNumberIsNotSerialTracked" xml:space="preserve">
+    <value>Part number is not serial tracked.</value>
+  </data>
+  <data name="YouMustSpecifyAQuantity" xml:space="preserve">
+    <value>You must specify a quantity.</value>
+  </data>
+  <data name="TimeTypeCodeCannotBeEnteredIfProjectBillingIsNot" xml:space="preserve">
+    <value>Time Type Code cannot be entered if Project Billing is not licensed.</value>
+  </data>
+  <data name="ARoleCodeMustBeEnteredBeforeTheTimeTypeCode" xml:space="preserve">
+    <value>A Role Code must be entered before the Time Type Code.</value>
+  </data>
+  <data name="InvalidProjectTimeTypeCodeCannotBeEntered" xml:space="preserve">
+    <value>Invalid Project. Time Type Code cannot be entered.</value>
+  </data>
+  <data name="InvalidProjectOrWBSPhaseInvoiMethodTimeTypeCode" xml:space="preserve">
+    <value>Invalid Project or WBS Phase Invoicing Method. Time Type Code cannot be entered.</value>
+  </data>
+  <data name="ThereIsNoChargeRateDefinedForTheSelecTimeTypePlease" xml:space="preserve">
+    <value>There is no charge rate defined for the selected Time Type. A charge rate should be defined before this labor transaction is approved.</value>
+  </data>
+  <data name="ThereIsNoChargeRateDefinedOnTheProjectForTheSelec" xml:space="preserve">
+    <value>There is no charge rate defined on the Project for the selected Time Type. A charge rate should be defined before this labor transaction is approved.</value>
+  </data>
+  <data name="ThereIsNoChargeRateDefinedOnTheEmploForTheSelec" xml:space="preserve">
+    <value>There is no charge rate defined on the Employee for the selected Time Type. A charge rate should be defined before this labor transaction is approved.</value>
+  </data>
+  <data name="ThereIsNoChargeRateDefinedOnTheRoleCodeForTheSelec" xml:space="preserve">
+    <value>There is no charge rate defined on the Role Code for the selected Time Type. A charge rate should be defined before this labor transaction is approved.</value>
+  </data>
+  <data name="ResourceGroupNotValid" xml:space="preserve">
+    <value>Resource Group not valid.</value>
+  </data>
+  <data name="ResouGroupNotValidForThePlant" xml:space="preserve">
+    <value>Resource Group not valid for the Site.</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Hour" xml:space="preserve">
+    <value>Hour</value>
+  </data>
+  <data name="Minute" xml:space="preserve">
+    <value>Minute</value>
+  </data>
+  <data name="InvalidJobNumber" xml:space="preserve">
+    <value>Invalid Job Number</value>
+  </data>
+  <data name="PlantConfiControlRecordNotFound" xml:space="preserve">
+    <value>Site Configuration Control record not found.</value>
+  </data>
+  <data name="InvalidSerialNumberNumber" xml:space="preserve">
+    <value>Invalid SerialNumber Number</value>
+  </data>
+  <data name="ThereIsAtLeastOneSerialNumberWhichHasNotBeenMatched" xml:space="preserve">
+    <value>There is at least one serial number which has not been matched. Continue?</value>
+  </data>
+  <data name="LowerLevelSerialMatchIsRequiForTheReceiptSerial" xml:space="preserve">
+    <value>Lower Level serial matching is required for the receipt serial numbers</value>
+  </data>
+  <data name="Manufacture" xml:space="preserve">
+    <value>Manufacture</value>
+  </data>
+  <data name="Service" xml:space="preserve">
+    <value>Service</value>
+  </data>
+  <data name="Project" xml:space="preserve">
+    <value>Project</value>
+  </data>
+  <data name="Maintenance" xml:space="preserve">
+    <value>Maintenance</value>
+  </data>
+  <data name="Production" xml:space="preserve">
+    <value>Production</value>
+  </data>
+  <data name="Setup" xml:space="preserve">
+    <value>Setup</value>
+  </data>
+  <data name="Indirect" xml:space="preserve">
+    <value>Indirect</value>
+  </data>
+  <data name="TheLaborHoursYouHaveSelecUpdatedForAreComprOfMulti" xml:space="preserve">
+    <value>The labor hours you have selected (updated) for {0} are comprised of multiple labor detail records.                                      Please use the Daily Time view to make any updates to these labor hours.</value>
+  </data>
+  <data name="MoreThanOneEntryForIsNotAllowed" xml:space="preserve">
+    <value>More than one entry for {0} is not allowed</value>
+  </data>
+  <data name="SerialNumberIsNotValidForThisJobAndPart" xml:space="preserve">
+    <value>Serial Number {0} is not valid for this job and part.</value>
+  </data>
+  <data name="SerialNumberAlreadyHasAStatusOtherThanWIPScrap" xml:space="preserve">
+    <value>Serial Number {0} already has a status other than WIP, Scrap, or Nonconformance.</value>
+  </data>
+  <data name="SerialNumberHasAlreadyBeenAssigToThisOpera" xml:space="preserve">
+    <value>Serial Number {0} has already been assigned to this operation.</value>
+  </data>
+  <data name="SerialNumberAlreadyRejecByDMR" xml:space="preserve">
+    <value>Serial Number {0} already rejected by DMR: {1}</value>
+  </data>
+  <data name="SerialNumberWasScrapOnOpera" xml:space="preserve">
+    <value>Serial Number {0} was scrapped on operation: {1}</value>
+  </data>
+  <data name="SerialNumberIsInInspeUnderNonCoNumber" xml:space="preserve">
+    <value>Serial Number {0} is in inspection under NonConformance Number: {1}</value>
+  </data>
+  <data name="NotEnoughSerialNumbersAssigToJobNeedMoreSerial" xml:space="preserve">
+    <value>Not enough serial numbers assigned to job. Need {0} more serial numbers assigned. Assign them now?</value>
+  </data>
+  <data name="TheTotalCombiQuantMustBeAWholeNumber" xml:space="preserve">
+    <value>The total combined quantity ({0}) must be a whole number.</value>
+  </data>
+  <data name="TheModulesRequiToAccessBOLaborAreNotLicen" xml:space="preserve">
+    <value>The modules required to access 'BO.Labor' are not licensed.</value>
+  </data>
+  <data name="EquipMustBeUnique" xml:space="preserve">
+    <value>Equipment ID must be unique.</value>
+  </data>
+  <data name="CurrTimeFormat" xml:space="preserve">
+    <value>Current Time Format</value>
+  </data>
+  <data name="InventoryStatus" xml:space="preserve">
+    <value>INVENTORY</value>
+  </data>
+  <data name="ExistingNonConformanceRecordsQuestion" xml:space="preserve">
+    <value>There is a Nonconformance entry linked to this labor. Are you sure you want to delete the labor and nonconformance records?</value>
+  </data>
+  <data name="SerialNumberHasNotBeenAssigToThisOp" xml:space="preserve">
+    <value>Serial Number {0} has not been assigned to this operation previously.</value>
+  </data>
+  <data name="NotEnoughSerialNumbersToBeSelectAsRW" xml:space="preserve">
+    <value>Not enough serial numbers to be selected as rework, you only have completed {0} previously</value>
+  </data>
+  <data name="InvalidToDeleteRWExists" xml:space="preserve">
+    <value>Invalid to delete as there is a rework operation for same serial number</value>
+  </data>
+  <data name="ExternalMESIndirectCodeNotBlank" xml:space="preserve">
+    <value>Please select a Downtime Code.</value>
+  </data>
+  <data name="NonConfAlreadyProcessed" xml:space="preserve">
+    <value>Noncomformance quantity has been already processed in Inspection. Change not allowed.</value>
+  </data>
+  <data name="TimeTypeCodeCannotBeBlank" xml:space="preserve">
+    <value>Please select a Time Type.</value>
+  </data>
+  <data name="TimeTypeChangeRateWarning" xml:space="preserve">
+    <value>There is no charge rate defined for this labor transaction. If it is approved it will result in a $0.00 charge amount. Do you wish to continue?</value>
+  </data>
+  <data name="SerialNumberHasAlreadyBeenAssigToThisOperaRework" xml:space="preserve">
+    <value>Serial Number {0} has already been assigned to this operation as rework.</value>
+  </data>
+  <data name="InvalidToDeleteAnApprovedTrans" xml:space="preserve">
+    <value>Invalid to delete an approved labor detail.</value>
+  </data>
+  <data name="ShiftInformationFromCurrentEmployeeNotAvailable" xml:space="preserve">
+    <value>Shift Information from current employee not available</value>
+  </data>
+  <data name="CannotSelectSerialNoWithPCID" xml:space="preserve">
+    <value>Serial Number {0} is associated with a PCID.</value>
+  </data>
+  <data name="ReportQtyNotAllowedForTimeAndBackflushOperations" xml:space="preserve">
+    <value>Report Quantity not allowed for Time and Backflush Qty Operations.</value>
+  </data>
+  <data name="NotAllowedToChangeNextOperationForATimeBackflushQty" xml:space="preserve">
+    <value>Not allowed to change Next Operation for a Time - Backflush Qty.</value>
+  </data>
+  <data name="InvalidDateRangeSelected" xml:space="preserve">
+    <value>Invalid Range of Dates Selected.</value>
+  </data>
+  <data name="HCMRecordDelete" xml:space="preserve">
+    <value>Unable to Delete HCM Record, Review Status.</value>
+  </data>
+  <data name="HCMRecordNotFound" xml:space="preserve">
+    <value>HCM record not found.</value>
+  </data>
+  <data name="CallFromIncorrect" xml:space="preserve">
+    <value>Incorrect Call From parameter.</value>
+  </data>
+  <data name="InvalidToDeleteAPostedLabor" xml:space="preserve">
+    <value>Invalid to delete a posted labor detail.</value>
+  </data>
+  <data name="InvalidToModifyAPostedLabor" xml:space="preserve">
+    <value>Invalid to modify a posted labor detail.</value>
+  </data>
+  <data name="HCMLaborMustHaveSameType" xml:space="preserve">
+    <value>It is not allowed to mix HCM integration types in the same header. Please create a new header for the new type</value>
+  </data>
+  <data name="InvalidToDeleteBackFlushedTrans" xml:space="preserve">
+    <value>Cannot delete backflushed labor transactions.</value>
+  </data>
+  <data name="FSAActionOnlyForFSA" xml:space="preserve">
+    <value>Action is only for use by the Epicor FSA integration.</value>
+  </data>
+  <data name="FSACallCodeOnlyForFSA" xml:space="preserve">
+    <value>Call Code is only for use by the Epicor FSA integration.</value>
+  </data>
+  <data name="FSAContractCodeOnlyForFSA" xml:space="preserve">
+    <value>Contract Code is only for use by the Epicor FSA integration.</value>
+  </data>
+  <data name="FSAContractNumOnlyForFSA" xml:space="preserve">
+    <value>Contract Number is only for use by the Epicor FSA integration.</value>
+  </data>
+  <data name="FSAEquipmentInstallIDOnlyForFSA" xml:space="preserve">
+    <value>Equipment Install ID is only for use by the Epicor FSA integration.</value>
+  </data>
+  <data name="FSAEquipmentPartNumOnlyForFSA" xml:space="preserve">
+    <value>Equipment ID is only for use by the Epicor FSA integration.</value>
+  </data>
+  <data name="FSAServiceOrderNumberOnlyForFSA" xml:space="preserve">
+    <value>Service Order Number is only for use by the Epicor FSA integration.</value>
+  </data>
+  <data name="FSAServiceOrderResourceNumberOnlyForFSA" xml:space="preserve">
+    <value>Service Order Resource Number is only for use by the Epicor FSA integration.</value>
+  </data>
+  <data name="FSAWarrantyCodeOnlyForFSA" xml:space="preserve">
+    <value>Warranty Code is only for use by the Epicor FSA integration.</value>
+  </data>
+  <data name="PCIDContainsADifferentItemPartNum" xml:space="preserve">
+    <value>This transaction cannot be processed into a PCID that contains a different part if the PCID is not Allow Mixed Parts.</value>
+  </data>
+  <data name="PCIDContainsADifferentJob" xml:space="preserve">
+    <value>This transaction cannot be processed into a PCID that contains a different job if the PCID is Label Print Controlled.</value>
+  </data>
+  <data name="PCIDCannotBeUsedForThisTransaction" xml:space="preserve">
+    <value>PCID cannot be used for this transaction.</value>
+  </data>
+  <data name="LotMustBeEnteredWhenUsingPCID" xml:space="preserve">
+    <value>Lot must be entered for Lot tracked parts when using a PCID</value>
+  </data>
+  <data name="CannotEndDowntimeWithoutDowntime" xml:space="preserve">
+    <value>You cannot end Downtime without existing Downtime.</value>
+  </data>
+  <data name="CannotStartDowntimeWhenDowntimeAlreadyExists" xml:space="preserve">
+    <value>You cannot start Downtime when Downtime already exists.</value>
+  </data>
+  <data name="InvalidReworkReasonCode" xml:space="preserve">
+    <value>Invalid Rework Reason Code.</value>
+  </data>
+  <data name="NeedResource" xml:space="preserve">
+    <value>A valid resource must be selected to continue.</value>
+  </data>
+  <data name="EmployeeUnableToUpdateDiscrepQty" xml:space="preserve">
+    <value>Employee is unable to update Non-Conformance Quantity.</value>
+  </data>
+  <data name="EmployeeUnableToUpdateScrapQty" xml:space="preserve">
+    <value>Employee is unable to update Scrap Quantity.</value>
+  </data>
+  <data name="CannotEnterCommentForApproved" xml:space="preserve">
+    <value>You cannot enter comments to an approved time</value>
+  </data>
+  <data name="ProjectClosed" xml:space="preserve">
+    <value>Project {0} is closed and must be reopened to proceed with this action.</value>
+  </data>
+  <data name="WeekBeginDateSunday" xml:space="preserve">
+    <value>Beginning week date must be a Sunday.</value>
+  </data>
+  <data name="Invoice" xml:space="preserve">
+    <value>Invoice</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="Approve" xml:space="preserve">
+    <value>Approve</value>
+  </data>
+  <data name="Reject" xml:space="preserve">
+    <value>Reject</value>
+  </data>
+  <data name="Approved" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="ClockInDate" xml:space="preserve">
+    <value>Clock In Date</value>
+  </data>
+  <data name="Entered" xml:space="preserve">
+    <value>Entered</value>
+  </data>
+  <data name="Job" xml:space="preserve">
+    <value>Job</value>
+  </data>
+  <data name="LaborHours" xml:space="preserve">
+    <value>Labor Hours</value>
+  </data>
+  <data name="Opr" xml:space="preserve">
+    <value>Opr</value>
+  </data>
+  <data name="PartiallyApproved" xml:space="preserve">
+    <value>Partially Approved</value>
+  </data>
+  <data name="PhaseID" xml:space="preserve">
+    <value>Phase ID</value>
+  </data>
+  <data name="Rejected" xml:space="preserve">
+    <value>Rejected</value>
+  </data>
+  <data name="Role" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Submitted" xml:space="preserve">
+    <value>Submitted</value>
+  </data>
+  <data name="TimeType" xml:space="preserve">
+    <value>Time Type</value>
+  </data>
+  <data name="CannotCompleteOpActionReq" xml:space="preserve">
+    <value>Cannot Complete Operation. Need to complete every required Action first.</value>
+  </data>
+  <data name="JobOperActionNotFound" xml:space="preserve">
+    <value>Job Operation Action record not found.</value>
+  </data>
+  <data name="TheTotalCoPartsDiscrepQuantAndLaborQuantDoNotBalance" xml:space="preserve">
+    <value>The total co-parts nonconformance quantity and labor nonconformance quantity do not balance.</value>
+  </data>
+  <data name="TheTotalCoPartsScrapAndLaborQuantDoNotBalance" xml:space="preserve">
+    <value>The total co-parts scrap quantity and labor scrap quantity do not balance.</value>
+  </data>
+  <data name="LaborPartHasNotChanged" xml:space="preserve">
+    <value>Co-part record has not changed.</value>
+  </data>
+  <data name="AllAttrSetsMustBeTheSame" xml:space="preserve">
+    <value>When part is serial tracked, all attribute sets must be the same.</value>
+  </data>
+  <data name="AttributeSetsMustBeEnteredForAllQtys" xml:space="preserve">
+    <value>Attribute sets must be entered for all quantities.</value>
+  </data>
+  <data name="CoPartError" xml:space="preserve">
+    <value>Job: {0} Assy: {1} OperSeq: {2} is a co-part operation and is not supported by Work Queue at this time. It may be processed in Labor Entry or End Activity.</value>
+  </data>
+</root>

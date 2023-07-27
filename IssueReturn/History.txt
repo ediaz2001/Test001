@@ -1,0 +1,492 @@
+﻿History:
+02/22/13 dparillo	SCR 113202 - IssueReturn.cs added ExceptionManager.AssertNoBLExceptions to validateTranQty.
+02/25/13 Pradeep scr93671 - IssueReturn.cs - Set the default DimConvFactor to 1.
+02/25/13 dparillo	SCR 110524 - Uplifted SCR 101665. IssueReturn.cs & IssueReturnQueries.cs
+03/05/2013 IrisE SCR 110524 (Rework) - In procedure onChangePartNumCore: Clear TO wareshouse/bin and getToWhse proc will get new default.
+03/26/13 armoreno - SCR113211 Issue14 - A Null validation was added and the isEmpty condition changed by the IsNullorEmpty.
+04/04/13 YuriR    SCR 118326 - IssueReturn.cs - Modified onChangePartNumCore: reset From WH/Bin, so getFromWhse proc gets default.
+04/04/13 dparillo	SCR 110524 - IssueReturn.cs - corrected getToWhse - changed PartWhse to PartPlant
+04/08/13 gheier SCR 117541 - Added a Db.Validate(PartTran) to process-STK-MTL so the ExtCost is calculated before it is used later in the code resulting in bad calcuations
+04/12/13 - CarlosM - SCR 118396 - IssueReturn.cs - Added MidpointRounding mode AwayFromZero as a parameter on all the calls to Math.Round.
+05/03/13 andreaP - scr 120095 - IssueReturn.cs - found switch statements looking for PartAlloc.DemandType not to be all caps so fixed it throughout the system where I found it.
+05/13/13 - CarlosM - SCR 120101 - Uplifted SCR 117753 - Rolled back changes made for SCR 91513.
+05/13/13 dparillo	SCR 120098 - IssueReturn.cs - added ref to getNewPartNumCore for ttIssueReturn and to the calling methods.
+05/23/13 andreaP - scr 121785 - IssueReturn.cs - added TriggerType and ErpCallContext to override trigger logic.
+05/29/13 jstevermer - SCR 102218 - Uplifted SCR 90188
+06/05/13 - DebbieP - SCR 117945 - IssueReturn.cs - converted ErpCallContext logic to "using" syntax so that the key is removed when exiting the method.
+06/18/13 - cpetty - SCR 122411 - IssueReturn.cs - added call to FillForeignFields in prePerformMaterialMovement method to ensure correct part Lot and serial track flag details.
+07/08/13 jonunez - SCR 124252 - IssueReturn.cs - changed a validation on getToWhse(IssueReturnRow) method to fix a null pointer exception.
+07/09/13 - lguerra - SCR 123925 - IssueReturn.cs - assinging the value to tmpResourceGrpID in method updatePartWIP, so that the trigger PartWIP search for the ResourceGrp
+07/10/13 - NancyA  - SCR 123256 - FormatSNErrors method, added ref to the ErrMessage parameter because ErrMessage string should be input-output.
+07/17/13 - lguerra - SCR 124439 - Showing the correct exception when accesing the method by Reflection
+07/19/13 - lguerra - SCR 124277 - Fixing the comparison in enableSNButton for handling same as E9
+07/22/13 - lguerra - SCR 102477 - Create overload method for Negative Inventory adding the parameter SysRowId from MtlQueue and validating if the Transaction is INSPECTION
+07/23/13 - lguerra - SCR 102547 - Fixed collection error
+07/25/13 - AHudson - SCR 122606 - TranDate was incorrectly defined as a string. Changed datatype to DateTime.
+07/26/13 - dparillo  SCR 125077 - removed fix for SCR 123546 in OnChangeUM. The issue should be addressed by tools SCR 124295
+07/31/13 - JesusC  - SCR 125247 - Fixed find of PartWip.
+07/31/13 - EBalbuena - SCR 123341 - Added 'ref' to parameter ttIssueReturn in method zerottIssueReturn.
+08/06/13 - AldoS   - SCR 125642 - Added a search to get the correct ttIssueReturn.FromBinNum. These changes does not affect the funcionality for SCR 118326
+08/06/13 - lguerra - SCR 102547 - Added the tran type SUB-INS, when the process is MaterialQueue and having serial tracking
+08/07/13 - Pradeep scr125648 - IssueReturn.cs - Moved changes for scr120245 to 10.0.
+08/12/13 - VickiY  - SCR126145  - Updated IssueReturn.cs file, PreGetNewIssueReturn method, add transaction scop to the code where query the MtlQueue and delete the MtlQueue from the Db.
+08/12/13 - gcardenas - SCR 126133 - IssueReturn.cs method: checkStatusTracking ToList() added because RowMod is in the whereclause and modified inside the foreach.
+08/20/13 - DebbieP - SCR-126797 - IssueReturn.cs: fixed processing for SUB-INS type throughout; also removed many strings strings.resx that should be hard coded and moved to quoted strings in the code 
+08/28/13 - hcoss - SCR 122507 - IssueReturn.cs - Formatted incorrect selected serial number records message.
+09/04/13 JeanetteP SCR 127565 - Modified process-ASM-STK to validate PartTran to update the ExtCost before it can be used in the logic. 
+09/12/13- lguerra - SCR 126768 - Added validation for Tran Qty when the movement is STK-INS to prevent to enter more than the available
+09/17/2013 gheier SCR 124324 - Changed validation of shared warehouse to look at PlantShared.RemotePlant
+09/17/2013 Pradeep scr128303 - IssueReturn.cs - Added code to fire the PartTran triggers.
+10/22/13 - andreaP - scr 130294 - IssueReturn.cs, IssueReturn.Queries.cs - bringing forward change for scr 125918.
+11/28/13 - AldoS - SCR 132381 - IssueReturn.cs - Uplifted SCR 130460: Added a new public method OnChangeASTUom().
+12/04/13 - EdgarT - SCR 131899 - IssueReturn.cs - Updated RelatedToFile and ForeignKey fields of LegalNumHistory table.
+12/04/13 - EdgarT - SCR 131899 - IssueReturn.Queries.cs - Updated RelatedToFile and ForeignKey fields of LegalNumHistory table.
+12/05/13 - Almartinez - SCR 132279 - Uplift for scr129647 - Fixed logic bug related to warehouses/shared warehouses.
+01/03/14 - dparillo SCR 127213 - IssueReturn.cs: modified PrePerformMaterialMovement and getLegalNumberType
+01/13/14 - gheier - SCR 127621 - Added check to process_PUR-STK for move from one shared warehouse to another shared warehouse, both owned by the same plant. This is a STK-STK transaction, not STK-PLT.
+01/15/14 - edgart - SCR 127934 - Added validation in PerformMaterialMovement method.
+01/24/14 -edgart - SCR 76510 - IssueReturn.cs - Missing field PartTran.Bin2 has been saved within process_STK_MTL method
+01/24/14 - dparillo SCR 135479 - IssueReturn.cs: modified process_ASM_STK, process_MTL_STK, process_STK_ASM and process_STK_MTL to not verify plant case sensitive.
+01/27/14 - edgart - SCR 133452 - IssueReturn.cs - Added the UpdateLegalNumHistory method to update relatedToFile and ForeignKey fields in LegalNumHistory table, also the FromBin field has been saved in MTL_STK process.
+02/02/14 - DJY    - SCR 130276 & 130238 & 130239 - Cross Dock consumption during Transfer Order Receipt
+02/06/14 - EdgarT - SCR 76510 - IssueReturn.cs - Missing field WareHouse2 has been saved within process_STK_MTL method
+02/28/14 - aralba - SCR 137075 - IssueReturn.cs - Changed getToWhse(), case ASM, from JobAsmbl to JobOperCheck to keep JobAsmbl values.
+03/03/14 - KeithW - SCR 136281 - IssueReturn.cs - Change to validateJobNum() so that exception is thrown if Job is invalid
+03/04/14 - dparillo		SCR 123990 - IssueReturn.cs - PerformMaterialMovement: do not check negative inventory if coming from MtlQueue and is NonConf type with ReqestMove = true.
+03/10/14 - aalba -		SCR 137075 - IssueReturn.cs - RW -  Modify onChangeToAssemblySeqCore() to fix required quantity, modify getFromWhse() to allow FromWarehouseCode to update.
+03/12/14 - dparillo		SCR 138250 - IssueReturn.cs: modified enableSNButton to handle MtlQueue INS-ASM operation and subcontract operation
+03/12/14 - dparillo		SCR 138263 - IssueReturn.cs: modified enableSNButton and processMtlQueue
+03/13/14 - dparillo		SCR 138263 - IssueReturn.cs: removed un-needed code from previous check-in in enableSNButton
+03/17/14 - dparillo		SCR 83908  - IssueReturn.cs: checkStatus - corrected DMR status, validatSerialNumber - changed to correct to FromWarehouse for DMR-ASM
+03/18/14 - dparillo		SCR 103345 - IssueReturn.cs: modified process_INS_DMR to update DMRHead wh/bin. IssueReturn.Queries.cs: added FindFirstDMRHeadWithUpdLock
+03/19/14 - DebbieP -	SCR-132588 - IssueReturn.cs: changed parameters for createttSNtranRecord and createSNTranPartTranLink and changed return value for getNewSerialNo
+03/26/14 - dparillo		SCR 138804 - IssueReturn.cs: modified GetNewIssueReturn, getToJobSeq to not overwrite populated fields
+04/09/14 - djy     -	scr 139283 - IssueReturn.cs - handle a legitimate material movement within the same warehouse/bin
+04/11/2014 - DebbieP -	SCR-138322 - IssueReturn.cs: fix MtlQueue serial number logic for shared whs when shared does not track SN on bin to bin moves 
+04/18/2014 - gheier -	SCR 137978 - IssueReturn.cs: added GetPartXRefInfo public method
+05/07/14 - daramos -	SCR 140687 - IssueReturn.cs: Change _DefPartTran parameters to ref option, so they can be modified by the method.
+05/22/14 - dparillo		SCR 141822 - IssueReturn.cs: modified process_STK_MTL and OnChangeTranQty
+05/23/14 - NancyA		SCR 141546 - IssueReturn.cs: When Issue Assembly, assign ttIssueReturn.QtyRequired = JobAsmbl.PullQty.
+06/09/14 - CeciliaL		SCR 140798 - IssueReturn.cs: Modified updatePartWIP - avoid update FromAssemblySeq, FromOprSeq of original (From) record against WIP-WIP transaction; Modified validatePartWip - let program move material components;
+06/17/14 - dparillo		SCR 143045 - IssueReturn.cs: Modified GetNewIssueReturn, getToJobSeq, onChangeToJobNumCore, onChangeToJobSeqCore - don't run getToWhse from getToJobSeq if we just read MtlQueue
+06/18/14 - KeithW -		SCR 125408 - IssueReturn.cs: Replace use of patch field PartWip FromOpCode with field PartWip.FromOpCode.
+06/20/14 - AldoS -		SCR 142078 - IssueReturn.cs: Uplifted SCR 110878 - Removed duplicate validateLotNum call from PrePerformMaterialMovement.
+06/25/14 - almartinez   SCR 143447 - Migrate JobAsmbl Patchfields.
+07/07/14 - almartinez   SCR 143449 - Migrate JobMtl Patchfields.
+07/31/14 - dparillo     SCR 142882 - IssueReturn.cs: modified getToJobSeq, onChangeToAssemblySeqCore and updateSerialNo for reassign serial 
+09/02/14 - EdgarT - SCR 142635 - IssueReturn.cs, Strings.resx - Uplifted the SCR 135712
+09/09/14 - hcoss - SCR  143561 -IssueReturn.cs: Use PartTram.DUM field for creating the PlantTran record.
+09/10/14 - CCORTEZ - SCR 143551 - IssueReturn.cs: Adding logic to populate the ALTXXXUnitCost columns with the STK/MGF-PLT PartTran columns to the receipt PartTran to have a correct costs at FIFO records.
+09/29/14 - YuriR   - SCR 148038 - IssueReturn.cs: Modified process_STK_ASM: generate PLT-ASM transaction by GeneratePlantReceiptTran, the same way as it's done against STK-MTL.
+10/01/14 - dparillo  SCR 146834 - IssueReturn.cs: modified GetSelectSerialNumbersParams for MoveWIP
+10/07/14 - dparillo  SCR 148797 - IssueReturn.cs: modified getToWhse - removed some of previous fix for SCR 103345
+10/14/14 - dparillo  SCR 149776 - IssueReturn.cs: modified getFromJobSeq.
+10/16/14 - dparillo  SCR 149899 - IssueReturn.cs: modified getToWhse - removed some of previous fix for SCR 103345
+10/28/14 - gheier - SCR 145776 - IssueReturn.cs + IssueReturn.Queries.cs + Strings.resx - Added status check for unpick transactions to ValidateSN method.
+10/31/14 - dparillo  SCR 148173 - IssueReturn.cs: added MasterInventoryBinTests
+11/12/14 - dparillo  SCR 148195  - IssueReturn.cs: modified PreGetNewIssueReturn
+11/18/14 - dparillo  SCR 148195  - IssueReturn.cs: modified MasterInventoryBinTests. IssueReturn.Queries.cs: added ExistsPORelContractID
+11/20/14 - dparillo  SCR 151918  - IssueReturn.cs: added check for error to OnChangingToJobSeq
+12/05/14 - AlejandroM SCR 152555 - IssueReturn.cs: Set complete only when QtyPer for Mtl is > 0 and rules applies.
+12/08/14 - dparillo  SCR 148173  - IssueReturn.cs: modified validateWareHouseCodeBinNum
+12/16/14 - dparillo  SCR 148200  - IssueReturn.cs: modified MasterInventoryBinTests. IssueReturn.Queries.cs: added FindPlanningContractID
+12/29/14 - gheier - SCR 152798 - PCID: Enhancement to add PCID to sales order pick - Initial Checkin
+01/01/15 - gheier - SCR 153209 - PCID: Add OnChangePCID public method
+01/07/15 - DJY - SCR 154371 - Package Control 
+01/13/15 - gheier - SCR 153209 - PCID: Correct an issue with the validation on OnChangePCID.
+01/20/15 - gheier - SCR 152798 - PCID: Add qty to existing PkgControlItem if a matching one exists rather than creating a new one for each pick.
+01/20/15 - gheier - SCR 152798 - PCID: Changes for revised schema - call PackageControl library to stamp customer & shipto info on PkgControlHeader
+01/21/15 - dparillo SCR 154875 - IssueReturn.cs: modified MasterInventoryBinTests
+01/24/15 - gheier - SCR 155011 - PCID: Changes to shipto validation logic
+01/27/15 - YuriR  - SCR 146665 - IssueReturn.cs, IssueReturn.Queries.cs - Added dataset InventoryQtyAdjBrw, method GetInventoryQtyAdjBrw;
+01/30/15 - gheier - SCR 151906 - Initial check-in for mass unpick by PCID functionality
+02/10/15 - gheier - SCR 152798 - Changes for dynamic PCID support
+02/12/15 - AbrahamM - SCR 154681 - Control if stock can be issued to a Job that does not belong to this contract.
+02/16/15 - CeciliaL - SCR 147058 - IssueReturn.cs - Lot FIFO When moving material with the same site, Material Unit Cost value should not be updated.
+                                   IssueReturn.Queries.cs - Added FindFirstRcvDtl query.
+02/17/15 - YuriR    - SCR 156467 - IssueReturn.cs - Modified onChangePartNumCore: reset To Warehause in case Return Misc (UKN-STK)
+02/12/15 - AbrahamM - SCR 154681 - IssueReturn.cs, IssueReturn.Queries.cs, Strings.resx: Modified NegativeInventoryTest to also validate planning contract receiving warehouse.
+02/24/15 - gheier - SCR 152798 - Assign PCID value in SerialNo on picking.
+02/25/15 - gheier - SCR 151906 - Mass unpick support for serial numbers. Clear MtlQueue PCID value for unpick of partial picks.
+03/02/15 - MarcoV - SCR 156440 - IssueReturn.cs: Modified  process_PUR_STK method to set the BinType from the bin which is moving to stock
+03/09/15 - gheier - SCR 153209 - IssueReturn.cs, IssueReturn.Queries.cs, Strings.cs: Added validation for PkgControl flags 
+03/10/15 - gheier - SCR 153209 - IssueReturn.cs: Added CMP-SHP (used for picking kit components) to valid IssueReturn.TranTypes for PCID
+03/12/15 - MarcoV - SCR 156440 - IssueReturn.cs: ETO: process_PUR_STK method to validate Cont bintype using the same logic as std bintype
+03/19/15 - andreaP - scr 75747 - IssueReturn.cs: CrossDock records not processing properly.
+04/30/15 - dparillo SCR 162001 - IssueReturn.cs: modified updateSerialNo to use altJobHead
+05/11/15 - dparillo SCR 162357 - IssueReturn.cs: modified updatePartBin to round decimals
+06/11/15 - AldoS    SCR 164752 - IssueReturn.cs: Added validation to not perform the material movement if PCID status is SOPACK.
+06/15/15 - dparillo SCR 164988 - IssueReturn.cs: modified setIssuedComplete. IssueReturn.Queries.cs: added FindJobMtlQtyPer
+06/17/15 - YuriR    SCR 157873 - IssueReturn.cs: modified process_MTL_STK: avoid reset JobMtl costs when Qty Issued is zero (to honor Job Adjustments)
+06/19/15 - dparillo SCR 165198 - IssueReturn.cs: modified getFromJobSeq, GetNewIssueReturn, onChangeFromAssemblyCore, onChangeFromJobNumCore, OnChangeFromJobSeq, OnChangingJobSeq, processMtlQueue, setIssuedComplete
+06/26/15 - AbrahamM - SCR 163553  - IssueReturn.cs, IssueReturn.Queries.cs: Update PartTran.ContractID for Inventory transactions so Planning Contract Tracker can read it.
+07/16/15 - YuriR    - SCR 129458 - IssueReturn.cs: program lets issue materials to Server jobs 
+07/17/15 - Pradeep - scr167251 - IssueReturn.cs - New parameter for InitializeDynamicPCID.
+07/20/15 - dparillo SCR 166719 - IssueReturn.cs: modified OnChangeTranQty to not call setIssuedComplete for ADJ-MTL
+07/20/15 - Pradeep - scr168251 - IssueReturn.cs - Removed the new parameter.
+07/21/15 - Pradeep - scr163957 - IssueReturn.cs/.Queries.cs - Modified code to adjust expendable and returnable containers.
+07/31/15 - Pradeep - scr161100 - IssueReturn.cs/.Queries.cs - Modified code to default the control ID.
+08/05/15 - YuriR   - SCR 168293 - IssueReturn.cs , modified onChangePartNumCore - set PartNum from Part Master.
+08/13/15 - dpittman- SCR-168428 - IssueReturn.cs: added PCID validations for serial number processing and whereClause.
+08/26/15 - ScottH  - SCR 167740 - IssueReturn.cs: removed logic that was overwriting PickedOrders.PCID with the wrong PCID. This field was already set correctly by lib/Allocations.updatePickedOrders.
+09/03/15 - ccortez - SCR 169576 - IssueReturn.Queries.cs: Not retriving PartBin records for Misc Issue Grid. 
+
+09/09/15 - Pradeep scr165655 - Assigned safety indicator.
+09/14/15 - dparillo  SCR 168723 - IssueReturn.cs: modified getListCore to honor PartNum and EquipID sortby.
+09/15/15 - dparillo  SCR 171099 - IssueReturn.cs: modified validateWareHouseCodeBinNum to allow STK-ASM transactions for Customer Managed bins
+09/18/15 - ScottH  - SCR 169531 - IssueReturn.cs: moved and modified serial number validation logic related to Unpick.
+09/21/15 - IrisE - SCR 171673 - IssueReturn.cs/Queries.cs: Set the package code from the Pkg Control Configuration - Additional: Add plant param to PkgControl query.
+09/25/15 - JeanetteP - SCR 170491 - IssueReturn.cs and IssueReturn.Queries.cs: Modified MTL-STK/ASM-STK logic when returning FIFO/LOTFIFO materials/assemblies back to stock. The new logic will return quantities 
+                                    using the original FIFO cost layers issued to the job starting from the last issued FIFO. The new return logic will create multiple FIFO cost layers as needed instead of just
+                                    a single FIFO for the weighted average costs.
+09/29/15 - YuriR  - SCR 171456 - IssueReturn.cs - modified process_MTL_STK: set PartTran.WareHouse2.
+09/30/15 - JeanetteP - SCR 140750 - IssueReturn.cs: Modified ASM-STK logic when returning FIFO/LOTFIFO to make sure that single FIFO return also works as multi-FIFO return.
+10/07/15 - DebbieP - SCR-171025 - IssueReturn.cs, .Queries.cs: for MaterialQueue and HHMaterialQueue tran types a serial number that is on an open cycle count tag cannot be added to a PCID.
+10/15/15 - JeanetteP - SCR 172014 - IssueReturn.cs and IssueReturn.Queries.cs: Moved the ASM-STK/MTL-STK FIFO/LOTFIFO return logic to the ProcessFIFO library.
+10/20/15 - dparillo  SCR 173514 - IssueReturn.cs: modified getToWhse to allow whse/bin to change for STK-MTL when changing JobSeq.
+10/22/15 - IrisE - SCR 173807 - IssueReturn.cs: Populate PkgControlItem.CustPONum from OrderHed.PONum
+10/23/15 - AlejandoM - SCR 164799 - IssueReturn.cs:  Enclose Material movement process in a transaction to avoid other processes to pick partbin in negative Inventory Test.
+10/26/15 - ScottH - SCR 169531 - Rollback changes made previously made for SCR 169531 due to lack of time to fully complete and test SCR.
+10/27/15 - dparillo  SCR 173643 - IssueReturn.cs: modified getListCore to sort by description 
+11/04/15 - AbrahamM - SCR 104054 - IssueReturn.cs, IssueReturn.Queries: Set UM from Assembly when there is a Non-Master Part.
+11/06/15 - Pradeep - scr172629 - IssueReturn.cs, new methods CheckPackageCodeAllocQty, CheckPackageCodeNegQty.
+11/24/15 - Pradeep scr176426 IssueReturn.Queries.cs Removed un-used queries.
+12/10/15 - ScottH - SCR 169531 - Modified serial number retrieval where clause and validation logic related to Unpick.  Also moved unpick serial number validations into the validateSerialNumbers method to conform with serial number standards.
+01/06/16 - dparillo  SCR 177543 - IssueReturn.cs: modified validateTranQty. IssueReturn.Queries.cs: added NoRounding and StopOnUOMNoRound. Strings.resx: added NoDecAllowed
+01/08/16 - dparillo  SCR 178662 - IssueReturn.cs: modified createPartTran to use correct UOM when rounding.
+01/08/16 - dparillo  SCR 178662 - IssueReturn.cs: modified updatePartBin to not convert UOM as it was done previously in createPartTran.
+01/11/16 - Pradeep - scr178750		- IssueReturn.cs/.Queries.cs - Code to assign the Package Code from the Packing table.
+01/18/16 - IrisE  - SCR 178740		- IssueReturn.cs/.Queries.cs: Populate label values when PCID is generated and LabelPrintControlled is true.
+01/18/16 - KeithW - SCR 156200		- IssueReturn.cs/.Queries.cs: Changes to process_STK_SHP() to create a STK-PLT transaction instead of STK-STK when moving to a different site.
+01/21/16 - dparillo  SCR 178785		- IssueReturn.cs: modified process_STK_MTL to correctly update JobMtl.IssuedQty
+03/01/16 - IrisE  - SCR 176928		- Added SuppressPrintMessages and IsAutoPrintSetup methods 
+03/10/16 - JulioM - SCR 181106		- Assigning other value to PartTran.InvAdjSrc in createPartTran() method.
+04/06/16 - Pradeep - PkgControlAdjustReturnContainer - Changed the project reference for AdjustReturnContainer library.
+04/15/16 - hcoss - SCR 183315		- IssueReturn.cs: Do not ask for a lot number if the request comes from a DMR-ASM transaction.
+04/18/16 - alejandroM - SCR 182034	- IssueReturn.cs: Block LaborEntryMethod X and B from searches and combos
+04/21/16 - Pradeep scr172629 - IssueReturn.cs Consolodated method for AdjustReturnContainer.
+04/22/16 - YuriR   SCR 184004 - Modified getRelatedOperation: it returns 0 when there is not any related operation of the Material;
+04/26/16 - alejandroM - SCR 182034	- IssueReturn.cs: Fix Validation for JobSeq changing. Raw Material Transactions will bypass this validations
+04/28/16 - hcoss - SCR 183315 - IssueReturn.cs: processMtlQueue(): Added DM-ASM as a valid transaction to the conditional that sets job number, assembly and job sequence.
+04/29/16 - JeanetteP - SCR 176758 - IssueReturn.cs: Added logic that calculates Extended Costs for each of the subcomponent costs.
+04/26/16 - alejandroM - SCR 182034	- IssueReturn.cs: Add More Mtl transactions to be allowed by this process.
+05/09/16 - Pradeep - scr172629 IssueReturn.cs - Changed the PCID parameter to IList type.
+05/11/16 - dparillo  SCR 184428 IssueReturn.cs: modified validateAssemblySeq for ASM-STK. IssueReturn.Queries.cs: added FindFirstJobAsmblSeq
+05/11/16 - dparillo  SCR 183705 IssueReturn.cs: modified updateSerialNo to correctly set WIP or Consumed status.
+06/01/16 - gheier - SCR 185600 IssueReturn.cs: Added PUR-STK to the list of MtlQueue trantypes to be checked for available inventory. PUR-STK is actually a STK-STK move after the inventory has been received
+                                               so the inventory must already be in the system or the negative inventory rules apply.
+06/02/16 - gheier - SCR 186800 IssueReturn.cs: Added PUR-MTL and PUR-SUB to the list of MtlQueue trantypes to be checked for available inventory since they had the same issue as PUR-STK.
+06/14/16 - gheier - SCR 187498 IssueReturn.cs: Rollback changes - SCR was invalid.
+06/17/16 - dparillo SCR 187207 IssueReturn.cs: modified validatePartNum. IssueReturn.Queries.cs: added ExistsUOMClassForPart. Strings.resx: added CannotChangeUOMClass
+06/17/16 - dparillo SCR 132627 IssueReturn.cs: modified getFromWhse to populate OnHandQty
+07/01/16 - DebbieP - SCR-188237, SCR-188260 - IssueReturn.cs: set PkgControlItem.PkgControlBoolean01 = true when setting order demand data for picking to picked.
+07/08/16 - dparillo SCR 187893 IssueReturn.cs: modified PrePerformMaterialMovement to set a blank TranDocTypeID to system default if one exists.
+                               IssueReturn.Queries.cs: added ExistsTranDocTypeID
+07/13/16 - dparillo SCR 187893 IssueReturn.cs: modified PrePerformMaterialMovement: changed logic
+08/19/16 - agonzalez SCR 190923 IssueReturn.cs: Updated logic to determine the toUOM parameter when calling the UOMConv library.
+08/22/16 - agonzalez SCR 190923 IssueReturn.cs: Additional changes implemented to improve logic.
+08/26/16 - IrisE - SCR 171855 - IssueReturn.cs: Added code to set the LabelPrintControlStatus and LabelPrintControlPriorStatus for dynamic PCIDs when PkgControlHeader.LabelPrintControlled is true.
+09/15/16 - agonzalez SCR 190923 IssueReturn.cs: Additional changes implemented due rework. Fixed additional issue.
+09/15/16 - AngelJM - SCR 190923 - IssueReturn.cs: Created new PerformMaterialMovementWithLegalNum public method. This method accepts a Legal Number as parameter in order to add it to PartTran table.
+09/19/16 - gheier - SCR 192508 - IssueReturn.cs: Add CMP-SHP to the trantypes that require a negative inventory test.
+09/23/16 - CeciliaL - SCR 191487 - IssueReturn.cs: pcidUpdatePkgControlHeader() and pcidCheckCustShipTo() methods - To assign ShipTo Customer instead of SoldTo Customer to PkgControlHeader.CustNum.
+10/05/16 - dparillo - SCR 190923 - IssueReturn.cs: removed obsolete code in PerformMaterialMovement
+10/07/16 - dparillo - SCR 190923 - IssueReturn.cs: modified createPartTran and validateTranQty for additional issue.
+11/02/16 - LStegman - SCR 192574 - IssueReturn.cs, IssueReturn.Queries.cs: modified to validate whse selections.
+11/03/16 - LStegman - SCR 192574 - IssueReturn.cs: modified validate to whse selection.
+11/16/16 - DebbieP  - SCR 195387 - IssueReturn.cs: corrections to the logic that sets SerialNo.SNStatus = "CONSUMED" (restore logic removed by SCR-183705)
+11/29/16 - DJY      - SCR 194435 - IssueReturn.cs: consistent handling of UOM conversion for all material movements including processing a non-inventory UOM quantity on a part that is *not* Track Multiple UOMs  
+12/13/16 - Pradeep  - scr194435  - IssueReturn.cs/.Queries.cs  Added quantity rounding logic.
+12/14/16 - JesusC   - SCR 194639 - IssueReturn.cs: modified validatePartNum to verify if we are using the same UOM with a different UOM Class.
+04/11/17 - JeanetteP  SCR 201263 - IssueReturn.cs: Modified process_ASM_STK to return assembly using the current costs if not FIFO/LOTFIFO costing. 
+05/02/17 - JulioM   - SCR 202266 - IssueReturn.cs: Added string processID input parameter to validateJobNum() method in order to add exception for Overlay/Void PCID in Job.Closed validation.
+05/05/17 - ScottH   - SCR 200766 - IssueReturn.cs: Corrected wave picking logic so that the lot & "from" bin on the STK-SHP transaction is updated with the lot and "To" location from the STK-STK transaction.
+05/05/17 - ScottH   - SCR 200766 - IssueReturn.cs: Fixed multiple string comparison code analysis warnings
+06/12/17 - dparillo   SCR 195371 - EN2308 - added TranDocTypeID parameter to GeneratePlantReceiptTran
+06/19/17 - daramos   SCR 204179 -  IssueReturn.cs IssueReturn.Queries.cs: Move WIP for Part on the Fly should process without the error as expected.
+06/21/17 - ReyesS  -  SCR 195371 - EN-2342 - IssueReturn.cs: Added TranDocType to unpick transfer order for LN creation
+06/30/17 - Aserebrenik SCR 100025  IssueReturn.cs: Added logic to store JobNum in the PartTran same format as in the Job - fix trailing spaces
+07/13/17 - ReyesS   - SCR 195371 - EN-2342 - IssueReturn.cs: Fixed LN creation for Unpick by PCID transaction 
+07/18/17 - andreaP - scr 195371 - EN-3181 - fixed default of TranDocTypeID.
+07/20/17 - dparillo  SCR 195371 - EN-3214 Updates to Legal Number Transactions Generated in Material Request Queue
+07/24/17 - YuriR     SCR 126616  - Modified getPartTranTotalCosts: fixed cost calculation against variance transaction ADJ-PUR;
+07/26/17 - ReyesS   - SCR 195371 - EN-2342 - IssueReturn.cs: Removed logic to create LN on unpick by PCID
+07/27/17 - ReyesS   - SCR 195371 - EN-2343 - IssueReturn.cs: Corrected transaction type for transfer order unpick.
+07/28/17 - dparillo - SCR 195371 - EN-3218 - Fix update of LegalNumHistory foreignKey.
+08/03/17 - DebbieP -  SCR-205875 - IssueReturn.cs: revert the changes made by SCR-147058 (invalid SCR) to ensure the correct MtlUnitCost is used for STK-STK related to a PO. 
+08/09/17 - DJY      - SCR 193532 (EN-2359, EN-3242, EN-3283) - enhance Control ID Extract capabilities for 2D barcode  
+10/09/17 - dparillo - SCR 195371 - EN-3852 - AMM - Unpick PCID Sales Order - Generate a Stock to Stock Legal Number
+10/18/17 - dparillo - SCR 195371 - EN-3852 - modified MassUnpickByPCID for legal number display
+11/07/17 - DiegoF   - SCR 208911 - Added additional find first statement in case there's no PartWip record with LotNum assigned. Copied functionality from ReceiptsFromMfg BO.
+11/16/17 - ScottH   - SCR 127335 - Corrected logic to not require a negative inventory check for STK-INS transactions coming from the Material Queue
+02/14/17 - JeanetteP  SCR 206151 - IssueReturn.cs: Modified PerformMaterialMovement() to get the correct CostMethod for the PartNum/Plant before checking for FIFO onhand quantity.
+03/01/18 - JeanetteP  ERPS-75905 - IssueReturn.cs: Modified PerformMaterialMovement() to count the correct serialnumbers for the part.
+04/25/18 - gheier - ERP-2431 - Add validation for EpicorFSA related MtlQueue transactions. To Whse/Bin must match what is on the MtlQueue.
+05/07/18 - FedericoE - ERP-2854 - IssueReturn.cs: Added CreateFSAPartTran() method to create the FSAExtData for the PartTran "FROM" and "TO" movements.
+05/08/18 - ScottR - ERP-2410 - Added parameter to method GeneratePlantReceiptTran
+05/18/18 - PedroL - EPR-2388 - Replace MtlQueue.PCID with LastUsedPCID when handling partial qty.
+05/18/18 - PedroL - ERP-2388 - Code Cleanup.
+05/21/18 - ScottR - ERP-3069 - Update existing PkgControlItem when picking multiple order/line/releases to same PCID
+05/23/18 - PedroL - ERP-2388 - Only query the Db for a MtlQueue record when needed to avoid performance issues.
+05/29/18 - KeithW - ERP-2389 - Changes to allow the processing of PCID movements.  Cleanup several methods.  Only run certain queries when the key information exists.
+05/31/18 ERP-2179/ERP-2183 - fixed warnings.
+06/06/18 - KeithW - ERP-3320 - Changes to handle allocations, negative FIFO tests, and serial processing for PCID moves.  New methods CheckAllocations, CheckNegativeFIFO, UpdateSerialNoForPCID, and UpdateSerialNoRow created.
+06/06/18 - HugoM	- ERP-2670 - Added the method IsValidFromPCIDChange in the BO and the queries for it to validate PCID in Issue Assembly Entry. Added external fields: DisablePCIDRelatedFields, PCIDQuestion and PlantConfCtrlEnablePackageControl and regen from SD.
+06/07/18 - HugoM	- ERP-2670 - Peer review changes. Added PCID move missing line.
+06/07/18 - Keith    - ERP-3320 - Changes to process_PUR_STK to fix moving to different plants.
+06/07/18 - HugoM	- ERP-2670 - Sending addToManager parameter value to PackageControlValidations.
+06/08/18 - HugoM	- ERP-2670 - Clean up and peer review changes.
+06/11/18 - KeithW   - ERP-3320 - Remove globel Warehse buffer to avoid issue of using wrong value. Removed all duplicate Warehse queries.
+06/14/18 - HugoM	- ERP-3198 - IssueReturn.cs: Changed OnChangeFromPCID BO Method and the queries it uses to work with both client and HH.
+06/16/18 - PedroL	- ERP-3203 - Added new PCID validations when performing a material move from Issue Assembly.
+06/16/18 - RVillalobos - ERP-3198 - Modified OnChangeFromPCID signature and in the Actions section modified to use Plant in the searches, and to use the correct Part Num, depending on the transaction and to not allow default of PartNum on scenarios where we are not allowed to change Part Num (HH IssueAssebmly).
+06/18/18 - PedroL	- Erp-3203 - Added PkgControlHeader validation to pcidUpdateValidations and removed validations already being made in the library.
+06/19/18 - PedroL	- Erp-3203 - Code Cleanup. Removed Lazy Load for the Control ID Extract lib.
+06/19/18 - PedroL	- Erp-3202 - Added Issue Material to the transactions that need to validate PCID when updating.
+06/19/18 - HugoM	- ERP-3198 - Peer Review changes.
+06/20/18 - calvillo - ERP-3196 - Added a parameter to OnChangePCID to know the process calling it.
+06/20/18 - HugoM	- ERP-3198 - Added scenario to OnChangeFromPCID method.
+06/21/18 - RosalindaV - ERP-2261 - Added logic to fill IssueReturn.FromPCID, when mtlqueue transaction = stock. If we are moving an entire PCID (whit it contains) from one place to another
+                        then the FromPCID and ToPCID should be the same PCID ( MtlQueue.PCID)
+06/26/18 - HugoM	- ERP-3720 - IssueReturn.cs: Change ValidatePCIDForMovement to use ValidatePCID method from PackageControlValidations.
+06/29/18 - PedroL	- ERP-3205 - Removed PCID extract logic in PerformMaterialMovement. Any PCID getting here should had already gone through the extract logic.
+07/02/18 - HugoM	- ERP-3853 - IssueReturn.cs: Set to location based on PkgControlHeader in location part from OnChangePCID method now excludes STK-SHP TranTypes.
+07/05/18 - RVillalobos - ERP-3901 - IssueReturn.cs - Fixed warning validations for default of Part on selection of PCID for Issue Assembly. The pkgControlItemPartialRows is never null, when no records found it is a count = 0.
+07/06/18 - ScottR   - ERP-3765 - Serial Numbers for Build/Split/Merge
+07/10/18 - ScottR   - ERP-3765 - Serial Numbers for Build/Split/Merge - added additional case when serial numbers should be voided
+07/17/18 - DebbieP -  ERP-2669 - IssueReturn.cs, .Queries.cs: IssueMaterial, Add code to control serial prompting for outbound tracked PCID, and auto populate SelectedSerialNumbers if full PCID qty is issued
+07/18/18 - DebbieP -  ERP-2669 - IssueReturn.cs, IssueAssembly, Add code to control serial prompting for outbound tracked PCID, and auto populate SelectedSerialNumbers if full PCID qty is issued
+07/17/18 - DJY    - ERP-4283 - allow users to process a Material Queue using inventory that is in a PCID
+07/19/18 - PedroL   - ERP-3205 - Do not disable the From PCID field after issuing assembly/material. 
+07/19-18 - calvillo - ERP-4087 - Default part number when required part is contained in a PCID with multiple items
+07/18/18 - PedroL   - ERP-3205 - Code Cleanup. Set PlantConfCtrlEnablePackageControl in a single place and remove duplicates.
+07/20/18 - DebbieP    ERP-3173 - IssueReturn.cs: update serial tracking logic for MaterialQueue transactions that can have "to PCID", add parameter to OnChangePCID
+07/20/18 - DJY    - ERP-4283 - allow users to process a Material Queue using inventory that is in a PCID
+07/21/18 - ScottR - ERP-3765 - Add serial number validations for PCID build/split/merge
+07/23/18 - ScottR - ERP-3765 - Corrected issue found during peer review
+07/30/18 - KeithW - ERP-4486 - Add PCID = '' filter to PartWip queries.
+08/01/18 - calvillo - ERP-4087 - Do not default part if PCID selected contains multiple matching parts with different lot numbers.
+08/02/18 - DJY     - ERP-4283 - allow users to process a Material Queue using inventory that is in a PCID
+08/03/18 - PedroL  - ERP-2914 - Add new parameter to PerformMaterialMovement to indicate if a PkgControlHeader record was deleted.
+08/04/18 - PedroL  - ERP-2914 - Rollback changeset 85726.
+08/06/18 - PedroL  - ERP-2914 - Set new external field in IssueReturn to indicate if a PkgControlHeader record was deleted.
+08/07/18 - DJY     - ERP-4283 - allow users to process a Material Queue using inventory that is in a PCID
+08/10/18 - DJY     - ERP-4287 - allow Wave Processing to process inventory in a PCID
+09/14/18 - DebbieP - ERPS-96748 - IssueReturn.cs, .Queries.cs: RMA receipt to inspection should allow SerialNo with PCID
+10/03/18 - DJY     - ERP-6401 - Ability to consolidate the picks on mtl queue when demand is satisfied by allocating an entire PCID
+10/05/18 - RVillalobos - ERP-6897 - Fixed the "LastUsedPCID" functionality to work with the new PCID changes.
+10/08/18 - Pradeep - ERPS-101072 - IssueReturn.cs - Assigned EpicorFSA temp field.
+02/14/19 - JeanetteP ERPS-106804/106471 - IssueReturn.cs; IssueReturn.Queries.cs : Modfied process_MtlQueue, process_WIP_WIP and updatePartWIP to preserve the source FromAssemblySeq/FromOprSeq values of the PartWIP when moving locations (WIP-WIP/MFG-OPR) and other considerations related to INS-SUB/DMR-SUB.
+02/19/19 - JeanetteP ERPS-106804/106471 - IssueReturn.cs: Modified getToJobSeq() to get the correct FromWhse/FromBin descriptions if defaulted from PartWip.
+02/25/19 - JeanetteP ERPS-106804/106471 - IssueReturn.cs: Modified process_WIP_WIP() to keep the user entered ToJobSeq if not linked to a MtlQueue.
+02/27/19 - JeanetteP ERPS-106804/106471 - IssueReturn.cs: Modified updatePartWIP() to store the correct source of the PartWip when doing WIP-WIP with OprSeq change (from Move WIP).
+03/26/19 - DebbieP   ERPS-111806 - IssueReturn.cs, Issue.Queries.cs: Modifications related to OnChange/Changing FromBinNum, serial bin validations (reverts some changes by SCR-63296)
+                                        parameter removed from OnChangeFromBinNum public method and BO regen;
+                                        code cleanup for performance, string comparisons and code analysis warnings
+04/26/19 - DebbieP - ERPS-107317 - IssueReturn.cs, .Queries.cs: add logic to pcidCheckCustShipTo to correctly handle releases with OTS address	
+04/26/19 - DebbieP - ERPS-107317 - IssueReturn.cs, .Queries.cs: fix pcidCheckCustShipTo to get the correct PartAlloc for validation of OTS when updating the PCID.
+06/17/19 - DMashkov- ERP-15195 - CSF Malaysia - Sales / Service Details Report. Issue Miscellaneous Material.
+09/10/19 - DebbieP - ERPS-117305 - IssueReturn.cs: only replace the value in SerialNo.JobNum if the SN is going to a new job number.
+09/20/19 - KarenR  - ERPS-122806 - IssueReturn.cs: Added a call to Internal.Lib.MathExtensions.SafeDivision function on getPartTranTotalCosts method to protect divisions by zero. Added ASM-STK transaction type on processMtlQueue method to assign the fromJobNum, FromAssemblySeq and FromJobSeq values.
+11/15/19 - DJY        - ERP-20074 - schema change to add AttributeSetID to all tables that hold the PartBin primary key
+11/22/19 - DJY     - ERP-20074 - schema change to add AttributeSetID to all tables that hold the PartBin primary key
+12/01/19 - ATarasov   - ERPS-128421 - Code cleanup: Remove 'ABL Source' comments. (Epicor.Analyzer.ABLComments.Tool)
+12/07/09 - DJY        - ERP-21877 - add Attribute Set to all PartTran creation logic blocks when applicable
+12/09/19 - DJY        - ERP-21877 - add AttributeSetID to relevant deferred update methods
+12/16/19 - DJY        - ERP-21877 - add AttributeSetID to relevant PartBin queries
+12/18/19 - grobles	  - ERP-22142 - Move/Wip Transaction UI - Enable To/Location PCID Buttons and Text Fields
+12/18/19 - grobles	  - ERP-22146 - Pick from Loose Inventory to Dynamic PCID
+01/02/20 - DJY        - ERP-21787 - enhance Receipt BO and related libraries to handle receiving inventory with attributes
+01/03/20 - grobles	  - ERP-22380 - Fix issue found when moving stock and dynamic PCID into static PCID
+01/03/20 - grobles	  - ERP-22381 - Prevent PCIDs that are Returnable to be picked into
+01/09/20 - DJY        - ERP-21787 - enhance Receipt BO and related libraries to handle receiving inventory with attributes
+01/10/20 - DebbieP	  - ERPS-129963 - IssueReturn.cs, .Queries.cs: ensure that the cust/shipto info is added to PCIDs processed for sales order pick,
+                                        fixed validation issues for "allow" flags and address validation when to processing multi-level (consolidated PICK) PCIDs
+                                        strings.resx: enhanced the cust/shipto mismatch error to add order/line/rel and PCID for clarity.
+01/15/20 - DJY        - ERP-21788 - rename Erp.RcvDtlAttrValue table to Erp.RcvDtlAttrValueSet
+01/17/20 - DebbieP	  - ERPS-125236 - IssueReturn.cs, .Queries.cs: do not require SN selection for certain xxx-STK transactions based on site BinToBinReqSN
+01/22/20 - grobles	  - ERP-22201   - Transfer PCIDs - Add serial number creation when entering PCIDs
+01/27/20 - jvelazquez - ERP-22519 - Modify PCID Status Validation for TFOPICK
+01/28/20 - JeanetteP  - ERPS-128171 - IssueReturn.cs: Modified updatePartBin() to use the correct quantity from PartTran instead of from ttIssueReturn to make the logic work for both issue and return scenarios.
+01/29/20 - DebbieP    - ERPS-132142 - IssueReturn.cs: Set PCID status empty when fully picked to another PCID for STK-SHP and STK-PLT
+01/30/20 - jvelazquez - ERP-22553 - PCID - Site (No) to Site (Full) Serial Number within PCID Prevention
+01/31/20 - DiegoC     - ERP-22269 - Added TFO PCID unpick functionality and corrected validation for Transfer Orders
+02/04/20 - jvelazquez - ERP-22553 - PCID - Site (No) to Site (Full) Serial Number within PCID Prevention
+02/04/20 - jvelazquez - ERP-22519 - Modify PCID Status Validation for TFOPICK
+02/06/20 - jvelazquez - ERP-22519 - Modify PCID Status Validation for TFOPICK
+02/07/20 - jvelazquez - ERP-22938 - PartLotUOM Error - Validation Issue of From PCID
+02/12/20 - grobles    - ERP-23050 - Multiple PartBin Records created when working with serial/lot using Static
+02/13/20 - DiegoC	  - ERP-22957 - Added validation using Call Context Key for Mass Unpick PCID, added ERP.Internal.Lib.Shared to references. Updated ExistsPkgControlItem query to look for inventory lines in PkgControlItem instead of only child PCID lines. Created new query CheckPkgControlItemChild that contains old functionality for other validations in IssueReturn.
+02/14/20 - DiegoC     - ERP-22269 - Refactored CallContex validation using Ice.Lib instead of Erp.Internal.Lib
+02/20/20 - DiegoC     - ERP-22269 - Changed CallContext validation to be called before PerformMaterialMovement and added a try/finally block for removal
+02/27/20 - grobles	  - ERP-23055 - Fix issue when multiple part allocations remain and need to clean after the material queue processing
+02/27/20 - DiegoC     - ERP-22994 - Added validation on CheckPlantSerialTrack to forbid processing serial tracked parts on PCIDPICK from no serial tracking to full serial tracking.
+02/28/20 - DiegoC     - ERP-22269 - Moved TFO Mass Unpick CallContext to right method call to consume PartAlloc
+02/28/20 - DiegoC     - ERP-22994 - Optimized validation on CheckPlantSerialTrack for PCIDPICK
+03/04/20 - grobles    - ERP-23915 - Transfer PCIDS - Populate PkgControlItem.PkgControlBoolean01 to identify picked pcids.
+03/04/20 - DiegoC     - ERP-23941 - Added condition to also use CallContext key from ERP-22269 on Static PCIDs under MassUnpickByPCID to consume PartAlloc
+03/05/20 - DJY        - ERP-22294 - add Attribute Set capabilities throughout the Sales Order workflow (FWB/PICK/PACK/SHIP/UNSHIP/UNPACK/UNSHIP)
+03/06/20 - grobles	  - ERP-23055 - Rollback queries and create new query to validate existance of partalloc for same PCID/Transfer Order
+03/07/20 - DJY        - ERP-22294 - add Attribute Set ID to the call to GenSMIReceipt and return an error for now if Attribute Set ID is ever not zero
+03/07/20 - DJY        - ERP-22294 - add AttributeSetID to relevant PartWip queries
+03/09/20 - DJY        - ERP-22294 - review all queries whose where clause contains AttributeSetID and rearrange the order of the where conditions to align with an index or multiple indexes
+03/10/20 - grobles	  - ERP-23055 - Rollback transfer allocation code for reservations and create new code block for PCID scenarios
+03/12/20 - DJY        - ERP-22294 - add Attribute Set capabilities throughout the Sales Order workflow (FWB/PICK/PACK/SHIP/UNSHIP/UNPACK/UNSHIP)
+03/13/20 - Bperez     - ERPS- 133784 - On OnChangePCID method two transaction types ("CMP-SHP", "STK-PLT") were added to two validations so that they do not change the warehouse and bin values to anything that does not belong.
+03/18/20 - DJY        - ERPS-135398 - PartAlloc rows were being created without RelatedToSchemaName, RelatedToTableName and RelatedToSysRowID being populated
+03/25/20 - grobles	  - ERP-24303 - Original Reservation PartAlloc record remained after picked to PCID
+03/27/20 - grobles	  - ERP-24309 - Partial pick from PCID updating quantity on pick transaction incorrectly.
+04/01/20 - DebbieP    - ERPS-135280 - IssueReturn.cs, .Queries.cs: moved the logic to delete PickedOrders from UnpickTransaction BO to the IssueReturn MassUnpickByPCID method;
+                                        commented out some code and added Developer comments that it is intentionally not being deleted from the code.
+04/15/20 - DebbieP    - ERPS-136166 - IssueReturn.cs, .Queries.cs: Add defaulting and validation logic for the To Whs/Bin based on ToPCID status for STK-SHP, CMP-SHP or STK-PLT types. 
+04/16/20 - TannerA    - ERP-24467  -  Added validation for track inventory attribute parts.
+04/17/20 - dparillo   - ERP-25330  - Added EnableAttributeSetSearch (onChangePartNumCore).
+04/17/20 - dparillo   - ERP-25330  - fixed conversion problem with Assemblies in OnChangeTranQty
+04/21/20 - DebbieP    - ERPS-137428 - IssueReturn.cs, .Queries.cs: Set ERPCallContext key "IsMaterialQueueSOPicking-StaticPCID" if this is a sales order material queue pick transaction from a static PCID to control PartAlloc updates
+04/23/20 - dparillo   - ERP-25334  - IssueReturn.cs, .Queries.cs: modified OnChangeTranQty and added logic for populating Attribute Descriptions
+04/23/20 - dparillo   - ERP-25334  - IssueReturn.cs, modified getToJobSeq
+04/24/20 - dparillo   - ERP-25334  - IssueReturn.cs, modified OnChangeTranQty
+04/28/20 - TannerA	  - ERP-24467  - Added support for attribute tracked parts
+04/29/20 - dparillo   - ERP-25334  - Fixed setting of AttributeSetID in getFromJobSeq, getToJobSeq
+05/07/20 - dparillo   - ERP-25532  - populate EnableAttributeSetSearch in processMtlQueue
+05/27/20 - DebbieP    - ERPS-138949 - IssueReturn.cs, .Queries.cs: Set ERPCallContext key "IsMaterialQueueTFPicking-StaticPCID" if this is a transfer order material queue pick transaction from a static PCID to control PartAlloc updates
+                                        And reverted some changes from ERP-23055		
+06/15/20 - DebbieP - ERPS-134650 - IssueReturn.cs, .Queries.cs: moved method UpdatePkgControlAndPickedOrdersForMassUnpickByPCID (renamed here to PCIDUpdateAfterMassUnpickByPCID) and related logic from the UnpickTransaction BO for performance and PCID data integrity 
+06/19/20 - JulioM  - ERPS-134662 - IssueReturn.cs: Added call to LibAdjustReturnContainer.AdjustContainer in pcidUpdate method in order to consume containers for dynamic PCIDs during picking and added pcidUpdate to PerformMaterialMovement method in order to cosnume Parent PCIDs as well.
+                                                   Added call to LibAdjustReturnContainer.AdjustContainer in PCIDUpdateAfterMassUnpickByPCID method in order to consume containers for non-empty PCIDs during unpicking.
+06/30/20 - JulioM  - ERPS-134662 - IssueReturn.cs: Added validation in order to only adjust container for top level PCID once and logic to adjust container for PCIDs without part items.
+07/01/20 - ScottH  - ERP-27376   - Added new ttIssueReturn.NumberOfPieces external column and ttIssueReturn.PartTrackInventoryAttributes link column and regenerated service.
+07/13/20 - ScottH  - ERP-27376   - Added support for issuing inventory tracked parts by number of pieces.
+07/14/20 - ScottH  - ERP-27376   - Added logic to populate PartTran.NumberOfPieces
+07/14/20 - DiegoG  - ERP-24756   - Add HttpGet attribute to GetList/GetRows methods.
+07/21/20 - DebbieP - ERPS-128417 - IssueReturn.cs, .Queries.cs: as part of pcidCheckCustShipTo method validate ToPCID to make sure the PCID would not have items for orders that have different ERSOrder setting 
+07/22/20 - AOlivares - ERPS-77130 - Updated exception's grammatical error
+07/24/20 - DebbieP - ERPS-142888 - IssueReturn.cs: Clear the ttIssueReturnWaveChildRows when ttIssueRetrunWaveParentRows is cleared to avoid Wave picking issues when only partial qty is picked 
+07/18/20 - ScottH  - ERP-27376   - Removed hard coded string.
+08/18/20 - DebbieP - ERPS-145014 - IssueReturn.cs: reverted the changes made by ERPS-134662 for Return Container adjustments when the adjustment timing is set to "picking"
+                                        - removed call to LibAdjustReturnContainer.AdjustContainer in pcidUpdate method
+                                        - removed pcidUpdate from PerformMaterialMovement method for parent PCID 
+                                        - Removed call to LibAdjustReturnContainer.AdjustContainer in PCIDUpdateAfterMassUnpickByPCID.
+08/19/20 - DebbieP - ERPS-145104 - IssueReturn.cs: Only execute PCIDUpdateAfterMassUnpickByPCID for the top level PCID to avoid changing the CHILD PCID status to STOCK.
+08/21/20 - JulioM  - ERPS-134662 - IssueReturn.cs: Returned the changes originally made by ERPS-134662 for Return Container adjustments when the adjustment timing is set to "picking" without the validation for pcidUpdate in PerformMaterialMovement and adding a validation in order to adjust
+                                    containers for parent PCID wihtout part itmes so pcidUpdate is always executed for all needed pcidIssueReturnRows.
+08/24/20 - JulioM  - ERPS-134662 - IssueReturn.cs: Moved LibAdjustReturnContainer.AdjustContainer for unpicking out of PCIDUpdateAfterMassUnpickByPCID to MassUnpickByPCID so it can be executed for both parent and children PCIDs.
+08/27/20 - JulioM  - ERPS-134662 - IssueReturn.cs: Removed LibAdjustReturnContainer.AdjustContainer for picking from pcidUpdate and removed validation when adjusting container for toplevel parent PCID, now containers for all child PCIDs are being adjusted,
+                                    added logic in MassUnpickByPCID in order to only adjust container for unpicking when using partnum when there are no PkgControlItems for that PCID left, added validation to check partnum is not being used when adjusting container for unpicking.
+08/28/20 - DebbieP - ERPS-143151 - IssueReturn.cs: PLT-STK type PICDPICK for the transfer receipt putaway MtlQueue will use Inventory Transfer.CommitTransfer to make the db updates
+09/24/20 - JShay   - ERPS-146357 - IssueReturn.cs: Modified processMtlQueue() to add the DMR-SUB as a valid transaction type to the conditional that sets the from and to assembly seq and job sequence information in the Material Request Queue like with the DMR-ASM transactions.
+10/01/20 - JPineda - ERPS-146357 - IssueReturn.cs: Modified process_WIP_WIP() and updatePartWIP() to handle the new changes done for the DMR-ASM/DMR-SUB scenarios to preserve the source FromAssemblySeq/FromOprSeq of the PartWIP.
+10/23/20 - DebbieP - ERPS-149012 - IssueReturn.cs. Queries.cs: Add code to verify the from PCID exists in the from whs/bin for STK-STK movement when moving a PCID as a whole 
+10/28/20 - dparillo   ERP-30522  - set CheckAttributeSetIsValidForPart to allow non-master part
+11/05/20 - PeterH  - ERPS-141563 - IssueReturn.cs: Assigned MtlMtlUnitCost within PUR_STK (STK_STK) similar to Inventory Transfer.
+11/11/20 - dparillo  ERP-29409   - IssueReturn.cs: corrected attribute assignment in onChangeToAssemblySeqCore
+11/19/20 - dparillo  ERP-29470   - IssueReturn.cs: recalculate DispNumberOfPieces before WIP/Material Movement Transaction is displayed.
+12/07/20 - dparillo  ERP-29478 - add attribute set and number of pieces functionality - MoveWIP, populate AttributeSetID from PartWIP.
+12/18/20 - dparillo  ERP-29482   - update nbr of pcs if it was not passed in.
+1/15/21  - AustinJ   ERP-30168   - added line to remove IssueReturn dataset from memory
+01/21/21 - scottr    ERP-24767   - added method GetToBinNumWhereClause to return where clause for bin searches
+02/16/21 - scottr    ERP-24767   - Added new methods for changing from and to warehouse 
+03/29/21 - scottr    ERP-34068   - Added method GetRowsJobAssemblies to search for records with server paging
+03/29/21 - dparillo  ERP-31539   - do not allow PUR-STK (BTO) attribute to be changed for MtlQueue.
+04/05/21 - aserebrenik ERP-34379 - Fix error in GetRowsJobAssemblies method
+04/12/21 - DebbieP - ERPS-157498 - UpdatePartAllocTF: update PartAlloc.RelatedToSysRowID for new PartAlloc, and fix query to check for existing PartAlloc 
+05/03/21 - DJY        - ERPS-152286 - If the Attribute Set does not already exist and one does exist on JobMtl or JobAsmbl, pull it in and set the descriptions accordingly
+05/12/21 - tguseynov - ERP-32650 - Erp.UI.ReturnMiscEntry.dll.
+05/26/21 - YuriR     - ERPS-99557 - Modified getToJobSeq(): Store From-parameters as they are not available in Adjust WIP; Modified validateLotNum(): allow WIP adjustment with not empty LotNum from subcontract operation  
+06/01/21 - DebbieP - ERPS-121553 - regen BO for change of Equip.Description column size.
+06/04/21 - tguseynov - ERP-32650, Erp.UI.ReturnMiscEntry.dll.
+07/14/21 - BillE     - ERP-35362 - Changes for multiple bins for Planning Contracts.
+08/05/21 - jstevermer - ERP-33691 - Return Material changed from inventory attribute search to inventory attribute entry
+08/20/21 - DebbieP   - ERPS-167000 - Set ErpCallContext if fromPCID is dynamic, PkgControlHeader can get deleted before allocations updates which needs to know if fromPCID is dynamic
+09/14/21 - aserebrenik ERPS-170418 - Populated SysRowID in the ttInventoryQtyAdjBrw temp-table to correctly show rows in Kinetic UI
+09/24/21 - jstevermer - ERP-37573 - New column JobHead.KBConfigProdID regen only
+10/27/21 - KarenR	  - ERPS-172979 - IssueReturn.cs: Modified the PreGetNewIssueReturn method to include into the negative inventory validation the TranType "INS-STK".
+10/27/21 - KarenR	  - ERPS-172979 - Fixed old code analysis warnings.
+11/03/21 - YuriR      - ERPS-171397 - Modified process_STK_MTL() to fix calculation of the Issued Qty: always convert Qty to the JobMtl.IUM;
+04/21/22 - DebbieP    - ERPS-187379 - IssueReturn.cs onChangePartNum: do not default attributeSetID from Part unless Part.TrackInventoryAttributes = true
+04/28/22 - jstevermer - ERP-40948 - Track Inventory by Revision Enhancement: implement inventory by revision for Issue Material
+05/04/22 - DiegoG     - ERP-40944 - Track Inventory by Revision: added code to update and validate revision num.
+05/05/22 - CRodriguez - ERP-40948 - Added RevisionNum to PartTran when tracking inventory by revision
+05/09/22 - jstevermer - ERP-40948 - Track Inventory by Revision: moved AUOM and IBR code to new InventoryTracking class.
+05/11/22 - aserebrenik  ERP-41103 - Clear From/To PCID and BinNum when Warehouse/PCID changed.
+05/11/22 - aserebrenik  ERP-41103 - Updated validation when From PCID changed.
+05/12/22 - JesusC     - ERPS-154840 - Change to handle case with different UOMs
+05/12/22 - DJY        - ERP-41180 - server logic changes to support WIP in a PCID 
+05/12/22 - CRodriguez - ERP-40961 - New columns IssueReturn.FromAssemblyRevisionNum and IssueReturn.FromJobRevisionNum
+                                    getFromAssemblySeq: Assign FromAssemblyRevisionNum value, set AttributeSetID from JobAsmbl when 0, UpdateAttributeSetIDFromRevisionNum
+                                    onChangeFromJobNumCore: Assign FromJobRevisionNum  value
+                                    processMtlQueue: Assign FromAssemblyRevisionNum value
+                                    process_ASM_STK, process_MTL_STK: Don't override PartTran.RevisionNum when Part.TrackInventoryByRevision is true
+                                    FindFirstJobAsmblFL: Added RevisionNum to the class JobAsmblResult2
+05/18/22 - DJY        - ERP-41180 - server logic changes to support WIP in a PCID
+05/19/22 - ScottH     - ERP-41011 - Restore fulfillment workflow for make direct sales order releases.
+05/21/22 - DJY        - ERP-41180 - server logic changes to support WIP in a PCID
+05/23/22 - ArmandoO   - ERP-41174 - Added adjustWIP to onChangePCID validation
+05/23/22 - ArmandoO   - ERP-41103 - updated onChangePCID xml comments
+05/25/22 - jstevermer - ERP-40895 - Consolidate duplicated code to use existing logic in InventoryQtyAdj.  Obsoleted method GetInventoryQtyAdjBrwForWeb only used by MetaUI
+05/26/22 - jstevermer - ERP-40895 - Change in design on how to process on change of: AttributeSetID, RevisionNum for quantity adjustments
+06/02/22 - DJY        - ERP-41180 - server logic changes to support WIP in a PCID
+06/04/22 - DJY        - ERP-41180 - server logic changes to support WIP in a PCID (Issue/Move/Return)
+06/06/22 - ArmandoO   - ERP-41974 - server logic changes to support WIP in Adjust Material UI
+06/08/22 - ArmandoO   - ERP-42027 - Add logic to match PCID case in OnChangePCID method
+06/08/22 - DJY        - ERP-41180 - server logic changes to support WIP in a PCID - adding validations and MoveWIPPCID transaction
+06/09/22 - DJY        - ERP-41180 - server logic changes to support WIP in a PCID - do not allow Move WIP/Material of more than what is currently in WIP
+06/10/22 - ArmandoO   - ERP-42029 - Updated item exists in pcid validation
+06/14/22 - DJY        - ERP-41180 - server logic changes to support WIP in a PCID - rename OnChangePCID to OnChangeToPCID as part of SIC
+06/14/22 - BillE      - ERP-41174 - Blanking out associated ToPCID/FromPCID based on OnChange call when JobSeq or AssemblySeq change and/or Whse/Bin change.
+06/14/22 - Aserebrenik  ERP-41175 - Corrected PCID case issue
+06/16/22 - DJY        - ERP-41180 - incorrect logic was being executed in OnChangeFromPCID to set the warehouse/bin if the PCID is not empty
+06/16/22 - Aserebrenik  ERP-42045 - Corrected logic to allow use Serialized material part in a PCID for Return Material
+06/17/22 - Aserebrenik  ERP-42045 - Clear To BinNum when To Warehouse changes
+06/17/22 - ArmandoO   - ERP-41184 - Updated pcid extract logic
+06/22/22 - BillE      - ERP-41174 - Adding back one line of code to blank ttIssueReturn.FromPCID in the getFromWhse method.
+06/22/22 - DJY        - ERP-41104 - implementing logic to process a Move WIP PCID from the new UI
+06/24/22 - Aserebrenik  ERP-42216 - Updated call to determine if using from WinClient
+07/06/22 - scottr     - ERP-42083 - Added check for call context when getting related operation
+07/09/22 - ScottH     - ERP-42131 - Add logic to support processing material queue records for MTO releases.
+07/15/22 - DJY        - ERP-41255 - modify logic that enables From PCID and To PCID to allow for WIP in a PCID
+07/18/22 - BillE      - ERP-42304 - Changed snWhere for Adjust Material.
+07/20/22 - BillE      - ERP-42245 - Changed snWhere for Return Material, Return Assembly, Adjust WIP and Move Wip. Updated validation in validateSerialNumber.
+07/20/22 - DJY        - ERP-42029 - cleaned up the switch statements handling pCallProcess, make sure all instances where a HH version 
+                                    of the screen exists the same logic is being executed from both the HH screen and the non-HH screen
+07/21/22 - DJY        - ERP-42216 - rework initial enhancement of Void PCID / Label to allow for Void of a WIP PCID with contents in all stages of WIP
+07/25/22 - BillE      - ERP-42304 - Updated validation in validateSerialNumber for Adjust WIP, Move WIP and Adjust Material.
+07/20/22 - DiegoM - ERPS-190932 - IssueReturn.cs: OnChangePartNum(): When ttIssueReturn.PartNum is changed. logic to update the following fields: ttIssueReturn.ToJobSeq, ttIssueReturn.ToJobSeqPartNum,ttIssueReturn.ToJobSeqPartDesc was added. ttIssueReturn.LotNum's value will reset when ttIssueReturn.PartNum is changed in order to avoid the Lot number error, ttIssueReturn.ToJobSeqPartNum value will reset as well  to avoid that  ttIssueReturn.ToJobSeqPartDesc comes back  empty on getFromWhse()
+07/28/22 - dparillo   - ERP-43094 - Fixed transactions PUR_STK, STK_UKN & STK_SHP to not update Revision if part is track by revision.
+07/29/22 - DJY        - ERP-42995 - additional validations for Move WIP PCID and Move WIP PCID Request location requirements
+07/31/22 - ScottH     - ERP-42791 - Add logic to support unpicking a make direct sales order release from a supply job
+08/01/22 - dparillo   - ERP-43089 - Use AttributeSetID and Revision from JobMtl when issuing material.
+08/01/22 - DiegoG     - ERP-42997 - Added refresh attributes descriptions for processMtlQueue method.
+08/06/22 - DJY        - ERP-43057 - when a WIP PCID contains more than just what is attempting to be moved, throw validation informing user they must use Move WIP PCID
+08/08/22 - ScottH     - ERP-42791 - Add logic to support unpicking a make direct sales order release from a supply job
+08/09/22 - ArmandoO   - ERP-41418 - Added validation in WIP-WIP transaction.
+08/18/22 - DJY        - ERP-43228 - rework ValidateWIPPCID method to be able to be shared for PartWip, NonConf or DMRHead
+08/18/22 - DiegoM     - ERPS-190932 - Temporary RollBack for OnNchangerPartNum changes
+08/19/22 - DiegoM     - ERPS-190932-  IssueReturn.cs: OnChangePartNum():  ttIssueReturn.LotNum's value will reset when ttIssueReturn.PartNum is changed in order to avoid the Lot number error
+08/22/22 - dparillo   - ERP-43284 - When user changes PartNum reset AttributeSetID and RevisionNum
+08/22/22 - DJY        - ERP-43228 - allow the same PCID to be maintained from Stock to WIP to WIPFG to Stock/Job as long as all contents are moved with each transaction
+08/24/22 - ArmandoO   - ERP-43243 - Updated enableSNButton to retreive pkgStageHeader correctly
+08/26/22 - DennisP    - ERP-43106 - Number of pieces shows correct number instead of zero in Material Queue Process by ID
+08/30/22 - ScottH     - ERP-43301 - Added logic to support unpicking serial tracked parts from a picked make direct sales order release
+09/01/22 - AndresO    - ERPS-198399 - Added validateToBinNum method to validate To Bin Numbers from kinetic.
+09/06/22 - PeterH     - ERPS-104021 - Added SN Validation for DMR process to not need serial where the operation didn't call for one on movement.
+09/13/22 - ScottH     - ERP-43462 - Corrected logic to allow unpick of make direct sales order release even if the from PartWip is not found.
+09/15/22 - Aserebrenik  ERP-42315 - Moved PkgControl Status validation before PartTran trigger is fired
+09/23/22 - CRodriguez - ERP-43738 - Assign AttributeSetID from JobMtl to ttIssueReturn.AttributeSetID when JobMtl.AttributeSetID is not 0 in getFromJobSeq.
+09/24/22 - jstevermer - ERP-43674 - New SerialNoList, SelectedSerialNumbers, SerialNumberSelection columns for selection and filtering, caused change to ISelectedSerialNumbers contract interface, regen only
+09/26/22 - PeterH     - ERPS-104021 - Removed validation added earlier, need to revisit fix including other tasks.
+09/27/22 - scottr     - ERP-43816 - Remove check for call context when getting related operation. It is no longer needed.
+09/30/22 - ArmandoO   - ERP-43935 - Moved PkgControl Status validation before PartTran trigger is fired in STK_ASM
+10/06/22 - AndresO    - ERPS-195822 - Added GetListWIP and GetRowsWIP to use it as provider model for Move WIP and Move Material Landing Page to fix column sorting and filtering.
+10/07/22 - AndresO    - ERPS-195822 - Added ExecuteQuery method and use it to create and execute the sql query for GetRowsWIP and GetRowsJobAssemblies to avoid repeating code.
+10/08/22 - JeanetteP  - ERPS-130913 - IssueReturn.cs: Modified process_MTL_STK() to reset the JobMtl costs and adjust PartTran UnitCosts/ExtXXXCosts if IssuedQty becomes 0 after the return of material/assembly. 
+                                      Moved the call of MtlRcpt after the new logic to ensure that correct unit costs are used in the receipt logic. 
+                                      Modified process_ASM_STK() to remove other conditions when checking JobAsmbl.IssuedQty = 0 before resetting the issued assembly costs similar to the changes in process_MTL_STK().
+10/12/22 - AndresO    - ERPS-202865 - Modified Landing Page provider method to format the whereclause strings and add them a N prefix to support queries with unicode characters.
+10/13/22 - SLevchenko - ERP-43981 - CSF China - Bonded Warehouse for Customs Items. Return Material.
+10/20/22 - AngelJM    - ERPS-208356 - IssueReturn.cs: process_STK_MTL: Moved PkgControl Status validation before PartTran record is created to avoid issues caused by the PCID consumption run by PartTran trigger.
+10/20/22 - andreaP    - ERP-43806 - reverted change from yesterday.  Didn't mean to check in IssueReturn.cs file.
+10/26/22 - andreaP    - ERP-43812 - Implement serial tracked parts for track revision and track attributes
+10/31/22 - DJY        - ERPS-208343 - avoid throwing the CannotMoveMoreThanCurrentlyExistsInThisLocation exception if the current transaction is a Return Material
+11/09/22 - SLevchenko - ERP-43980 - CSF China - Bonded Warehouse for Customs Items. Inspection Processing.
+11/30/22 - JSuarez    - ERPS-210919 - IssueReturn.cs: Modified onChangePartNumCore() to correctly validate the Part AttributeSetID.

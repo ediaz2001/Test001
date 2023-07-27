@@ -1,0 +1,397 @@
+03/21/12 - armoreno - SCR 113211 Issue43 -  Labor BO was added a casting for a null object.
+04/15/13 - CarlosM - SCR 118396 - Labor.cs - Added MidpointRounding mode AwayFromZero as a parameter on all the calls to Math.Round.
+05/01/13 - JeanetteP - SCR 93089 - Replaced PatchFld references for TimeAutoSubmit with actual PlantConfCtrl.TimeAutoSubmit field.
+05/22/13 - jstevermer - SCR 103916 - Uplift of 103410, corrected comments and validate brought cuurent
+05/23/13 - andreaP - scr 121875 - Labor.cs - added TriggerType to override trigger logic.
+05/28/13 - jstevermer - SCR 103916 - Labor.cs add missing code in LaborDtlAfterGetRows
+06/28/13 - dparillo		SCR 123547 - Labor.cs - switched parameters to SelectLaborDtlWithUpdLock in calcLaborHours. LaborQueries.cs - fixed SelectLaborDtlWithUpdLock query.
+06/28/13 - JoseLuisE SCR 123833 - Fix for <Object reference not set to an instance of an object> error detected in the  Time and Expense entry When Submiting a New Time Detail.
+08/14/13 - DebbieP - SCR-126638 - Labor.cs: fixed an issue in VerifySerialMatch to avoid object reference error 
+09/06/13 - MarcoM  - SCR 127945 - Set as true the ExcludeUpdate and ExcludeGet for SNFormat table in Labor dataset.
+10/03/13 - YeseniaA - SCR 129161 - Added logic to revert INVENTORY status of serial numbers when deleting labor for an Operation checked as autoreceive.
+10/15/13 - dparillo - SCR 130035 - Labor.cs: modified AfterUpdate regarding JobPart.QtyCompleted
+10/23/13 - hcoss - SCR 130265 - Labor.cs - Classes that inherited from IceRow now do so from TempRowBase.
+11/06/13 - JeanetteP - SCR 120033 - Modified calcToHrs() to skip going through all LaborDtls to get the total hours if ttLaborDtl.LaborHedSeq = 0. It means ttLaborDtl is the first record and no other LaborDtl exists for the same LaborHedSeq.
+11/14/13 - JoseE  - SCR 131636 -  Labor.cs - Change to set the Department based on the selected Resource Group for Indirect Labor entries
+11/21/13 - JeanetteP - SCR 132264 - Modified Labor.cs to fix the date format when showing the LaborDtl's week begin/end dates as display text. This SCR has a 9.05 equivalent SCR 120897 but the solution for E10 is much simpler so the changes for the 9.05 were not uplifted in E10.
+11/21/13 - JeanetteP - SCR 132274 - Modified Labor.cs to remove InventoryManagement from the security check but instead add JobManagement and TimeManagement to the license check.
+12/06/13 - JuanPerez - SCR 120389 - Modified Labor.cs to set LaborCollection equal to false on LaborDtlSetDefaults() procedure.
+01/17/14 - DAlvizo - SCR 132881 - Added MES's Downtime Functionality
+01/20/14 - JesusC	 - SCR 133008 - Added Advanced Labor Rate Functionality.
+01/21/14 - JesusC	 - SCR 133008 - Moved LaborRateCalc to internal lib
+01/22/14 - YeseniaA  - SCR 116122 - Code modified to allow selecting serial numbers already completed in a rework detail: 
+										- modified to create SNTran records with OPR-RWK type,
+										- modified to handle those new SNTran records
+										- added validation when trying to delete no rework details for serial numbers,
+										- modified some validations when creating the labor details with serial numbers .
+									setComplete method modified to only complete the labordtl when it is not a rework with serial numbers
+									Queries.cs  - modified the queries needed to handle new behavior.
+01/28/14 - JesusC	- SCR 133008 - Modified Advanced Labor Rate.
+02/12/14 - DAlvizo  - SCR 136144 - Logic to differenciate between ordinary job operation and when comes from MES Start Rework
+02/19/14 - YeseniaA - SCR 116122 - RW. Code modified to validate correctly if there is rework transactions created when trying to delete labor with serial numbers.
+02/21/14 - dparillo - SCR 130035 - Labor.cs: reversed change in AfterUpdate done on 10/15/13
+02/24/14- JuanP - SCR 136722 - Labor.cs to modify a query in order to get the information using the primary key values instead of pk plus employee number on BeforeUpdate() method.
+02/24/14 - JuanP SCR 136722 - Labor.cs to add additional condition per Peer Review.
+03/13/14 - JuanP - SCR 66013 - Modified Labor.Queries.cs; to add a new namespace for System.Data.Objects. Create a new class called LaborDtlCustom which will contain the 
+							   clockouttime and a field called calc_ClockInDate which will contain the correct date value based on the shift for that labor which will use to 
+							   order the information and get the next clockindate correctly always based in the Shift. This class is filled in SelectLaborDtl2 method.
+							   Labor.cs; to remove unnecessary method called GetNextClockInTime  Adapt SelectLaborDtl2 method in order to order the data received from by calc_ClockInDate and ClockOutTime as descending.
+							   TimeExpenseForm.cs; to add NotifyAll where is necessary
+03/19/14 - DebbieP - SCR-132588 - Labor.cs: changed parameters for createttSNtranRecord and createSNTranPartTranLink
+03/25/14 - dparillo  SCR 136673 - Labor.cs: modified updateSerialNumbers. - LaborQueries.cs: added FindFirstSNTranWithUpdLock2 and FindLastSNTranWithUpdLock5
+03/28/14 - dparillo  SCR 136617 - Labor.cs: modified updateSerialNumbers. - LaborQueries.cs: modified FindLastSNTranWithUpdLock3
+04/02/14 - AbrahamG  SCR 138496 - The validateNonConfProcessed method was changed to public, the BO was regenerated and new logic added to perform the expected behavior.
+04/07/14 - DAlvizo   SCR 139530 - In/Out lunch taken from Shift, plus added Labor hrs calc logic when comes from MES
+04/09/14 - dparillo  SCR 139503 - Labor.cs: modified deleteSerialNumbers.
+04/29/14 - Almartinez SCR 136402 - Labor.cs Modify logic to consider override burden rates for JobOpDtl. 
+									Additional: Eliminate null EntityKey Exception when changing Resource Group field.
+05/07/14 - DAlvizo    SCR 140914 - Labor.cs Modify query into looking for downtime and active dtl parent records for labor details from dataset.
+05/09/14 - Dalvizo    SCR 140911 - Changed logic on how checkin/checkout downtime time from MES is done 
+05/12/14 - DAlvizo    SCR 140911 - Downtime recorded with current actual hour/mins  
+05/12/14 - JeanetteP  SCR 141068 - Modified Labor.cs and Labor.Queries.cs to add ttLaborDtl.HasComments to indicate if the line has comments.
+05/29/14 - dparillo   SCR 142163 - Labor.cs: modified validateSerial, Strings: added new message
+05/30/14 - DAlvizo    SCR 142299 - Labor.cs: MES splits the labor hours when working on multiple jobs/op at the time
+06/04/14 - dparillo   SCR 142222 - Labor.cs: modified chkLaborQty, LaborDtlAfterGetRows & validateJobOper to not allow inspection data if Rework.
+06/04/14 - DAlvizo    SCR 142537 - Labor:cs: JobOper.QtyCompleted had already the global work completed data.
+06/06/14 - dparillo   SCR 135525 - Labor:cs: modified EndActivity, getSerialNumbers, validateSerial for rework/serial functionality
+06/06/14 - dparillo   SCR 142581 - Labor.cs: modified updateSerialNumbers and validateSerial
+06/09/14 - dparillo   SCR 142717 - Labor.cs: brought forward SCR 136601, modified SelectForWork. 
+								   Labor.Queries.cs: added ResourceResult.
+06/10/14 - dparillo   SCR 125353 - Labor.cs: removed patchfld logic and update requestmove in createNonConfMtlQ
+								   Labor.Queries.cs: added FindFirstNonConfWithUpdLock
+06/24/14 - YeseniaA - SCR 125259 - Replaced the use of patchFld for EmpBasic.DisallowTimeEntry field.
+06/25/14 - almartinez SCR 143447 - Migrate JobAsmbl Patchfields.
+06/27/14 - YeseniaA - SCR 143752 - Modified SubmitForApproval method to avoid an infinite loop when saving on submitting on records already submitted
+07/07/14 - almartinez - SCR 143449 - Migrate JobMtl Patchfields.
+07/11/14 - almartinez - SCR 143448 - Code modified to replace the use of patchflds for JobOper.
+07/15/14 - dparillo   SCR 143265 - Labor.cs: modified deleteSerialNumbers and LaborDtlAfterDelete
+07/14/14 - LorenS     SCR 96134  - Default Auto Move checkbox value from resource.
+07/17/14 - Aserebrenik SCR 82018 - Labor.cs - Patch fields migration related changes
+07/18/14 - IgorM      SCR 142752 - MES Menu - Add operation description and Part description to MES Production grid.
+07/29/14 - JuanP      SCR 144268 - Labor.cs; Modify CopyLaborDetail method by adding the logic to make the copy for Coparts.
+								   Labor.Queries.cs; Adding 3 new queries
+								   1) SelectJobPart; to include the plant as part of the condition when jobpart information is required.
+								   2) FindFirstLaborPart; to get/validate the information that will be copy to the new row for LaborPart
+								   3) ExistsJobPartChanges; to get the copart information from jobpart that was changed from the          original record respect the new copy.
+07/30/14 - AbrahamM - SCR 144986 - Fixed Downtime to work for Setup Activity.
+08/06/14 - JuanP    - SCR 144268 - Labor.cs; Modify chkPartQty method to avoid Object reference not set to an instance of an object error when a copart was deleted from Job Entry.
+											 Modify CopyLaborDetail method to validate if PartQty from JobPart is Zero then set the new record for JobLabor.PartQty to Zero.
+08/07/14 - JuanP    - SCR 144268 - Code changes as PR reques on Labor.cs and also a query was removed on Labor.Queries.cs because its not longer used.
+08/12/14 - AbrahamM - SCR 142881 - Fixed various issues about incorrect quanities to MtlQueue when Reporting Activity and Moving to Material Queue before ending Activity in MES.
+08/13/14 - ArMoreno - SCR 146292 - Labor.cs: The logic which adds the equipment to the laborEquip was changed in order to avoid duplicated records when the laborDtl and OprDtl have the same resource
+08/18/14 - ArMoreno - SCR 144172 & 143363 - Labor.cs: A new list was created in order to hold the elements to be deleted in the getSerial method and the rowMod was set to "D"
+09/02/14 - AbrahamM - SCR 146793 - Added GetNewLaborDtlOnSelectForWork method.
+09/02/14 - YeseniaA - SCR 143849 - CopyLaborDetail method modified to avoid creating new header record for the copied detail, as the header is the same than the copied one
+09/09/14 - ArMoreno - SCR 147908 - Labor.cs, Strings.resx: A validation in the server side was added in order to avoid deleting approved details.
+10/02/14 - JEstrada - SCR 147007 - Labor.cs - Updated the chkStartActShopWarn() method to condition the verification of the WARNING020 to happen only if WARNING010 has not occurred. This is to avoid a double message warning about a previous  operation has not started and also has not completed, which is redundant.
+10/03/14 - dparillo - SCR 143112 - Labor.cs: modified validateSerialAvail & validateSerial. Labor.Queries.cs: added FindFirstLaborDtlPrevQty.
+10/10/14 - JEstrada - SCR 147007 - Labor.cs - Added the chkReportQtyShopWarn() public method to expose the same logic used in Start Activity to display Shop Warnings for the Report Quantity module.
+11/04/14 - JeanetteP - SCR 151111 - Modified Labor.cs to assign the BurdenRate in the DefaultOprSeq() to make sure that we have burden rate for the default resource/group values.
+11/19/14 - LorenS   - SCR 147287 - Labor.cs - Modified to handle Scrap and NonConf quantities correctly.
+12/01/14 - ArMoreno - SCR 143196 - Modified Labor.cs, Labor.Queries.cs: The method which checked the site configuration was replaced by a query. The TimeAutoSubmit was added to weeklyview as external field and to LaborDtl as phisical field.
+12/01/14 - JesusC   - SCR 144360 - Modified Labor.cs - Added a condition to call the modified mehod LaborRateCalc when is available the operation sequence and is different to zero.
+12/01/14 - ArMoreno - SCR 143196 - Modified Labor.cs - When copying the weekly time the TimeAutoSubmit flag was not set taking the site configuration.
+12/19/14 - ArMoreno - SCR 143196 - Modified Labor.cs - When recalling the weekly time the TimeAutoSubmit flag was not set taking the site configuration.
+12/19/14 - DiegoF	- SCR 150595 - Fixed getShiftDescription() method to show de correct format in the cmbShift.Text
+01/12/15 - JEstrada - SCR 151179 - Labor.cs - Updated the GetNewLaborDtlWithHdr() method to include the same EADvalidation() occurring when creating a new LaborDtl entry without Header (in the GetNewLaborDtlNoHdr() method).
+01/14/15 - DebbieP  - SCR-154791 - Labor.cs: replace Session.ServiceSchemaName with "Erp" in calls to security logic.
+01/20/15 - ArMoreno - SCR 143196 - Labor.cs: if the ProjPhaseID doesn't have a valid value, then it will be set as empty
+01/20/15 - ArMoreno - SCR 143196 - Labor.cs: An additional condition was added in order to validate the hours of the timeWeek entry.
+03/12/15 - ArMoreno - SCR 157211 - The references to the old patchfield (CanUpdateTime) were removed and changed to use the phisical fields
+03/20/15 - JesusC   - SCR 159452 - Labocs.cs: LaborDtlAfterUpdate added a clear of ttTEKeyRows to avoid repetition of lines processed.
+04/06/15 - JShay	- SCR 159908 - Labor.cs, LaborSvcFacade.cs - Added new parameter to method GetNewLaborDtlOnSelectForWork to allow start activity when it was set as Setup.
+04/07/15 - JShay	- SCR 159908 - Labor.cs, UpdateExt_i.cs - Modified to fix warning messages.
+04/13/15 - JEstrada - SCR 160564 - Labor.cs : Updated the LaborDtlAfterUpdate() method to process ttLaborDtl records with a RowMod equal to ROWSTATE_UPDATED to be a ble to update the LaborEquip.Hours value when the ttLaborDtl record is sent from MES End Activity. This is by checking the new External Flag field SentFromMES included in the row.
+04/15/15 - JShay	- SCR 132820 - Labor.cs, Labor.Queries.cs: Updated the defaultOprSeq2() method to retrieve the resource from the resource group if ResourceTimeUsed table has no records for the current job.
+04/21/15 - JShay	- SCR 143196 - Labor.cs: Modified processTimeWeeklyView() method to validate if weekly time record is deleted or if is updated.
+04/28/15 - JShay	- SCR 132820 - Labor.cs, Labor.Queries.cs: Rollback previous changes and modified method defaultOprSeq() and LaborDtlBeforeUpdate() to set the JCDept based on the ResourceGroup as TimeDetail does. 
+05/07/15 - DiegoF	- SCR 162351 - Labor.cs: Added validations to allow 24 hours shift
+05/20/15 - JeanetteP - SCR 161845 - Labor.cs and Labor.Queries.cs: Modified AfterUpdate() logic that updates the JobPart.QtyCompleted for all LaborParts. Made sure that when receiving LaborParts for Concurrent Job, the MainPart is 
+									received LAST. This is to ensure that all received LaborParts will have the correct prorated job costs. Concurrent job costing only reports completed qty from the MainPart, so if it is 
+									received first then COSWIP logic will recognized that all completed qty has been received and no remaining costs to be relieved.
+05/20/15 - RPerez		- SCR 149725  - Separated LaborRate and BillableServiceRate (Advanced Labor Rates) logic.
+05/28/15 - JEstrada		- SCR 162808 - Labor.cs - Updated the AfterUpdate() method to set the Complete flag in the LaborDtl row (passed from the ttLaborDtl), and to calculate the jobParts Qty already produced in the Job to determine if the amount declared for the current entry completes the Job.
+06/08/15 - JesusC		- SCR 162808 - Labor.cs, Labor.Queries.cs - Removed change that saves when clicking the save the button. Added method OnChangePartQty to calculate the QtyCompleted and set complete checkbox. Added query FindFirstLaborPart.
+06/10/15 - JesusC		- SCR 161737 - Labor.cs: Modified createMtlqPwip to deduct the LaborQty related to current Qty entered in MES by Report Qty
+06/12/15 - dparillo		- SCR 164568 - Labor.cs: Modified validateJobFields to always check nonconformance 
+06/15/15 - JesusC		- SCR 161737 - Labor.cs: Rollback 
+06/18/15 - DiegoF		- SCR 141841 - Labor.cs: Added ValidateIndirectCodeIsDowntime() function
+06/23/15 - JesusC		- SCR 161737 - Labor.cs: Modified creatMtlqPwip to handle reportQty and request move.
+06/25/15 - JEstrada		- SCR 162533 - Labor.cs: Modified the GetNewLaborDtlOnSelectForWork() method to add a validation for a NULL object and to set the row to be updated properly (the last created, instead of the first one).
+07/02/15 - JesusC		- SCR 165528 - Labor.cs: Added a condition to not create Mtl Queue records when labor is a rework
+07/02/15 - RPerez		- SCR 149725 - Labor.cs: Call LaborRate and BillServiceRate libraries for calculations on Weekly Time.
+07/09/15 - RPerez		- SCR 149725 - Labor.cs: Validate de job number on Weekly Time so BillServiceRate is calcultated with the correct parameters, specifically CallNum, CallLine and ExpenseCode.
+07/13/15 - JSaenz		- SCR 156781 - Now when adding an operation of Prod Std: Fixed Hours and LaborEntry: Quantity Only and entered time in the T&E the LaborHrs and BurdenHrs Controls are disabled and setted to the fixed hour value to avoid any unecesary change due the fixed hour option and, when adding more time for the same operation the LaborHrs and BurdenHrs values are 0.00. and in Job Tracker the Act. Hours are displayed correclty. Also, when adding a non Fixed Hour Operation the behavior is add to Act. Hours the value of LaborHrs for every TimeDetail added in T&E and MES & Job Adjustment behavior were corrected within this fix.
+07/20/15 - JSaenz		- SCR 156781 - Added same behavior on Job Adjustment as in T&E, if FixedHrs and Quantity Only operation is selected the Labor/Burden Hrs Textbox are disabled. also added same external field "ISFixHourAndQtyOnly" as in LaborDtl to JALaborDtl and a minor change to External Field "ProdStandard".
+07/21/15 - YuriR		- SCR 163552 - Provided calculation of Labor, Burden Hours with 5 decimals instead of 2.
+07/21/15 - AlejandroM	- SCR 164819 - Labor.cs Calculate LaborHrs and BurdenHrs by substracting also the Break minutes in the Shift.
+07/21/15 - AlejandroM	- SCR 164819 - Labor.cs  Apply Peer Review Changes.
+07/31/15 - AlejandroM	- SCR 164819 - Fix issue included within SCR 156781 in 07/13/15 as additional of my SCR.
+08/04/15 - YuriR		- SCR 163552 - Rolled back previous changes, SCR was sent to 10.2
+08/05/15 - AbrahamM     - SCR 168286 - LaborDtl ClockIn and ClockOut and its child fields should not take into account "Late/Early Allowance setting". This setting only applies for financials so it should be taken into account only for LaborHed.
+08/17/15 - DebbieP		- SCR 168428 - Labor.cs: validate that the selected serial number is not associated with a PCID
+08/20/15 - JeanetteP    - SCR 156781 - Labor.cs and Labor.Queries.cs: Undid the previous changes done for SCR 156781. Implemented a new fix to correctly default/calculate labor/burden hours for Quantity Only/Fixed Hours labor type.
+08/21/15 - JeanetteP    - SCR 156781 - Labor.cs and Labor.Queries.cs: Additional changes to implement similar QuantityOnly/FixedHours logic for Setup labor.
+09/24/15 - MarcoM       - SCR 168903 - Labor.cs: Changed the ttLaborHed to the physical table LaborHed in LaborHedBeforeDelete method because the physical table is always available.
+10/01/15 - dparillo     - SCR 172051 - Labor.cs: modified the SCR 143112 change to validateSerial
+10/12/15 - JEstrada     - SCR 172662 - Labor.cs: Added the getElapsedTime() public method to calculate the difference in Hours from a given StartDate and the current time.  The result is Up-Rounded and uses ZERO decimals to maintain compatibility with the Equip Entity.
+10/16/15 - JesusC       - SCR 172662 - Labor.cs: In method getElapsedTime changed rounding to math.ceiling
+10/27/15 - dparillo     - SCR 173508 - Labor.cs: modified the SCR 143112 change to validateSerial further.
+10/27/15 - JShay		- SCR 172184 - Labor.cs: Modified method calcLaborHrs() and query SelectLaborDtlWithUpdLock() to split the labor hours between the activities that the employee is running simultaneously and that are in the same labor head sequence.
+10/28/15 - YuriR        - SCR 172049 - Labor.cs: LaborAfterGetRows - set EfficiencyPercentage the same way as in LaborDtlSearch;
+11/25/15 - RosalindaV	- SCR 176541 - Labor.cs: Labor.Queries.cs - Fixed ExistsNonConfWithProcessedInspection and FindFirstNonConfProc queries to send Company as parameter instead of directly using Session.CompanyID
+11/25/15 - RosalindaV	- SCR 176541 - Labor.cs: UpdateExt_i.cs - Cleaning Warnings.
+11/25/15 - RosalindaV	- SCR 176541 - Labor.Queries.cs: Removed the query FindFirstNonConfProc as it is not used at all in the code.
+12/21/15 - DiegoF		- SCR 177939 - Labor.cs: Added validation to auto-approve indirect activities.
+01/13/16 - AbrahamG		- SCR 168520 - Labor.cs: Fixed logic to calculate correctly the Labor/Burden Hrs, as it was being rounded before to perform the calculations of these values. 
+01/22/16 - dparillo		- SCR 177818 - Labor.cs: modified getSupervisorRights to honor authorized users.
+01/22/16 - JacobO	    - SCR 168612 - Labor.cs: ValidateNonConfProcessed Method was modified to compare with a sentence decision if there a new Labor Header Sequence and Labor Detail Sequence related with the new event to add into time detail record.
+01/22/16 - dparillo     - SCR 177919 - Labor.cs: modified getSupervisorRights to verify Workforce is active. Labor.Queries.cs: added IsactiveWorkForce
+01/27/16 - dparillo		- SCR 175577 - Labor.cs: modified LaborDtlAfterUpdate to run submit if time is entered and TimeAutoSubmit is true.
+02/04/16 - dparillo		- SCR 175577 - Labor.cs: removed previous change.
+03/08/16 - AlejandroM	- SCR 181933 - Labor.cs: Add validations to not allow enter LaborQty for Time and Backflush Operations.
+03/15/16 - YuriR        - SCR 182019 - Labor.cs: Modified Overrides - program processes empty input values as non-changed fields Resource Group and Operation; Fixed some Code Analisys issues;
+13/17/16 - JacobO       - SCR 180340 - Labor.cs: Now PayHours field it's being calculated correctly when the Clockout time is equal to LunchOut Time.
+03/18/16 - AlejandroM	- SCR 182035 - Labor.cs: Add validations to not allow enter LaborQty on ENd Activity for T&BQ operations.
+03/18/16 - JacobO       - SCR 180340 - Labor.cs: Now PayHours field it's being calculated correctly, Additional scenarios when your lunch stared before your clock in time and your lunch out time is jumping to other day and when your lunch stared before your clock in time and your lunch out time is not jumping to other day.
+03/18/16 - JacobO       - SCR 180340 - Labor.cs: Deleted unnecessary commented lines.
+03/30/16 - JacobO		- SCR 180340 - Labor.cs: Additional scenarios was added to calculate correctly Payhours, when you got scheduled a daily time with a lunch time out of range it was being calculated incorrectly.
+04/01/16 - AbrahamG     - SCR 182858 - Labor.cs: GetRowsWhoIsHere - Added a call to Ice.Services.CheckSQLInjection to prevent SQL Injection issues.
+04/15/16 - AlejandroM   - SCR 182034 - Labor.cs: partial Check in - Disable Next Operation Sequence for Time - Backflush Qty operations.
+04/15/16 - JacobO       - SCR 177450 - Labor.cs: Now when you enter a new time detail and its clock in time is equal to clock out time labor hours and burden hours are being calculated correctly.
+04/15/16 - JacobO       - SCR 182042 - Labor.cs: Now Laborhours field is calculated only with two decimals.
+04/18/16 - AlejandroM   - SCR 182034 - Labor.cs: Disbale Next operation Seq for T&BQty operations.
+04/22/16 - dparillo     - SCR 181874 - Labor.cs: added validation for scrap reason. LaborQueries.cs: added ValidScrapCode
+04/27/16 - dparillo     - SCR 179197 - Labor.cs: fixed null object error in updateSerialNumbers by checking ttSNTranRows
+05/09/16 - MarcoM       - SCR 183102 - Labor.cs: Added two methods and logic for integration with HCM.
+05/10/16 - AbrahamG		- SCR 182487 - Labor.cs / LaborQueries.cs - Added logic to avoid report qty twice for coparts. Fixed SQL Injection sentence.
+05/12/16 - JacobO       - SCR 182086 - Labor.cs: Added sentence to re-calculate Labor Rate only if the labor entry method in each operation is different from "Quantity Only".
+05/12/16 - JacobO       - SCR 177450 - Labor.cs: Now when you enter a new time detail and its clock in time is equal to clock out time labor hours and burden hours are being calculated correctly. Added scenario to take in account discounting lunch time over the employee.
+05/12/16 - dparillo		- SCR 182443 - Labor.cs: Modified AfterUpdate to use PartsPerOp in qty calculation of main co-part.
+05/09/16 - MarcoM       - SCR 183102 - Labor.cs: Added logic to set correctly HCMPayHours from LaborHrs for integration with HCM.
+05/13/16 - AbrahamG		- SCR 182487 - Labor.cs: Logic modified to fix issues related with previous changes. Fixed StringCompare issues also.
+05/13/16 - AbrahamG		- SCR 182487 - Labor.cs / LaborQueries.cs: Logic modified to fix issues related with previous changes. Fixed StringCompare issues.
+05/19/16 - MarcoM       - SCR 183102 - Labor.cs: Modified LaborDtl_Foreign_Link(); location into LaborDtlAfterGetRows in order fill all the link fields correctly and added missing DB.Validate() for HCM methods.
+05/20/16 - MarcoM       - SCR 183102 - Labor.cs: Defaulted HCMPayHours from Labor Hours when the record is created from MES.
+05/23/16 - dparillo     - SCR 185776 - Labor.cs: Removed fix for SCR 177450 and modified payHoursDtl.
+05/25/16 - dparillo		- SCR 185776 - Labor.cs: reworked payHoursDtl
+05/27/16 - JeanetteP    - SCR 185762 - Labor.cs: Modified AfterUpdate() to simplify the CoParts logic that updates the JobPart's Completed Quantity.
+06/01/16 - MarcoM       - SCR 185826 - Added logic to fill the field HCM Total Pay Hours on Detail tab and Weekly Time List.
+06/02/16 - dparillo		- SCR 185776 - Labor.cs: reworked payHoursDtl and payHours
+06/06/16 - JacobO		- SCR 185574 - Labor.cs: Payhours field is being correctly calculating when the Clock out time is more late than outgoing Lunchtime.
+06/17/16 - dparillo		- SCR 187588 - Labor.cs: added another condition for Scrap Reason code in LaborDtlBeforeUpdate
+06/23/16 - dparillo     - SCR 187588 - Labor.cs: modified DefaultOprSeg to properly set EnableScrapQty and EnableDiscrepQty
+07/01/16 - JacobO       - SCR 167699 - Labor.cs: The user is able to open more than one window of T&E and submit new records simultaneously without getting any error.
+07/01/16 - IrisE		- SCR 188501 - Labor.cs: If Labor Update method is called from Ad hoc Job Output by PCID, don't calculate labor hours. Labor hours will be always one minute per PCID or set of PCIDs generated in one transaction.
+07/04/16 - RVillalobos  - SCR 187997 - Labor.cs: Fixed error message: "Labor cannot be reported to a non-location resource." for weekly time.
+07/20/16 - MarcoM       - SCR 189302 - Labor.cs: Added method DeleteLaborDtl to allow delete of records from HCM (PTO).
+07/22/16 - dparillo     - SCR 188871 - Labor.cs: added flag previousShiftHours to flag if shift hours have been met. 
+07/29/16 - JacobO       - SCR 185773 - Labor.cs: Updated calcLaborHours method to avoid calculate worked time on Indirect Labor.
+07/29/16 - JacobO       - SCR 185773 - Labor.cs: Updated code lines according standards.
+07/29/16 - JacobO       - SCR 185773 - Labor.cs: Fixed FxCodeCop Errors.
+08/02/16 - JacobO       - SCR 185773 - Labor.cs: Updated calcLaborHours method to avoid calculate worked time on Indirect Labor with Downtime.
+08/03/16 - JacobO       - SCR 187461 - Labor.cs: Implemented IsDocument Method from PELock Internal Library to verify if exists a Labor Detail pending to review in Journal to avoid delete from Time and Expense.
+08/03/16 - JacobO       - SCR 190525 - Labor.cs: Added a validation to avoid delete or modify a Time Detail Record if has been posted.
+08/12/16 - dparillo     - SCR 190657 - Labor.cs: changed arrays to type decimal in calcLaborHours and calcBurdenHours.
+08/20/16 - JacobO       - SCR 132723 - Labor.cs: Added inside beforeupdate method a sentence where if finds the WipPosted is true then Labor table is set to null to create new Labor Header.
+08/22/16 - JacobO       - SCR 187461 - Labor.cs: Implemented IsDocument Method from PELock Internal Library to verify if exists a Labor Detail pending to review in Journal to avoid modify from Time and Expense.
+08/22/16 - AGonzalez      SCR 185854 - Labor.cs: Added VerifyScrapQty public method.
+08/24/16 - JacobO       - SCR 132723 - Labor.cs: Added inside processTimeWeeklyView method a validation to know if exists any header posted and to review if there's other header without post to use it or if doesn't exists, set the LaborHed table to null to create new header.
+08/26/16 - JacobO       - SCR 187461 - Labor.cs: Added new method called ReviewIsDocumentLock to avoid modify the record if the user make click on Recall button from Time and Expense Entry Form.
+08/30/16 - dparillo     - SCR 189782 - Labor.cs: reverted the previous change of SCR 168286.
+09/27/16 - MarcoM       - SCR 192978 - Added decimals format to PayHours in HCMLaborDtl table for HCM Integration.
+10/18/16 - dparillo     - SCR 193564 - modified logic in validateTimeTypCd to not throw error for blank time type if role code charge exists
+10/21/16 - MarcoM		- SCR 194155 - Labor.cs: Removed logic to delete NonConf on LaborDtlBeforeDelete, moved to LaborDtl trigger.
+11/18/16 - DiegoF		- SCR 191581 - Labor.cs: Added missing JCDept assignation when creating New Time Detail.
+11/23/16 - YuriR        - SCR 187543 - Labor.cs: Performance. validateSerialAvail - avoid unnecessary calculations when Available SN >= Needed SN; updateSerialNumbers - validate a whole group of records instead of each; 
+12/07/16 - YuriR        - SCR 195813 - Labor.cs: Pass current record ttLaborDtl in LaborRateCalc to correct calculation of the labor rate; 
+02/08/17 - ArMoreno     - SCR 197631 - The external field HCMTotPayHours it is now a patchfield in order to save the payhrs at the header when the configuration allows it
+02/08/17 - ArMoreno     - SCR 197632 - Modified the HCM methods in order to add the new funcionality which allows HCM to retrieve the LaborHed records as well
+02/14/17 - DiegoF		- SCR 197631 - HCMPayHours value is honored after submit.
+02/15/17 - YuriR        - SCR 198842 - Modified updateSerialNumbers: validate SNTran before the second record against the same Part, SN is created (and the first one was not validated yet).
+02/22/17 - DiegoF		- SCR 197631 - Added external field PayrollValuesForHCM, Modified HCM get method.
+02/24/17 - DiegoF		- SCR 197631 - Added column status in HCMLaborDtl table, fixed HCM filter, Removed unused patchfield calls.
+02/24/17 - DiegoF		- SCR 197631 - HCM Get now only return labor records with LaborHed.FeerPayRoll = true
+02/27/17 - DiegoF		- SCR 197631 - Valitaded HCM integration types only when HCM integration is enable in company configuration
+03/20/17 - YuriR        - SCR 191259 - Labor.cs: Modified LaborDtlBeforeUpdate - recalculate LaborRate if it was denied; removed duplicated code in LaborRateCalc;
+05/17/17 - JShay		- SCR 201780 - Labor.cs: Modified to verify if the labor is in review journal on the recall process.
+05/17/17 - JShay		- SCR 201780 - CodeAnalysis: Fixed some warnings. More warnings are pending but require more investigation.
+05/23/17 - Pradeep		- scr191017 - Labor.cs - Code to set the clock in date/time during update. New field HH to check if the call is made from MES, HH or labor entry.
+06/13/17 - YuriR        - SCR 193634 - Labor.cs - Added scope of disabled trigger, avoid setting if RequestMove was not changed  
+07/07/17 - YuriR        - SCR 203328 - Set Actual Production, Setup, Earned Hours of JobOper as sum of Labor Hours of LaborDtl instead of the Burden;
+07/12/17 - jstevermer   - SCR 201638 - (EN-2944) - Changes for UpdateExt for new FSA Integration for Indirect Labor, renamed from UpdateExt_i.cs to be more consistent with other BOs
+07/13/17 - nzirbes      - scr 199933 - updated the logic for DisallowTimeEntry.  When the patchfld was removed it was replaced by the schema column.  However, the logic that 
+									   sets the 'setType' only looked at the schema column and did not take the users into consideration.  I added a new field dissalowTimeEntry with a default
+									   value of false.  In the logic where the DcduserId  = Session.UserID if time entry is not allowed disallowTimeEntry is set to true to prevent that functionality.
+									   Added some comments from E9 that apply to E10 for method setUpdateRules.
+									   Minor code clean up.  Moved common logic for setting the type, which controls what is enabled to method SetRuleTypeForLabor and call that in both places where
+									   it is needed.  This was done to start removing duplicate code.
+08/07/17 - YuriR       - SCR 205743 - EndActivityComplete - pass incomplete parameter to have incomplete operation even when Completed Qty exceeds Run Qty;
+08/21/17 - JeanetteP   - SCR 203328 - Rollback previous changes for SCR 203328.
+08/31/17 - ArMoreno    - SCR 206310 - Removed ProjPhase field from WeeklyView
+09/04/17 - YuriR       - SCR 207068 - Performance - Modified setOprComplete - avoid call ExistsLaborDtl4 against empty Job and OperSeq
+09/21/17 - jstevermer  - SCR 201638 - (EN-3808) - Corrected UpdateExt when adding additional LaborDtl records to existing LaborHed.  Also corrected the integration point for the comments and setting of LaborDtlSeq
+09/25/17 - DiegoF	   - SCR 207696 - Changed PayrollValuesForHCM value to "NON" instead of empty string when HCM is not enabled.
+10/11/17 - YuriR       - SCR 114168 - Provide Shop Warning logic: replaced out parameter with ref one in chgWcCode;
+10/24/17 - Pradeep     - EN-3009 - Labor.cs/.Queries.cs Code to build/remove backflushed records.
+11/06/17 - jstevermer  - SCR 201638 (EN-4310) - Change for auto submit.
+11/14/17 - YuriR       - SCR 203885 - Replaced TERetrieveBy-xx patch-fields with actual DB-fields;
+01/08/18 - gheier - SCR 210999 (EN-72) -  Added EpicorFSA, CallCode, ContractCode, and WarrantyCode LaborDtl ext fields to replace patch fields for FSA integration
+01/09/18 - gheier - SCR 210999 (EN-4) - Added ContractNum, FSAServiceOrderNum, FSAServiceOrderResourceNum, FSAEquipmentPartNum, FSAEquipmentInstallID, FSAAction and associated logic
+01/19/18 - gheier - SCR 210999 (EN-4) - Minor changes for unittest
+01/23/18 - jstevermer - SCR 210999 (ERP-335) - Added code to populate PatchFld IntExternalKey which is needed to return related SysRowID
+01/25/18 - gheier - SCR 210999 (EN-4) - Minor change to validation logic
+02/20/18 - YuriR  - SCR 211968 - Performance: Use Dictionary of TimeWeeklyViewRow; Avoid calls of LaborDtl_Foreign_Link() from GetRows; Avoid repetitive queries in the loops which parameters are not changed;
+02/22/18 - YuriR  - SCR 211968 - Performance: Handle negative labor hours;
+03/02/18 - RosalindaV ERP-1477   - Fixed display of Payroll/Pay Hours Label/Fields for HCM integration on Time and Expenses entry.
+04/25/18 - YuriR  - ERPS-88748 - Modified LaborDtlAfterDelete - Added condition about not null collection of delSerialNoRows;
+07/04/18 - KeithW     ERP-2748 - Add logic for new LaborDtl PCID and EnablePCID fields
+07/11/18 - KeithW     ERP-2748 - Add logic to support Lot when using PCID with End Activity
+07/16/18 - KeithW     ERP-2748 - Add new EnableLotAndGetDefault method to set a default lot
+07/17/18 - YuriR      ERPS-94566 - Modified LaborDtlAfterUpdate - set the current SysRevID of the ttLaborDtl at the end of the method to avoid error ("Row has been modified by another user...");
+07/24/18 - KeithW     ERP-4083 - Add new method PrintPCIDContentsLabel which will print PCID contents if the flag has been set.
+07/24/18 - KeithW     ERP-2748 - Ignore JobAsmbl.FinalOpr flag when determining last operation for PCID
+07/27/18 - YuriR      ERPS-94566 - Modified LaborDtlAfterUpdate - added Validate of LaborEquip to avoid error ("Row has been modified by another user...");
+08/01/18 - YuriR      ERPS-94566 - Modified LaborDtlAfterUpdate - get ttLaborEquip record and synchronize it with db-record.
+08/22/18 - YuriR      ERPS-82932 - Modified createMtlqPwip - added Operation Completed Qty in the validation of the negative Qty;
+09/05/18 - KeithW     ERP-6712   - Removed PrintPCIDContentsLabel as this will now be done via the UI.
+10/10/18 - JuanP      ERPS-99886 - Labor.cs: Modified payHoursDtl method by refactoring fix made over SCR 188871 as the issue was still present when the user switch between labor types.
+11/05/18 - KeithW  - ERPS-103475 - Disable PCID for SubAssemblies (assemblySeq != 0)
+11/21/18 - JeanetteP  ERPS-104144 - Minor changes in validation messages about changing resource.
+12/06/18 - JeanetteP  ERPS-76711 - Labor.cs: Modified convMin2() to properly validate the Hours:Minutes clock in/out format like in E9.
+12/07/18 - JGomez	  ERP-8778	 - Replaced UI logic used for MES on added method GetActiveLaborDtl() to retrieve active laborDtl records searched by employee.
+12/14/2018 - MContreras - ERP-8542 - Created getHomePageData method for Mobile Time App. Regenerated contracts.
+12/27/2018 - RVillalobos - ERP-8542 - getHomePageData - Optimizing and implementing some standards. Now the code will only look for data if either SalesRepCode or EmployeeID are not empty. 
+12/07/18 - JGomez	  ERP-8092	 - Added OnLoadEndActivity method for kinetic-mes.
+01/08/2019 - MContreras - ERP-8542 - Removed GetHomePageData method. Moved the logic to the MobileLabor BO.
+01/09/19 - BillE      ERP-8095 - New methods, queries and strings for Kinetic MES Downtime.
+01/09/19 - JonathanD	- ERP-8085 - Modified validateIndirect method to avoid checking for Resource Group when only changing the Indirect Code.
+01/14/19 - JonathanD	- ERP-8088 - Modified DefaultJobNum to use the validations from Job Entry as well, also added method to validate Rework Reason Code.
+01/15/19 - MContreras - ERP-8542 - Peer review correction - removed unneeded reference to Task BO.
+01/22/19 - calvillo - ERP-9530 - Added HasAttachments external field and its asignation in afterGetRows, added partNum to job assembly link in LaborDtl
+02/04/19 - scottr    ERP-9076 - Create UserNotification when a new attachment is added
+02/06/19 - scottr    ERP-9076 - cleanup warnings
+02/17/19 - JeanetteP ERPS-94466 - Labor.cs; Labor.Queries.cs: Modified warnQty() to pass only the difference between the new and old values of the LaborQty when calling RunDEWrn070 to check for over quantity warning. The old value is already included in the JobOper.QtyCompleted.
+02/07/19 - JonathanD	- ERP-8094 - Fixed bug when checking resource id.
+02/25/19 - JonathanD	- ERP-8950 - Added out parameter to return the amount of new serial numbers required. Fixed a bug in the count of required SNs introduced in Changeset 33729 SCR 187543.
+02/26/19 - BillE        - ERP-9877 - Added validations to LaborDtlBeforeUpdate to not allow the saving of a record containing ScrapQty or DiscrepQty if employee is not allowed to update those qtys.
+02/26/19 - calvillo     - ERP-10168 - Added employee shift to GetNewLaborDtlNoHdr
+02/26/19 - JGomez		- ERP-9352  - Removed SerialNumberScan column and added paramaters to ValidateSerialScanInterface method.
+03/01/19 - calvillo     - ERP-9965 - Do not allow adding comments to an approved time 
+03/06/19 - gheier - ERP-10837 - Serial numbers were being added to LbrScrapSerialNumbers twice when OnLoadEndActivity called.
+03/08/19 - JGomez - ERP-10849 - Corrected calculation for serial numbers needed to assign.
+03/11/19 - JGomez - ERP-10931 - Updated ValidateSerialScanInterface method to validate if serial number has been used on previous operation.
+04/02/19 - MarcoM - ERP-11127 - Added validation for Copy function on Details against Closed Projects.
+04/04/19 - MarcoM - ERP-11127 - Fixing Code Analysis issues.
+05/03/19 - MarcoM - ERP-11127 - Modified validation related to Copy and Recall LaborDtls record linked to a closed Project.
+05/06/19 - MarcoM - ERP-11127 - Modified validation for Jobs not linked to a Project.
+08/05/19 - jgroblesr - ERP-15731 - Throw exception when not valid employee is found avoiding null exceptions.
+09/05/19 - YuriR     - ERPS-72717 - Modified payHoursDtl(): avoid update of hours in Downtime labor;
+10/03/19 - RVillalobos - ERP-17987 - Added public wrapper methods to call LaborDtlAfterGetRows
+12/01/19 - ATarasov   - ERPS-128421 - Code cleanup: Remove 'ABL Source' comments. (Epicor.Analyzer.ABLComments.Tool)
+03/20/20 - AngelJM - ERPS-134562 - Labor.Queries.cs: Renamed FindFirstJobAsmblPartNum query to FindFirstJobAsmblPart. Created new JobAsmblPartResult class to receive PartNum and PartDescription from it. 
+								 - Labor.cs: On EndActivity method, added a call to FindFirstJobAsmblPart query and added jobAsmblPart variable to receive its results, and populate them into ttLaborDtl corresponding columns.
+10/06/20 - YuriR  - ERPS-139151, Performance of GetRowsCalendarView(): Added Schema parameter in XFileAttch query; Cache data of Job to avoid repeated calls in ReportPartQtyAllowed(); Optimized some queries;
+07/30/20 - dparillo ERP-28393 - Add attribute set for non-conformance and scrap
+08/03/20 - dparillo ERP-28393 - removed duplicate validation 
+08/07/20 - dparillo ERP-28393 - added check for null BIttLaborDtl due to Kinetic limitations
+08/07/20 - dparillo ERP-28393 - re-factored previous change to not interrogate BIttLaborDtl
+08/13/20 - dparillo ERP-28701 - fixed obj ref error by check for ttLaborDtl
+09/25/20 - dparillo ERP-28526 - use new attribute columns for scrap and non-conformance and removed patchflds
+10/06/20 - dparillo ERP-28394  - Add attribute set functionality for LaborQty
+10/14/20 - dparillo ERPS-149052  changed call to CheckAttributeSetIsValidForPart to allow non-master part
+10/16/20 - DebbieP - ERPS-149060 - Labor.cs: correct casing issues with PCID
+10/21/20 - JulioM  - ERPS-148363 - Labor.cs, Labor.Queries.cs: Removed JobType = "MFG" parameter to ExistsJobHead query in IsValidAssembly method.
+10/27/20 - DebbieP - ERPS-148839 - Labor.cs: updateSerialNumbers will create SNTran for AMS-INS after all of the DMR data is added to SerialNo
+11/11/20 - scottr  - ERP-25151 - New methods and external fields for kinetic ui
+11/16/20 - scottr  - ERP-25151 - New methods and external fields for kinetic ui for submit, recall, copy
+11/19/20 - scottr  - ERP-25151 - New method GetRowsTimeEntry to consider user TERetrieval options
+12/02/20 - scottr  - ERP-25151 - New methods for serial numbers, payroll date change, labor type list for Kinetic UI
+12/07/20 - scottr  - ERP-25151 - Set SysRowID on LbrScrapSerialNumbers row
+01/07/20 - scottr  - ERP-25151 - Correct object reference error in CreateLbrScrapSerialNumbersFromList
+01/14/21 - scottr  - ERP-25151 - Correction for comment type list
+01/18/21 - YuriR   - ERPS-153432 - Labor.cs: Moved setting of JCDept from LaborDtlAfterGetRows() to GetNewLaborDtlNoHdr() introduced by change under ERPS-43905;
+01/20/21 - YuriR   - ERPS-153432 - Labor.cs: Added setting of JCDept to GetNewLaborDtlWithHdr();
+01/21/21 - YuriR   - ERPS-151606 - Labor.cs: Replaced field PhaseIDDescription with WBSPhaseDesc in the grid;
+01/26/21 - DebbieP - ERPS-147121 - Labor.cs: fix the serial validation for attempting to select a SN with status Inventory for End Activity if there is no related OPR-CMP SNTran for the operation
+02/17/21 - scottr  - ERP-25151 - New external field for comment type description
+02/22/21 - scottr  - ERP-25151 - Update ttLbrScrapSerialNumbers.SNStatusDesc field
+04/01/21 - scottr  - ERP-33883 - New external fields and method GetDefaultsAddLaborDtlFromCalendar for calendar control in Kinetic Time Entry
+05/12/21 - YuriR   - ERPS-159703 - Labor.cs: Modified sumAllBurdenCost(): Compare if JobOpDtl record provides the same Labor combination Resource/ResGroup/Capability and it was not from the primary OpDtl then skip it; defaultOprSeq2() - Added optional parameter opDtlSeq; Minor change in OverridesResource() - removed unreachable code; 
+05/18/21 - YuriR   - ERPS-159703 - Labor.cs: Modified defaultOprSeq2(), sumAllBurdenCost(), so isCopyResCombination() returns false against non-location resources;
+06/01/21 - DebbieP - ERPS-121553 - regen BO for change of Equip.Description column size.
+06/04/21 - YuriR   - ERPS-163044 - Modified populateTimeWeeklyAll(): Avoid creation Time Week if user has not access to labor
+07/12/21 - scottr  - ERP-36140 - populate external field ttLaborHed.PayrollDateNav
+08/19/21 - scottr  - ERPS-168052 - Correct issue with saving changes on a copied record
+10/12/21 - YuriR   - ERPS-166058 - Modified GetRowsWhoIsHere() to include Supervisor ID in the sql-query;
+10/20/21 - YuriR   - ERPS-166058 - Modified GetRowsWhoIsHere(): Apply page sizing for Kinetic, when absolutePage > 0; 
+11/19/21 - JSuarez - ERPS-168565 - Labor.cs: Modified createMtlqPwip() condition to properly process MtlQueue and PartWip. Removed qtyRepToMtlQBefEndAct!=0 evaluation.
+01/14/22 - DRodriguez - ERP-38046 - Added support for new LaborDtlAction functionality.
+01/27/22 - Malathi - LABS-1520 - Added external field TemplateID and GetTemplateID method.
+02/01/22 - Malathi - LABS-1520 - Additional changes.
+02/03/22 - DanielR - ERP-38046 - LaborDtlActionBeforeUpdate: changed LaborDtl validation for case when row wasn't created yet.
+02/15/22 - Aserebrenik ERPS-180104 Add logic to allow kinetic grid in Shop Tracker UI filter and sort by employee name
+02/16/22 - dparillo  ERP-38937 - Populate CompletedBy with LaborDtl.EmployeeNum
+03/14/22 - MCantu  - ERPS-74977 - Labor.cs: Added GetPartDescription() method to assign PartDescription to Labor Part.
+04/29/22 - DJY        - ERP-41083 - regen BO as a result of schema change modifications to Erp.PartWip
+05/03/22 - MCantu  - ERPS-186100 - Labor.cs: Modified getShiftDescription() method to return JCShift.Description. 
+05/06/22 - ArmandoO - ERP-41177 - Moved EnablePCID validation into PackageControlValidation Lib
+05/12/22 - ArmandoO - ERP-41178 - Added pcid fields, updated onchangepcid validations to include wip
+05/12/22 - DJY        - ERP-41180 - server logic changes to support WIP in a PCID 
+06/07/22 - dparillo  - ERP-41869 - Implement inventory by revision functionality
+06/12/22 - DJY        - ERP-41180 - server logic changes to support WIP in a PCID - proving out End Activity when a PCID is specified
+06/13/22 - Aserebrenik  ERP-41178 - PCID column change events corrections
+06/12/22 - DJY        - ERP-41180 - server logic changes to support WIP in a PCID - removing Scrap PCID from End Activity and moving to a single OnChangePCID method for both Current and NonConformance
+06/14/22 - Aserebrenik  ERP-41178 - Added DefaultNonConformanceQty method and corrected logic to Enable PCID  
+06/16/22 - dparillo     ERP-41133 - added TrackInventoryByRevision
+06/18/22 - DJY        - ERP-41178 - End Activity enhancement to be able to report Non-Conformance into a PCID
+07/20/22 - DJY        - ERP-42216 - found limitation during testing of Void PCID that was not allowing multiple Jobs to be able
+                                    to be in a WIP PCID, a limitation that should only exist if the PCID is Label Print Controlled
+07/25/22 - dparillo   - ERP-43040 - set TrackInventoryByRevision.
+07/28/22 - mvillarreal- ERPS-194991 - Labor.cs: Modified calcTotHrs method to loop the labor details by using altLaborDtl variable
+												Modified chkShopWarn method to validate if JobOper is not null
+												Modified clockInTimeMES and ExternalMESDowntime method to replace JCShift by JCShiftResult
+												Modified LaborDtlAfterGetRows method to validate if EmpBasic is already loaded to avoid calling FindFirstEmpBasic11 also validated if PlantConfCtrl is already loaded
+													Moved FindFirstLaborHedHCMPayHoursCalcType Query into IsHCMEnabledAtCompany condition to avoid run the query when is not enabled the HCM license
+													Validated if JobOper is already loaded to set the TemplateID if not call FindJobOperTemplateId
+												Modified LaborHedAfterGetNew1 method to set as argument EmpBasic.PhotoFile instead of EmpID when call getImagePath
+												Modified LaborHedAfterGetRows method to set as argument EmpBasic.PhotoFile instead of EmpID when call getImagePath
+													Moved FindFirstLaborHedHCMPayHoursCalcType Query into IsHCMEnabledAtCompany condition to avoid run the query when is not enabled the HCM license
+												Modified StartActivity method to validate if EmpBasic is already loaded to avoid calling FindFirstEmpBasic22  
+												Added new method StartActivityByEmp to find the active laborHead and Start the Activity
+												Modified TimeWeeklyView_Foreign_Link method to replace RoleCd by RoleCdResult
+												Modified buildValidRoleCodeList method to validate if iProjID has value to run the query getchkEmpPrjRole
+												Modified canApprove method to loop the tasks by using Task variable
+												Modified getComplete method to validate if callNum is greater than 0 to avoid call ExistsFSCallhd
+												Modified getImagePath method to use photoFile as argument to avoid call the query FindFirstEmpBasic24
+									- Labor.Queries.cs Modified FindFirstHCMLaborDtlSync method to return partial row HCMLaborDtlSyncResult instead of the full row
+													   Modified FindFirstJCShift2 method to return partial row JCShiftResult instead of the full row
+													   Modified SelectLaborDtl method to return partial row LaborDtlLaborHrsResult instead of the full row
+													   Modified FindFirstRoleCd method to return partial row RoleCdResult instead of the full row
+													   Modified SelectTask method to return partial row TaskResult instead of the full row
+													   Added FindFirstActiveLaborHed query
+08/10/22 - mvillarreal  - ERPS-185569 - UpdateExt.cs: Modified OnUpdateExtCopyRowForTable method to validate when there are changes between sourceRow and targetRow by calling ValidateRow.HasChanges
+													  and changed the return logic to validate base.OnUpdateExtCopyRowForTable or overrideHasChanges
+09/24/22 - jstevermer - ERP-43674 - New SerialNoList, SelectedSerialNumbers, SerialNumberSelection columns for selection and filtering, caused change to ISelectedSerialNumbers contract interface, regen only
+09/26/22 - andreaP    - ERP-43760 - enhancement to add adding scrap and Discrep Qty's for co-parts in EndActivity and TimeEntry
+09/28/22 - andreaP    - ERP-43760 - enhancement to add adding scrap and Discrep Qty's for co-parts in EndActivity and TimeEntry
+10/04/22 - andreaP    - ERP-43993 - add populating of AttributeSetID's in LaborPart from JobPart.
+10/05/22 - andreaP    - ERP-43760 - removed an unnecessary comment.
+10/21/22 - DJY        - ERPS-208837 - bypass validations if coming from Receive PCID action in Job Receipt to Inventory which receives the entire PCID
+10/26/22 - andreaP    - ERP-44539 - attributes for coparts were not getting updated properly.
+11/01/22 - dparillo   - ERP-44253 - added validation for empty reason codes on LaborPart
+11/02/22 - andreaP    - ERP-43901 - implement serial tracked parts for track revision and track attributes
+11/14/22 - andreaP    - ERP-43901 - rework for implement serial tracked parts for track revision and track attributes
+11/16/22 - dparillo   - ERP-44766 - erroneous error. check if co-part job (enableLaborQty)
+11/29/22 - andreaP    - ERP-43759 - rework for time entry
+12/09/22 - dparillo   - ERP-44999 - refresh ttLaborPart values in genLaborPart
+12/19/22 - JeanetteP  - ERPS-193646 - Labor.cs: Modified OnChangePartQty() and OnChangeLaborPartScrapQty() to consider the job's Process Mode when calculating completed/scrap quantities. 
+                                      If the job is Concurrent then only the completed/scrap quantities for the MainPart will count.
+12/27/22 - JShay	  - ERPS-209896 - Labor.cs: Modified SubmitForApproval() to delete the rows that weren't modified instead of the modified ones; the time status and the hours information of the modified rows are updated so the rows can be refreshed by the populateTimeWeeklyView().
+01/12/23 - dparillo   - ERP-43720 - Added error message regarding co-parts and Work Queue.
+01/13/23 - andreaP    - ERP-44519 - serialno.warehouse and binNum getting cleared when it should not.
+02/22/23 - JeanetteP  - ERPS-213225 - Labor.cs: Modified the payHoursDtl() to prevent defaulting 24 hours if the start and end times are the same but the shift is not really 24 hours. 
+                                      Modified calcLaborHours() and calcBurdenHours() to remove the special consideration of midnight clock out time by hardcoding 24 hours in the formula.
+									  The same formula is now used for all scenarios and is now correctly splitting the labor/burden hours for overlapping job activities.
+04/19/23 - pEscudero  - ERPS-217477 - Project Description Does Not Display on Weekly Time Entry: added query to get Project Description from ProjectID and load it into the Weekly Time Grid. Method modified: ttTimeWeekSetKeyFields(Datetime?, DateTime?)
+04/20/23 - pEscudero  - ERPS-217477 - Change of Method to get Project Description. Changed FindFirstProject to FindFirstProjectDescription(Company, ProjectID) to only retrieve the Project Description and not all the row.

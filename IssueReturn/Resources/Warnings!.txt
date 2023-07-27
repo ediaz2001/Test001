@@ -1,0 +1,18 @@
+﻿
+Warning. The following items are suspect of being duplicate or nearly identical with another item. Please verify:
+	File:IssueReturn ID:AValidAssemblyIsRequired Value:[A valid Assembly is required.] Similar to [A valid {0} Assembly is required.]
+	File:IssueReturn ID:AValidPartNumberIsRequired Value:[A valid part number is required.] Similar to [A valid Part number is required.]
+	File:IssueReturn ID:AValidJobNumberIsRequired Value:[A valid Job number is required.] Similar to [A valid {0} Job Number is required.]
+
+Warning. The following resources are present in ABL code but not found in converted source:
+	File:IssueReturn ID:AndJobHeadJobReAndNOTJobHeadJobCl value:[' and JobHead.JobReleased and NOT JobHead.JobClosed ] 
+	File:IssueReturn ID:Company value:[Company = '] 
+	File:IssueReturn ID:ForEachJobHead_0 value:[for each JobHead] 
+	File:IssueReturn ID:NoLock_0 value:[ no-lock] 
+	File:IssueReturn ID:TheTotalQuantity value:[The total quantity (] 
+	File:IssueReturn ID:MustBeAWholeNumber value:[) must be a whole number.] 
+	File:IssueReturn ID:QuantAvailToMoveHasBeenReducedTo value:[Quantity available to move has been reduced to 0.] 
+	File:IssueReturn ID:RequestHasBeenDeleted value:[Request has been deleted.] 
+	File:IssueReturn ID:InterErrorCannotUpdateCostsAndOnHandQtyOfPartBeing value:[Internal error: cannot update costs and on-hand qty of part ...] 
+	File:IssueReturn ID:ThisTransWillResultIntoANegatFIFOOnhandQuantTrans_0 value:[This transaction will result into a negative FIFO onhand qua...] 
+	File:IssueReturn ID:ErrorEncouWhenRetriSNFormat value:[Error encountered when retrieving SN Format.] 

@@ -1,0 +1,1590 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="InvalidInvoice" xml:space="preserve">
+    <value>Invalid Invoice.</value>
+  </data>
+  <data name="InvalidPOMiscellaneousCharge" xml:space="preserve">
+    <value>Invalid PO Miscellaneous Charge.</value>
+  </data>
+  <data name="TheBalanceOnThePOMisceChargeIsAddNotAllowed" xml:space="preserve">
+    <value>The balance on the PO Miscellaneous Charge is 0.  Add not allowed.</value>
+  </data>
+  <data name="InvalidInvoiceLine" xml:space="preserve">
+    <value>Invalid Invoice Line.</value>
+  </data>
+  <data name="POMisceChargeCanOnlyBeAddedToInvoiceLinesWithA" xml:space="preserve">
+    <value>PO Miscellaneous Charge can only be added to invoice lines with a po number.</value>
+  </data>
+  <data name="ThePOLineNumberDoesNotMatchThePOLineNumberOnThe" xml:space="preserve">
+    <value>The PO Line number does not match the PO Line number on the Invoice Line.</value>
+  </data>
+  <data name="MaintNotAllowedForPostedInvoi" xml:space="preserve">
+    <value>Maintenance not allowed for posted invoices.</value>
+  </data>
+  <data name="InvalidDistributionAmount" xml:space="preserve">
+    <value>Invalid Distribution Amount.</value>
+  </data>
+  <data name="POLine" xml:space="preserve">
+    <value>PO-Line</value>
+  </data>
+  <data name="POHeader" xml:space="preserve">
+    <value>PO-Header</value>
+  </data>
+  <data name="Manual" xml:space="preserve">
+    <value>Manual</value>
+  </data>
+  <data name="APInvoiceMisceChargeIsLinkedToAContaShipmOrAReceipt" xml:space="preserve">
+    <value>AP Invoice Miscellaneous Charge is linked to a Container Shipment or a Receipt. Delete not allowed.</value>
+  </data>
+  <data name="MisceChargeCannotBeMarkedAsLandedCost" xml:space="preserve">
+    <value>Miscellaneous Charge cannot be marked as Landed Cost</value>
+  </data>
+  <data name="APInvoiceMisceChargeIsLinkedAndMustStayMarkedAs" xml:space="preserve">
+    <value>AP Invoice Miscellaneous Charge is linked and must stay marked as Landed Cost.</value>
+  </data>
+  <data name="ReceiptOfGoods" xml:space="preserve">
+    <value>Receipt of Goods</value>
+  </data>
+  <data name="AdvanceBilling" xml:space="preserve">
+    <value>Advance Billing</value>
+  </data>
+  <data name="MiscellaneousBilling" xml:space="preserve">
+    <value>Miscellaneous Billing</value>
+  </data>
+  <data name="UnreceivedGoods" xml:space="preserve">
+    <value>Unreceived Goods</value>
+  </data>
+  <data name="JobMiscellaneousCharge" xml:space="preserve">
+    <value>Job Miscellaneous Charge</value>
+  </data>
+  <data name="Asset" xml:space="preserve">
+    <value>Asset</value>
+  </data>
+  <data name="AdvBillPO" xml:space="preserve">
+    <value>Adv.  Bill PO: {0}/{1}</value>
+  </data>
+  <data name="LineMisceChargesLinkedToContaShipmOrReceiptExist" xml:space="preserve">
+    <value>Line Miscellaneous Charges linked to Container Shipment or Receipt exist.  Delete not allowed.</value>
+  </data>
+  <data name="ThereIsNoUOMSelected" xml:space="preserve">
+    <value>There is no UOM Selected.</value>
+  </data>
+  <data name="InvalidPONumber" xml:space="preserve">
+    <value>Invalid PO Number.</value>
+  </data>
+  <data name="POCurreDoesNotMatchInvoiceCurre" xml:space="preserve">
+    <value>PO Currency does not match Invoice Currency.</value>
+  </data>
+  <data name="InvalidPOLine" xml:space="preserve">
+    <value>Invalid PO Line.</value>
+  </data>
+  <data name="InvalidPOReleaseNum" xml:space="preserve">
+    <value>Invalid PO Release Num.</value>
+  </data>
+  <data name="AConsoPOMayNotBeSelecForCentralPaymentProcess" xml:space="preserve">
+    <value>A consolidated PO may not be selected for Central Payment process.</value>
+  </data>
+  <data name="TheLineTotalIsInvalid" xml:space="preserve">
+    <value>The line total is invalid.</value>
+  </data>
+  <data name="InvalidLineAmount" xml:space="preserve">
+    <value>Invalid Line Amount.</value>
+  </data>
+  <data name="InvalidTaxCategory" xml:space="preserve">
+    <value>Invalid Tax Category.</value>
+  </data>
+  <data name="AValidPurchaseCodeIsRequired" xml:space="preserve">
+    <value>A valid Purchase Code is required.</value>
+  </data>
+  <data name="InvoiceNotFound" xml:space="preserve">
+    <value>Invoice not found.</value>
+  </data>
+  <data name="MultiCompanyJournalLicenseIsRequi" xml:space="preserve">
+    <value>Multi-Company Journal license is required.</value>
+  </data>
+  <data name="AValidExterCompanyIDIsRequi" xml:space="preserve">
+    <value>A valid External Company ID is required.</value>
+  </data>
+  <data name="TheExterCompanyIDIsNotAllowedToSendMultiCompany" xml:space="preserve">
+    <value>The External Company ID is not allowed to send Multi-Company General Journal for A/P.</value>
+  </data>
+  <data name="TheExterCompanyIDHasAnInvalidGLInterAccount" xml:space="preserve">
+    <value>The External Company ID has an invalid GL Intercompany Account</value>
+  </data>
+  <data name="StartupInvoiCanOnlyBeMaintThroughTheOpenInvoice" xml:space="preserve">
+    <value>Startup Invoices can only be maintained through the Open Invoice Load program.</value>
+  </data>
+  <data name="AValidInvoiceNumberIsRequired" xml:space="preserve">
+    <value>A valid Invoice Number is required.</value>
+  </data>
+  <data name="TheInvoiceNumberMustBeUnique" xml:space="preserve">
+    <value>The Invoice Number must be unique.</value>
+  </data>
+  <data name="TheInvoiceReferIsNotFlaggedForCentralPayment" xml:space="preserve">
+    <value>The Invoice Reference is not flagged for Central Payment.</value>
+  </data>
+  <data name="InvalidInvoiceReferForCentralPayment" xml:space="preserve">
+    <value>Invalid Invoice Reference for Central Payment.</value>
+  </data>
+  <data name="TheInvoiceReferFlaggedForCentralPaymentIsAlready" xml:space="preserve">
+    <value>The Invoice Reference flagged for Central Payment is already closed.</value>
+  </data>
+  <data name="InvalidInvoiceReference" xml:space="preserve">
+    <value>Invalid Invoice Reference.</value>
+  </data>
+  <data name="MisceChargesLinkedToContaShipmOrReceiptExistDelete" xml:space="preserve">
+    <value>Miscellaneous Charges linked to Container Shipment or Receipt exist.  Delete not allowed.</value>
+  </data>
+  <data name="CommuFailureWithTaxCoCannotDelete" xml:space="preserve">
+    <value>Communication Failure with TaxConnect. Cannot delete.</value>
+  </data>
+  <data name="LegalNumberMustBeVoidedFirst" xml:space="preserve">
+    <value>Legal Number must be voided first.</value>
+  </data>
+  <data name="CallAPInvOrAPInvToAddANewRecord" xml:space="preserve">
+    <value>Call APInvHedGetNewInvoice or APInvHedGetNewDebitMemo to add a new record.</value>
+  </data>
+  <data name="CreatOfTaxDetraNotAllowed" xml:space="preserve">
+    <value>Creation of Tax Detractions not allowed.</value>
+  </data>
+  <data name="NoMatchedLogInvoiceFound" xml:space="preserve">
+    <value>No matched log invoice found.</value>
+  </data>
+  <data name="AValidExchangeRateIsRequired" xml:space="preserve">
+    <value>A valid Exchange Rate is required.</value>
+  </data>
+  <data name="InvoiceDateCannotBeBlank" xml:space="preserve">
+    <value>Invoice Date cannot be blank.</value>
+  </data>
+  <data name="InvalidReferencePONumber" xml:space="preserve">
+    <value>Invalid Reference PO Number.</value>
+  </data>
+  <data name="MustUseTheSameCurreAsInvoice" xml:space="preserve">
+    <value>Must use the same currency as Invoice {0} ({1}).</value>
+  </data>
+  <data name="InvalidTermsCode" xml:space="preserve">
+    <value>Invalid Terms Code.</value>
+  </data>
+  <data name="InvalidLOCID" xml:space="preserve">
+    <value>Invalid Letter of Credit ID.</value>
+  </data>
+  <data name="LOCIsClosed" xml:space="preserve">
+    <value>LOC is Closed.</value>
+  </data>
+  <data name="InvalidSupplierForThisLOCID" xml:space="preserve">
+    <value>Invalid supplier for this Letter of Credit ID.</value>
+  </data>
+  <data name="InvalidCurrencyForThisLOCID" xml:space="preserve">
+    <value>Invalid currency for this Letter of Credit  ID.</value>
+  </data>
+  <data name="AValidParentCompanyIsRequiForCentralPaymentProcess" xml:space="preserve">
+    <value>A valid Parent Company is required for Central Payment process.</value>
+  </data>
+  <data name="ParentCompanyCannotInitiInvoiceForCentralPayment" xml:space="preserve">
+    <value>Parent Company cannot initiate invoice for Central Payment process.</value>
+  </data>
+  <data name="ThisInvoiceIsFlaggedForCentralPaymentVendorMust" xml:space="preserve">
+    <value>This invoice is flagged for Central Payment, Vendor must be Global.</value>
+  </data>
+  <data name="OnlyThe" xml:space="preserve">
+    <value>Only the</value>
+  </data>
+  <data name="DueDate" xml:space="preserve">
+    <value> Due Date,</value>
+  </data>
+  <data name="BankingReferencePaymentCode" xml:space="preserve">
+    <value> Banking Reference, Payment Code,</value>
+  </data>
+  <data name="BankingReference" xml:space="preserve">
+    <value> Banking Reference,</value>
+  </data>
+  <data name="SUNATReferNumberSUNATDepositNumberSUNATDeposit" xml:space="preserve">
+    <value> SUNAT Reference Number, SUNAT Deposit Number, SUNAT Deposit Date, SUNAT Deposit Amount, AP Payment Number, Computational Cost, DUA Reference Number,</value>
+  </data>
+  <data name="PaymeHeldPaymentMethodLetterOfCreditAndInvoice" xml:space="preserve">
+    <value> Payments Held, Payment Method, Letter of Credit, Invoice Comments  and Recurring Invoice fields can be changed on a posted invoice.</value>
+  </data>
+  <data name="InvalidCurrencyCode" xml:space="preserve">
+    <value>Invalid Currency Code.</value>
+  </data>
+  <data name="BankReferenceMayNotBeBlank" xml:space="preserve">
+    <value>Bank Reference may not be blank.</value>
+  </data>
+  <data name="APrepaInvoiceNumberShouldBeEmptyForADebitMemo" xml:space="preserve">
+    <value>A prepayment Invoice Number should be empty for a Debit Memo.</value>
+  </data>
+  <data name="TheInvoiceNoDoesNotExist" xml:space="preserve">
+    <value>The invoice No ''{0}'' does not exist.</value>
+  </data>
+  <data name="LessPrePaymentAmountShouldBeGreaterOrEquals" xml:space="preserve">
+    <value>Less Pre-Payment amount should be greater or equals 0.</value>
+  </data>
+  <data name="LessPrePaymentAmountShouldBeLesserThanAnUnposBalance" xml:space="preserve">
+    <value>Less Pre-Payment amount should be lesser than an unposted balance of the Prepayment Invoice.</value>
+  </data>
+  <data name="LessPrePaymentAmountShouldBeEqualsBecauseOfNon" xml:space="preserve">
+    <value>Less Pre-Payment amount should be equals 0 because of non-entered the Prepayment Invoice number.</value>
+  </data>
+  <data name="AJobMisceChargeCanBeAddedOnlyToJobMisceInvoice" xml:space="preserve">
+    <value>A Job Miscellaneous Charge can be added only to Job Miscellanous Invoice Lines.</value>
+  </data>
+  <data name="JobIsNotOnFileOrClosed" xml:space="preserve">
+    <value>Job is not on file or closed.</value>
+  </data>
+  <data name="AssemblyIsNotOnFile" xml:space="preserve">
+    <value>Assembly is not on file.</value>
+  </data>
+  <data name="MaterIsNotOnFileOrNotAJobMisceCharge" xml:space="preserve">
+    <value>Material is not on file or not a Job Miscellaneous Charge.</value>
+  </data>
+  <data name="InvalidMisceChargeAmount" xml:space="preserve">
+    <value>Invalid Miscellaneous Charge Amount.</value>
+  </data>
+  <data name="PhaseIsRequired" xml:space="preserve">
+    <value>Phase is required.</value>
+  </data>
+  <data name="MiscellaneousChargeIsRequired" xml:space="preserve">
+    <value>Miscellaneous charge is required.</value>
+  </data>
+  <data name="TheDebitMemoExceedsTheJobCosts" xml:space="preserve">
+    <value>The debit memo exceeds the Job Costs.</value>
+  </data>
+  <data name="InvalidRoleCode" xml:space="preserve">
+    <value>Invalid Role Code.</value>
+  </data>
+  <data name="POReleaseNotAvailable" xml:space="preserve">
+    <value>PO Release not available.</value>
+  </data>
+  <data name="JobOperationNotAvailable" xml:space="preserve">
+    <value>Job Operation not available.</value>
+  </data>
+  <data name="InvalidProjectRoleCodeNotInOperaRoleList" xml:space="preserve">
+    <value>Invalid Project Role Code. Not in Operation role list.</value>
+  </data>
+  <data name="ATaxLineAlreadyExistsWithTheTaxCodeAndRateCode" xml:space="preserve">
+    <value>A tax line already exists with the Tax Code and Rate Code.</value>
+  </data>
+  <data name="AValidTaxCodeIsRequired" xml:space="preserve">
+    <value>A valid Tax Code is required.</value>
+  </data>
+  <data name="AValidRateCodeIsRequired" xml:space="preserve">
+    <value>A valid Rate Code is required.</value>
+  </data>
+  <data name="Service" xml:space="preserve">
+    <value>Service</value>
+  </data>
+  <data name="Manufacture" xml:space="preserve">
+    <value>Manufacture</value>
+  </data>
+  <data name="ALegalNumberHasAlreadyBeenAssig" xml:space="preserve">
+    <value>A legal number has already been assigned.</value>
+  </data>
+  <data name="LegalNumberGenerOptionsNotFound" xml:space="preserve">
+    <value>Legal number generation options not found.</value>
+  </data>
+  <data name="InvalidMiscellaneousCode" xml:space="preserve">
+    <value>Invalid Miscellaneous Code.</value>
+  </data>
+  <data name="APInvHedRecordNotFound" xml:space="preserve">
+    <value>APInvHed record not found.</value>
+  </data>
+  <data name="APInvoiceCriteriaNotAvailable" xml:space="preserve">
+    <value>AP Invoice criteria not available.</value>
+  </data>
+  <data name="RelatedPOLineIsNotAvailable" xml:space="preserve">
+    <value>Related PO line is not available.</value>
+  </data>
+  <data name="AdvancePaymentCannotExceedAdvancePaymentBalance" xml:space="preserve">
+    <value>Advance Payment cannot exceed advance payment balance on PO.</value>
+  </data>
+  <data name="APJobMisceChargeCriteNotAvail" xml:space="preserve">
+    <value>AP Job Miscellaneous Charge criteria not available.</value>
+  </data>
+  <data name="APIHAPInvExpHasNotChanged" xml:space="preserve">
+    <value>APIHAPInvExp has not changed.</value>
+  </data>
+  <data name="APInvExpHasNotChanged" xml:space="preserve">
+    <value>APInvExp has not changed.</value>
+  </data>
+  <data name="MultiCompanyGeneralJournalLicenseIsRequi" xml:space="preserve">
+    <value>Multi-Company General Journal license is required.</value>
+  </data>
+  <data name="TheExterCompanyNeedsToInitiSendMultiCompanyGLAccou" xml:space="preserve">
+    <value>The External Company needs to Initialize/Send Multi-Company G/L Accounts and Setup records first.</value>
+  </data>
+  <data name="InvoiceLineAmountCannotExceedPOLineAdvancePayment" xml:space="preserve">
+    <value>Invoice Line Amount cannot exceed PO Line Advance Payment Balance.</value>
+  </data>
+  <data name="APInvoiceTaxCriteNotAvail" xml:space="preserve">
+    <value>AP Invoice Tax criteria not available.</value>
+  </data>
+  <data name="InvoiceHeaderIsNotFound" xml:space="preserve">
+    <value>Invoice Header is not found.</value>
+  </data>
+  <data name="TaxRateIsNotAvailable" xml:space="preserve">
+    <value>Tax Rate is not available.</value>
+  </data>
+  <data name="TtAPInvDtlTableIsNotModified" xml:space="preserve">
+    <value>ttAPInvDtl table is not modified</value>
+  </data>
+  <data name="AnInvoiceReferCanBeEnteredForDebitMemosOnly" xml:space="preserve">
+    <value>An Invoice Reference can be entered for Debit Memos only.</value>
+  </data>
+  <data name="ModuleConfiAPSystemControlIsMissing" xml:space="preserve">
+    <value>Module configuration A/P System Control is missing.</value>
+  </data>
+  <data name="EnteredRevisNumberAlreadyExists" xml:space="preserve">
+    <value>Entered Revision Number already exists.</value>
+  </data>
+  <data name="InvoiceJobNotFound" xml:space="preserve">
+    <value>Invoice Job not found.</value>
+  </data>
+  <data name="MisceChargeCodeNotFound" xml:space="preserve">
+    <value>Miscellaneous Charge Code not found.</value>
+  </data>
+  <data name="MaterNotFoundDoYouWantToAddOneAutom" xml:space="preserve">
+    <value>Material not found.  Do you want to add one automatically?</value>
+  </data>
+  <data name="RecordNotFound" xml:space="preserve">
+    <value>Record not found.</value>
+  </data>
+  <data name="ActiveProjectNotFound" xml:space="preserve">
+    <value>Active Project not found.</value>
+  </data>
+  <data name="Maintenance" xml:space="preserve">
+    <value>Maintenance</value>
+  </data>
+  <data name="Project" xml:space="preserve">
+    <value>Project</value>
+  </data>
+  <data name="RelatedServiceCallIsNotOnFileOrAlreadyInvoi" xml:space="preserve">
+    <value>Related Service Call is not on file or already invoiced.</value>
+  </data>
+  <data name="InvoiceDateIsOutsideOfLOCDateRange" xml:space="preserve">
+    <value>Invoice date is outside of LOC date range.</value>
+  </data>
+  <data name="InvoiceTermsAndLOCTermsDoNotMatchDoYouWantToUpdate" xml:space="preserve">
+    <value>Invoice terms {0} and LOC terms {1} do not match.  Do you want to update the Invoice Terms with the LOC terms?</value>
+  </data>
+  <data name="InvalidTaxCode" xml:space="preserve">
+    <value>Invalid Tax Code.</value>
+  </data>
+  <data name="InvalidRateCode" xml:space="preserve">
+    <value>Invalid Rate Code.</value>
+  </data>
+  <data name="APInvoiceMisceChargeIsAlreadyLinkedToAContaShipm" xml:space="preserve">
+    <value>AP Invoice Miscellaneous Charge is already linked to a Container Shipment or a Receipt.</value>
+  </data>
+  <data name="ThisMisceChargeIsNotAValidLandedCostCharge" xml:space="preserve">
+    <value>This Miscellaneous Charge is not a valid Landed Cost Charge.</value>
+  </data>
+  <data name="RecordNotAvailable" xml:space="preserve">
+    <value> record not available.</value>
+  </data>
+  <data name="NoExterCompanyIsSetUpToSendMultiCompanyGeneral" xml:space="preserve">
+    <value>No External Company is set up to send Multi-Company General Journal for A/P.</value>
+  </data>
+  <data name="NoneOfTheExterCompaHasInitiSentMultiCompanyGLAccou" xml:space="preserve">
+    <value>None of the External Companies has Initialized/Sent Multi-Company G/L Accounts and Setup records yet.</value>
+  </data>
+  <data name="APInvoiceLineIsNotAvailable" xml:space="preserve">
+    <value>AP Invoice Line is not available.</value>
+  </data>
+  <data name="APInvoiceLineCriteNotAvail" xml:space="preserve">
+    <value>AP Invoice Line criteria not available.</value>
+  </data>
+  <data name="AValidPaymentAmountIsRequired" xml:space="preserve">
+    <value>A valid Payment Amount is required.</value>
+  </data>
+  <data name="ProjectBillingInforNotAvail" xml:space="preserve">
+    <value>Project Billing information not available.</value>
+  </data>
+  <data name="PhaseNotFound" xml:space="preserve">
+    <value>Phase not found.</value>
+  </data>
+  <data name="PhaseJobIsRequired" xml:space="preserve">
+    <value>Phase Job is required.</value>
+  </data>
+  <data name="APInvoiceIsNotAvailable" xml:space="preserve">
+    <value>AP Invoice is not available.</value>
+  </data>
+  <data name="AConsoPOMayNotBeSelec" xml:space="preserve">
+    <value>A consolidated PO may not be selected.</value>
+  </data>
+  <data name="ThePurchOrderLineHasBeenClosed" xml:space="preserve">
+    <value>The Purchase Order Line has been closed.</value>
+  </data>
+  <data name="POLineMustHaveAnAdvancePaymentBalance" xml:space="preserve">
+    <value>PO Line must have an Advance Payment Balance.</value>
+  </data>
+  <data name="NonTaxable" xml:space="preserve">
+    <value>NonTaxable</value>
+  </data>
+  <data name="ExistAPInvPBRecordsWillBeClearedWhenTheLineIsSaved" xml:space="preserve">
+    <value>Existing APInvPB records will be cleared when the line is saved.</value>
+  </data>
+  <data name="ACMITypePOMayNotBeSelected" xml:space="preserve">
+    <value>A CMI Type PO may not be selected.</value>
+  </data>
+  <data name="InvalidPOReleaseNumber" xml:space="preserve">
+    <value>Invalid PO Release Number.</value>
+  </data>
+  <data name="ThePrepaInvoiceForTheRelatedSupplIsNotFound" xml:space="preserve">
+    <value>The prepayment invoice for the related supplier is not found.</value>
+  </data>
+  <data name="InvalidReverseChargeMethod" xml:space="preserve">
+    <value>Invalid Reverse Charge Method.</value>
+  </data>
+  <data name="InvoiceLineNotValidForReverseChargeWithThres" xml:space="preserve">
+    <value>Invoice line not valid for Reverse Charge with Threshold.</value>
+  </data>
+  <data name="APInvoiceLineNotAvailable" xml:space="preserve">
+    <value>AP Invoice Line not available.</value>
+  </data>
+  <data name="InvoiceTimingForNonInvoiceTaxesIsRequi" xml:space="preserve">
+    <value>Invoice timing for non-invoice taxes is required.</value>
+  </data>
+  <data name="DeducAmountCannotExceedTheTaxAmtOrHaveADiffeSign" xml:space="preserve">
+    <value>Deductible amount cannot exceed the TaxAmt or have a different sign.</value>
+  </data>
+  <data name="DeducAmountCanBeOnlyAppliToColleTypeInvoiceAnd" xml:space="preserve">
+    <value>Deductible Amount can be only applicable to collection type Invoice and Self-assessed dual entry .</value>
+  </data>
+  <data name="ChangeOfTaxPercentIsAllowedOnlyForManualTaxLines" xml:space="preserve">
+    <value>Change of Tax Percent is allowed only for Manual Tax Lines.</value>
+  </data>
+  <data name="AmountEnteredCannotExceedTheReferInvoiceBalance" xml:space="preserve">
+    <value>Amount entered cannot exceed the reference invoice balance.</value>
+  </data>
+  <data name="InvalidVendor" xml:space="preserve">
+    <value>Invalid Vendor.</value>
+  </data>
+  <data name="InvoiceLineNotFound" xml:space="preserve">
+    <value>Invoice Line not found.</value>
+  </data>
+  <data name="TheTotalOfBillingInvoiceValueShouldEqualLineInvoice" xml:space="preserve">
+    <value>The total of Billing Invoice Value should equal Line Invoice value.</value>
+  </data>
+  <data name="APInvoiceHasNotChanged" xml:space="preserve">
+    <value>APInvoice has not changed.</value>
+  </data>
+  <data name="ThisPaymentMethodIsReserForBankAPPaymentImport" xml:space="preserve">
+    <value>This payment method is reserved for Bank AP Payment Import.</value>
+  </data>
+  <data name="AValidCurreRateGroupIsRequi" xml:space="preserve">
+    <value>A valid Currency Rate Group is required.</value>
+  </data>
+  <data name="TheBankReferIsNotAssigDoYouWishToConti" xml:space="preserve">
+    <value>The Bank Reference is not assigned. Do you wish to continue?</value>
+  </data>
+  <data name="TheBankReferLengthIsGreaterThanCharaDoYouWishTo" xml:space="preserve">
+    <value>The Bank Reference length is greater than {0} characters.  Do you wish to continue?</value>
+  </data>
+  <data name="ThereAreNonNumericCharaInBankReferDoYouWishToConti" xml:space="preserve">
+    <value>There are non-numeric characters in Bank Reference.  Do you wish to continue?</value>
+  </data>
+  <data name="TheBankReferEnteredIsNotConsiWithCountryBankRefer" xml:space="preserve">
+    <value>The Bank Reference entered is not consistent with country Bank Referencing.  Do you wish to continue?</value>
+  </data>
+  <data name="ThisInvoiceIsLinkedToACentralPaymentInvoiceManual" xml:space="preserve">
+    <value>This invoice is linked to a Central Payment invoice.  Manual updates must be performed in the source Company to conform with this change.  Do you wish to continue?</value>
+  </data>
+  <data name="ThisInvoiceLineIsLinkedToACentralPaymentInvoice" xml:space="preserve">
+    <value>This invoice line is linked to a Central Payment invoice.  Manual updates must be performed in the source Company to conform with this change.  Do you wish to continue?</value>
+  </data>
+  <data name="TheSupplIsMarkedForReverseChargesButThisInvoice" xml:space="preserve">
+    <value>The Supplier is marked for Reverse Charges but this invoice line is flagged not to create a reverse charge tax line.  Do you wish to continue?</value>
+  </data>
+  <data name="ThePartIsMarkedForReverseChargesButThisInvoice" xml:space="preserve">
+    <value>The Part is marked for Reverse Charges but this invoice line is flagged not to create a reverse charge tax line.  Do you wish to continue?</value>
+  </data>
+  <data name="InvoiceAlreadyExists" xml:space="preserve">
+    <value>Invoice already exists.</value>
+  </data>
+  <data name="InvoiceNumberWasNotFound" xml:space="preserve">
+    <value>Invoice number was not found.</value>
+  </data>
+  <data name="InvalidInvoiceNumberSpecified" xml:space="preserve">
+    <value>Invalid Invoice number specified.</value>
+  </data>
+  <data name="InvoiceHasAlreadyBeenCorreByInvoice" xml:space="preserve">
+    <value>Invoice has already been corrected by Invoice {0}.</value>
+  </data>
+  <data name="JobNotFound" xml:space="preserve">
+    <value>Job not found.</value>
+  </data>
+  <data name="InvalidAPInvoice" xml:space="preserve">
+    <value>Invalid AP Invoice.</value>
+  </data>
+  <data name="TheInvoiceHasBeenPostedDetailLinesMayNotBeAdded" xml:space="preserve">
+    <value>The invoice has been posted.  Detail lines may not be added.</value>
+  </data>
+  <data name="AnUnrecLineCannotBeAddedToADebitMemo" xml:space="preserve">
+    <value>An unreceived line cannot be added to a Debit Memo.</value>
+  </data>
+  <data name="BOE" xml:space="preserve">
+    <value>BOE</value>
+  </data>
+  <data name="InvalidAPInvoiceGroup" xml:space="preserve">
+    <value>Invalid AP Invoice Group.</value>
+  </data>
+  <data name="Line" xml:space="preserve">
+    <value>Line</value>
+  </data>
+  <data name="Header" xml:space="preserve">
+    <value>Header</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="AddingUninvReceiToADebitMemoIsNotAllowed" xml:space="preserve">
+    <value>Adding uninvoiced receipts to a debit memo is not allowed.</value>
+  </data>
+  <data name="Pending" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="Failed" xml:space="preserve">
+    <value>Failed</value>
+  </data>
+  <data name="Passed" xml:space="preserve">
+    <value>Passed</value>
+  </data>
+  <data name="InvalidGroup" xml:space="preserve">
+    <value>Invalid Group</value>
+  </data>
+  <data name="DMRCorreInvoiceRequeAreNotAvailOrHaveAlreadyBeen" xml:space="preserve">
+    <value>DMR Correction Invoice Requests are not available or have already been created.  No new Correction Invoices to create.</value>
+  </data>
+  <data name="DMR" xml:space="preserve">
+    <value>DMR {0}-{1}</value>
+  </data>
+  <data name="DebitMemoCreated" xml:space="preserve">
+    <value>{0} Debit Memo(s) created.</value>
+  </data>
+  <data name="AFiscalPeriodForTodayCouldNotBeFound" xml:space="preserve">
+    <value>A fiscal period for today could not be found.</value>
+  </data>
+  <data name="DebitMemoIsNotAvailable" xml:space="preserve">
+    <value>AP Invoice or Debit Memo is not available.</value>
+  </data>
+  <data name="LegalNumbersAreNotGenerForManualGenerTypeAtThe" xml:space="preserve">
+    <value>Legal numbers are not generated for manual generation type at the group level. Select a specific debit memo and then select Action..Assign Legal Number.</value>
+  </data>
+  <data name="AVoidReasonMustBeEntered" xml:space="preserve">
+    <value>A void reason must be entered.</value>
+  </data>
+  <data name="DMRHeaderRecordNotFound" xml:space="preserve">
+    <value>DMR header record not found.</value>
+  </data>
+  <data name="DMRActionRecordNotFound" xml:space="preserve">
+    <value>DMR Action record not found.</value>
+  </data>
+  <data name="TheSpeciDMRDoesNotRequireSupplCredit" xml:space="preserve">
+    <value>The specified DMR does not require supplier credit.</value>
+  </data>
+  <data name="TheSpeciDMRIsForADiffeSuppl" xml:space="preserve">
+    <value>The specified DMR is for a different supplier.</value>
+  </data>
+  <data name="Customer" xml:space="preserve">
+    <value>Customer: {0}</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>&lt;unknown&gt;</value>
+  </data>
+  <data name="WhseBin" xml:space="preserve">
+    <value>Whse:{0} Bin {1}</value>
+  </data>
+  <data name="JobAsm" xml:space="preserve">
+    <value>Job {0} Asm {1} {2} {3}</value>
+  </data>
+  <data name="CompanyCurreDescrVendoOpenPInvoiDueDateInvoiInvoi" xml:space="preserve">
+    <value>Company,CurrencyCode,Description,VendorNum,OpenPayable,InvoiceDate,DueDate,InvoiceHeld,InvoiceNum,</value>
+  </data>
+  <data name="DocInDocInLegalEntryInvoi" xml:space="preserve">
+    <value>DocInvoiceAmt,DocInvoiceBal,LegalNumber,EntryPerson,InvoiceAmt,</value>
+  </data>
+  <data name="InvoiDebitUnposDocUnFiscaFiscaInvoiPayHold" xml:space="preserve">
+    <value>InvoiceBal,DebitMemo,UnpostedBal,DocUnpostedBal,FiscalPeriod, FiscalYear, InvoiceRef,PayHold,</value>
+  </data>
+  <data name="ReturnTaxLiabilityHasToBeSetUp" xml:space="preserve">
+    <value>Return Tax Liability has to be set up.</value>
+  </data>
+  <data name="TheAllocationIDIsInvalid" xml:space="preserve">
+    <value>The Allocation ID is invalid.</value>
+  </data>
+  <data name="AnAllocationAmountIsRequired" xml:space="preserve">
+    <value>An Allocation Amount is required.</value>
+  </data>
+  <data name="AValidInvoiceIsRequired" xml:space="preserve">
+    <value>A valid Invoice is required.</value>
+  </data>
+  <data name="TheInvoiceIsNotABillOfExchaInvoice" xml:space="preserve">
+    <value>The invoice is not a bill of exchange invoice.</value>
+  </data>
+  <data name="OneOrMoreSelecInvoiWereSkippedDueToValidErrors" xml:space="preserve">
+    <value>One or more selected invoices were skipped due to validation errors.</value>
+  </data>
+  <data name="NInvoiceSupplErrorNoLoggedInvoiceFound" xml:space="preserve">
+    <value>
+ Invoice: {0} , Supplier: {1} . Error - No logged Invoice found.</value>
+  </data>
+  <data name="NInvoiceSupplErrorLoggedInvoiceAlreadyExistAsAP" xml:space="preserve">
+    <value>
+ Invoice: {0} , Supplier: {1} . Error - Logged Invoice already exist as AP Invoice.</value>
+  </data>
+  <data name="APInvJobNotFound" xml:space="preserve">
+    <value>APInvJob not found.</value>
+  </data>
+  <data name="APInvPBHasNotChanged" xml:space="preserve">
+    <value>APInvPB has not changed.</value>
+  </data>
+  <data name="TtApInvDtlNotFound" xml:space="preserve">
+    <value>ttApInvDtl not found.</value>
+  </data>
+  <data name="TheReferInvoiceSelecCannotBeSelecInvoiceAmount" xml:space="preserve">
+    <value>The Reference Invoice selected cannot be selected.Invoice amount have already been assigned.</value>
+  </data>
+  <data name="TheReferInvoiceSelecCannotBeSelecInvoiceUnassAmount" xml:space="preserve">
+    <value>The Reference Invoice selected cannot be selected. Invoice unassigned amount subtracting Detractions amount is zero.</value>
+  </data>
+  <data name="RecordNotAvailable_0" xml:space="preserve">
+    <value>Record not available.</value>
+  </data>
+  <data name="InvalidTransactionDocumentType" xml:space="preserve">
+    <value>Invalid Transaction Document Type.</value>
+  </data>
+  <data name="NoMiscellaneousChargeSelected" xml:space="preserve">
+    <value>No Miscellaneous Charge Selected.</value>
+  </data>
+  <data name="TheRecordWasNotModified" xml:space="preserve">
+    <value>The record was not modified</value>
+  </data>
+  <data name="InvalidShipmentID" xml:space="preserve">
+    <value>Invalid Shipment ID.</value>
+  </data>
+  <data name="InvoiceDateIsRequiBeforeLegalNumberCanBeGener" xml:space="preserve">
+    <value>Invoice Date is required before legal number can be generated.</value>
+  </data>
+  <data name="InvalidInvoiceNumber" xml:space="preserve">
+    <value>Invalid Invoice number.</value>
+  </data>
+  <data name="InvalidUninvoicedReceipt" xml:space="preserve">
+    <value>Invalid Uninvoiced Receipt.</value>
+  </data>
+  <data name="InvoiceDetailNotFound" xml:space="preserve">
+    <value>Invoice Detail not found.</value>
+  </data>
+  <data name="TheVendorIsInvalid" xml:space="preserve">
+    <value>The Vendor is invalid.</value>
+  </data>
+  <data name="TheInvoiceDoesNotExist" xml:space="preserve">
+    <value>The Invoice does not exist.</value>
+  </data>
+  <data name="TheInvoiceIsAlreadyInGroup" xml:space="preserve">
+    <value>The invoice is already in group {0}.</value>
+  </data>
+  <data name="TheGroupIsInvalid" xml:space="preserve">
+    <value>The Group is invalid.</value>
+  </data>
+  <data name="NoAPInvoiceSelected" xml:space="preserve">
+    <value>No AP Invoice selected.</value>
+  </data>
+  <data name="NoLoggedInvoiceFound" xml:space="preserve">
+    <value>No Logged Invoice found.</value>
+  </data>
+  <data name="NInvoiceSupplErrorInvalidReferPONumber" xml:space="preserve">
+    <value>
+ Invoice: {0} , Supplier: {1} . Error - Invalid Reference PO Number.</value>
+  </data>
+  <data name="NInvoiceSupplErrorAConsoPOMayNotBeSelec" xml:space="preserve">
+    <value>
+ Invoice: {0} , Supplier: {1} . Error - A consolidated PO may not be selected.</value>
+  </data>
+  <data name="NInvoiceSupplErrorAConsoPOMayNotBeSelecForCentral" xml:space="preserve">
+    <value>
+ Invoice: {0} , Supplier: {1} . Error - A consolidated PO may not be selected for Central Payment process..</value>
+  </data>
+  <data name="AValidAPSystemControlRecordIsRequi" xml:space="preserve">
+    <value>A valid A/P System Control record is required.</value>
+  </data>
+  <data name="InvalidSupplier" xml:space="preserve">
+    <value>Invalid supplier.</value>
+  </data>
+  <data name="ThisInvoiceAlreadyExistsAsABillOfExchaForTheSelec" xml:space="preserve">
+    <value>This invoice already exists as a Bill of Exchange for the selected supplier.</value>
+  </data>
+  <data name="ThisInvoiceAlreadyExistsForTheSelecSuppl" xml:space="preserve">
+    <value>This invoice already exists for the selected supplier.</value>
+  </data>
+  <data name="SelecInvoiceAlreadyExistsAsALoggedInvoiceAndHas" xml:space="preserve">
+    <value>Selected invoice already exists as a Logged Invoice and has been voided.</value>
+  </data>
+  <data name="SelecInvoiceAlreadyExistsAsALoggedInvoiceButHas" xml:space="preserve">
+    <value>Selected invoice already exists as a Logged Invoice but has not been approved.</value>
+  </data>
+  <data name="InvoiceReferenceNotFound" xml:space="preserve">
+    <value>Invoice Reference not found.</value>
+  </data>
+  <data name="TheInvoiceIsAlreadyAssigToABillOfExchaInvoice" xml:space="preserve">
+    <value>The invoice is already assigned to a bill of exchange invoice.</value>
+  </data>
+  <data name="BOEAmountShouldBeLesserThanTheReferInvoiceBalance" xml:space="preserve">
+    <value>BoE amount should be lesser than the Reference Invoice balance subtracting Detractions amount.</value>
+  </data>
+  <data name="ExistInvoiceNumberCannotBeTheSameAsTheNewInvoice" xml:space="preserve">
+    <value>Existing invoice number cannot be the same as the new invoice number.</value>
+  </data>
+  <data name="ReferenceInvoiceNotFound" xml:space="preserve">
+    <value>Reference Invoice not found.</value>
+  </data>
+  <data name="ReferInvoiceSupplDoesNotMatchTheInvoiceSuppl" xml:space="preserve">
+    <value>Reference Invoice supplier does not match the Invoice supplier.</value>
+  </data>
+  <data name="ReferenceInvoiceMustBePosted" xml:space="preserve">
+    <value>Reference Invoice must be posted.</value>
+  </data>
+  <data name="ReferenceInvoiceMustBeOpen" xml:space="preserve">
+    <value>Reference Invoice must be open.</value>
+  </data>
+  <data name="TheCurreForAllInvoiceReferLinkedToTheBillOfExcha" xml:space="preserve">
+    <value>The currency for all invoice references linked to the Bill of Exchange Invoice must match.</value>
+  </data>
+  <data name="InvalidMiscellaneousChargeCode" xml:space="preserve">
+    <value>Invalid Miscellaneous Charge Code.</value>
+  </data>
+  <data name="ATaxLineAlreadyExistsForTaxCode" xml:space="preserve">
+    <value>A tax line already exists for tax code {0}.</value>
+  </data>
+  <data name="Invoice" xml:space="preserve">
+    <value>Invoice: {0}</value>
+  </data>
+  <data name="ALoggedInvoiceAlreadyExistForTheVendorInvoice" xml:space="preserve">
+    <value>A logged Invoice already exist for the vendor : {0} Invoice: {1}</value>
+  </data>
+  <data name="ThisInvoiceIsMatchedToALoggedInvoiceAndOverrValue" xml:space="preserve">
+    <value>This Invoice is matched to a Logged invoice and override value is false. 
+ Delete of Tax Line is not allowed.</value>
+  </data>
+  <data name="Resource_0" xml:space="preserve">
+    <value>R{0}-{1}</value>
+  </data>
+  <data name="TheFollowLoggedInvoiceSHadIssueSAndWereNotCreated" xml:space="preserve">
+    <value>The follow Logged Invoice(s) had issue(s) and were not created. 
+ {0}</value>
+  </data>
+  <data name="FiscalPeriodNotFound" xml:space="preserve">
+    <value>A fiscal period for {0} cound not be found.</value>
+  </data>
+  <data name="CorrectiveInvoiceCannotBeCreated" xml:space="preserve">
+    <value>Corrective Invoice cannot be created for a Revision of Corrective Invoice.</value>
+  </data>
+  <data name="Mtl" xml:space="preserve">
+    <value>Mtl</value>
+  </data>
+  <data name="Opr" xml:space="preserve">
+    <value>Opr</value>
+  </data>
+  <data name="ThereWereErrorsDuringGettingAccountForThisTrans" xml:space="preserve">
+    <value>There were errors during getting account for this transaction. The error is: {0}.</value>
+  </data>
+  <data name="ErrorBOEDetails" xml:space="preserve">
+    <value>Error generating BOE details</value>
+  </data>
+  <data name="MaintenanceNotAllowedTaxInclLiability" xml:space="preserve">
+    <value>Maintenance not allowed with  Tax Inclusive Liability</value>
+  </data>
+  <data name="ThisInvoiceHasInPriceTaxes" xml:space="preserve">
+    <value>This Tax Records are summary only. Delete not allowed.</value>
+  </data>
+  <data name="ColMethodInvoicing" xml:space="preserve">
+    <value>The collection method should be Invoicing.</value>
+  </data>
+  <data name="TotalInclTaxHeader" xml:space="preserve">
+    <value>Total Inclusive Tax Amount cannot exceed related Misc Charge Amount.</value>
+  </data>
+  <data name="TaxInclNotAllwd" xml:space="preserve">
+    <value>Tax Inclusive Liability allowed when AP Invoice has only Miscellaneous, Receipt, Unreceived or Advance Billing lines.</value>
+  </data>
+  <data name="TaxLiabilityNotValid" xml:space="preserve">
+    <value>Tax Liability is not valid</value>
+  </data>
+  <data name="LegalNumCnfgBoe" xml:space="preserve">
+    <value>A Legal Number Configuration for Bill Of Exchange must exist before invoices can be created</value>
+  </data>
+  <data name="LegalNumCnfgDM" xml:space="preserve">
+    <value>A Legal Number Configuration for Debit Memos must exist before invoices can be created.</value>
+  </data>
+  <data name="LegalNumCnfgInvoice" xml:space="preserve">
+    <value>A Legal Number Configuration for AP Invoices must exist before invoices can be created</value>
+  </data>
+  <data name="EmplNotOnFile" xml:space="preserve">
+    <value>Employee is not on file</value>
+  </data>
+  <data name="LinkExpenseNotOnFile" xml:space="preserve">
+    <value>Linked Expense is not on file</value>
+  </data>
+  <data name="LinkExpenseShouldAppvd" xml:space="preserve">
+    <value>Linked Expense should be Approved.</value>
+  </data>
+  <data name="LinkExpenseShouldNotNonReim" xml:space="preserve">
+    <value>Linked Expense should be non-Reimbursable</value>
+  </data>
+  <data name="LinkExpenseCurrencyCode" xml:space="preserve">
+    <value>Currency code of the linked Expense and the Invoice should be the same.</value>
+  </data>
+  <data name="LinkExpenseJobCharge" xml:space="preserve">
+    <value>Expense has been already linked to another Invoice Job Charge.</value>
+  </data>
+  <data name="LinkExpenseMiscCode" xml:space="preserve">
+    <value>Charge code of the linked Expense and the Invoice should be the same.</value>
+  </data>
+  <data name="LinkExpensePhase" xml:space="preserve">
+    <value>WBS Phase of the linked Expense and the Invoice should be the same</value>
+  </data>
+  <data name="BankingReferenceIsEmptyForInvoices" xml:space="preserve">
+    <value>Banking reference is empty for invoice(s): {0}
+Please confirm if there are NO banking reference numbers to enter.</value>
+  </data>
+  <data name="Sourceinvoiceisnotfound" xml:space="preserve">
+    <value>Source invoice is not found.</value>
+  </data>
+  <data name="APInvGrpNotFound" xml:space="preserve">
+    <value>AP Invoice Group is not found	</value>
+  </data>
+  <data name="InvoiceHeaderNotFound" xml:space="preserve">
+    <value>Invoice Header is not found</value>
+  </data>
+  <data name="RecurringCycleNotFound" xml:space="preserve">
+    <value>Recurring cycle is not found.</value>
+  </data>
+  <data name="CycleCodeEntered" xml:space="preserve">
+    <value>Cycle Code should be entered</value>
+  </data>
+  <data name="DurationEqualGreater" xml:space="preserve">
+    <value>Duration must be equal or greater than 1</value>
+  </data>
+  <data name="DurationEqualGreater2" xml:space="preserve">
+    <value>Duration must be equal or greater than the number of already generated recurring invoices</value>
+  </data>
+  <data name="RecurInvLastDate" xml:space="preserve">
+    <value>End Date must be equal or later than the date of the last created recurring invoice</value>
+  </data>
+  <data name="RecurInvMaxValue" xml:space="preserve">
+    <value>Maximum Value must be greater than 0</value>
+  </data>
+  <data name="RecurInvMaxValueEqualGreater" xml:space="preserve">
+    <value>Maximum Value must be equal or greater than the total amount of  already generated recurring invoices</value>
+  </data>
+  <data name="SourceRecurLen" xml:space="preserve">
+    <value>Source Recurring invoice number cannot contain more than 45 characters</value>
+  </data>
+  <data name="GoodsReceiptDateMustBeLaterPODate" xml:space="preserve">
+    <value>Goods Receipt Date must be later or same as PO Date</value>
+  </data>
+  <data name="InvalidPaymentMethod" xml:space="preserve">
+    <value>A valid Payment Method is required.</value>
+  </data>
+  <data name="ReceivedDateIsMandatory" xml:space="preserve">
+    <value>Received Date is mandatory (Poland localization).</value>
+  </data>
+  <data name="GUIFieldsArEmpty" xml:space="preserve">
+    <value>GUI Format Code, Tax Type, Deduction and Document Type are required.</value>
+  </data>
+  <data name="GUIUnique" xml:space="preserve">
+    <value>GUI Invoice Number already exists.</value>
+  </data>
+  <data name="DUANoExists" xml:space="preserve">
+    <value>DUA No. {0} already exists.</value>
+  </data>
+  <data name="ManualAddingDetracciones" xml:space="preserve">
+    <value>Manually adding Detracciones Tax is not allowed.</value>
+  </data>
+  <data name="LetterofCreditisinactive" xml:space="preserve">
+    <value>Letter of Credit is inactive</value>
+  </data>
+  <data name="InvoiceDetraTaxesHaveNotYetBeenPaidForInvoiceS" xml:space="preserve">
+    <value>Invoice Detractions taxes have not yet been paid for invoice(s) {0} to National Bank.</value>
+  </data>
+  <data name="InvalidPrepaymentAmount" xml:space="preserve">
+    <value>Invalid Prepayment Amount</value>
+  </data>
+  <data name="PrepaymentCurrencyMatch" xml:space="preserve">
+    <value>Prepayment Currency does not match Invoice Currency</value>
+  </data>
+  <data name="TaxIDBranchIDDMReason" xml:space="preserve">
+    <value>Tax ID, Branch ID, DM Reason,</value>
+  </data>
+  <data name="TheSlipTypeIsNotAllowedForCurrency" xml:space="preserve">
+    <value>The Slip Type {0} is not allowed for currency {1}.</value>
+  </data>
+  <data name="TheISRCodeLineIsIncorrect" xml:space="preserve">
+    <value>The ISR Code Line is incorrect.</value>
+  </data>
+  <data name="DoYouWishToContinue" xml:space="preserve">
+    <value>Do you wish to continue ?</value>
+  </data>
+  <data name="ISRCodeLineAndISRRefNumMustBeEntered" xml:space="preserve">
+    <value>ISR Code Line and ISR Reference Number must be entered.</value>
+  </data>
+  <data name="TheISRRefNumDoesNotMatchISRCodeLine" xml:space="preserve">
+    <value>The ISR Reference Number does not match ISR Code Line.</value>
+  </data>
+  <data name="TheISRRefNumLengthIsGreaterThanChara" xml:space="preserve">
+    <value>The ISR Reference Number length is greater than 27 characters.</value>
+  </data>
+  <data name="ThereAreNonNumericCharaInISRRefNum" xml:space="preserve">
+    <value>There are non numeric character in ISR Reference Number.</value>
+  </data>
+  <data name="UrgentPayment" xml:space="preserve">
+    <value>Urgent Payment</value>
+  </data>
+  <data name="CheckDigitValidationFails" xml:space="preserve">
+    <value>Check-Digit validation fails for ISR Code Line</value>
+  </data>
+  <data name="TheAmountIsInvalid" xml:space="preserve">
+    <value>The Amount is invalid.</value>
+  </data>
+  <data name="TheISRPartyNumberIsInvalid" xml:space="preserve">
+    <value>The ISR Party Number is invalid.</value>
+  </data>
+  <data name="TheISRReferenceNumberIsInvalid" xml:space="preserve">
+    <value>The ISR Reference Number is invalid.</value>
+  </data>
+  <data name="CurrencyISOCodeForInvoiceCurrMustBeCHF" xml:space="preserve">
+    <value>Currency ISO Code for Invoice currency must be CHF.</value>
+  </data>
+  <data name="CurrencyISOCodeForInvoiceCurrMustBeEUROrCHF" xml:space="preserve">
+    <value>Currency ISO Code for Invoice currency must be EUR or CHF.</value>
+  </data>
+  <data name="CurrencyISOCodeForSupplierMustBeEUROrCHF" xml:space="preserve">
+    <value>Currency ISO Code for Supplier {0} must be EUR or CHF.</value>
+  </data>
+  <data name="CurrencyWithISOCodeIsNotFound" xml:space="preserve">
+    <value>Currency with ISO Code 'CHF' is not found.</value>
+  </data>
+  <data name="SupplBankForISRPartyIDAndBankCustNumCouldNotBeFound" xml:space="preserve">
+    <value>Supplier Bank for ISR Party Number {0} and Bank Customer Number {1} could not be found.</value>
+  </data>
+  <data name="SupplBankForISRPartyIDCouldNotBeFound" xml:space="preserve">
+    <value>Supplier Bank for ISR Party Number {0} could not be found.</value>
+  </data>
+  <data name="SupplDoesNotCorrespondToISRCodeLine" xml:space="preserve">
+    <value>Supplier does not correspond to ISR Code Line.</value>
+  </data>
+  <data name="SupplDoesNotHaveABankWithISRPartyID" xml:space="preserve">
+    <value>Supplier does not have a Bank with ISR Party Number {0}.</value>
+  </data>
+  <data name="RecInvoicesCreated" xml:space="preserve">
+    <value>invoice(s) created.</value>
+  </data>
+  <data name="InvalidNewCorrectionInvoiceNumber" xml:space="preserve">
+    <value>Invalid Correction Invoice number, the new invoice number can not be blank or match select invoice number.</value>
+  </data>
+  <data name="NegativeAmount" xml:space="preserve">
+    <value>Negative amount is not allowed for non correction invoice.</value>
+  </data>
+  <data name="WrongInvoiceNumberFormat" xml:space="preserve">
+    <value>Wrong invoice number format (X-9999-99999999).</value>
+  </data>
+  <data name="TheInvoiceLetterMustBeABCEM" xml:space="preserve">
+    <value>The invoice letter must be A,B,C,E,M.</value>
+  </data>
+  <data name="TheInvoicingNumberMustBeNumeric" xml:space="preserve">
+    <value>The invoicing number must be numeric.</value>
+  </data>
+  <data name="TheInvoicingPointMustBeNumeric" xml:space="preserve">
+    <value>The invoicing point must be numeric.</value>
+  </data>
+  <data name="TheCAICAEExpirationDateMustBeDifferentOfBlank" xml:space="preserve">
+    <value>The CAI CAE Expiration Date must be different of blank.</value>
+  </data>
+  <data name="TheCAICAENumberMustBeDifferentOfBlank" xml:space="preserve">
+    <value>The CAI CAE Number must be different of blank.</value>
+  </data>
+  <data name="AndMore" xml:space="preserve">
+    <value>... and more.</value>
+  </data>
+  <data name="MultipleSupplHaveBeenFoundForISRPartyIDAndRefNumber" xml:space="preserve">
+    <value>Multiple suppliers have been found for the ISR Party Number {0} and reference number {1}.
+Please verify position and length of the Bank Customer Number in supplier banks for:{2}</value>
+  </data>
+  <data name="Supplier" xml:space="preserve">
+    <value>Supplier</value>
+  </data>
+  <data name="MiscChargeInactive" xml:space="preserve">
+    <value>Miscellaneous Charge {0} is inactive.</value>
+  </data>
+  <data name="TheISRPOBankAccountIsInvalid" xml:space="preserve">
+    <value>The Postal Bank Account is invalid.</value>
+  </data>
+  <data name="SupplDoesNotHaveABankWithISRPOAccount" xml:space="preserve">
+    <value>Supplier does not have a Bank with Postal Account {0}.</value>
+  </data>
+  <data name="InternationSecutitiesIdNumIsWrong" xml:space="preserve">
+    <value>Please specify a Internation Securities Id Num value consisting of two capital letters followed by 10 digits or capital letters.</value>
+  </data>
+  <data name="MXFiscalFolio" xml:space="preserve">
+    <value>MXFiscalFolio,</value>
+  </data>
+  <data name="CannotChangeTheDeferExpFlagToNoBecauseAtLeast" xml:space="preserve">
+    <value>Cannot change the deferred expense flag to No because at least one expense amortization period has been posted.</value>
+  </data>
+  <data name="EndDateMustBeLaterStartDate" xml:space="preserve">
+    <value>End Date must be later than Start Date.</value>
+  </data>
+  <data name="AmortAmtMustBePositive" xml:space="preserve">
+    <value>Amortization Amount must be positive.</value>
+  </data>
+  <data name="RemainingMustBeZero" xml:space="preserve">
+    <value>Remaining Amount must be zero.</value>
+  </data>
+  <data name="ThereIsNoAvailFiscalPeriodBetweenStartAndEndDates" xml:space="preserve">
+    <value>There is no available Fiscal Period between Start and End Dates.</value>
+  </data>
+  <data name="ThereIsAlreadyLineForFiscalYearSuffixPeriod" xml:space="preserve">
+    <value>There is already a line for Fiscal Year = {0} Suffix = '{1}' Period = {2}.</value>
+  </data>
+  <data name="AmortDateIsWithinFiscalYearSuffixPeriod" xml:space="preserve">
+    <value>Amortization date {0} is within Fiscal Year = {1} Suffix = '{2}' Period = {3}.</value>
+  </data>
+  <data name="CannotFindAValidFiscalPeriodForAmortDate" xml:space="preserve">
+    <value>Cannot find a valid fiscal period for amortization date {0}</value>
+  </data>
+  <data name="AmortDateMustBeBetweenStartAndEndDates" xml:space="preserve">
+    <value>Amortization date {0} must be within Start and End Dates.</value>
+  </data>
+  <data name="ThereIsNoScheduleLineToAddTheRemainingAmount" xml:space="preserve">
+    <value>There is no any schedule line to add the remaining amount.</value>
+  </data>
+  <data name="ReferenceInvoiceIsAlreadyReferencedByUnpostedBOE" xml:space="preserve">
+    <value>Reference invoice is already referenced by unposted Bill of Exchange.</value>
+  </data>
+  <data name="FiscalPeriodIsNotBetweenStartAndEndDates" xml:space="preserve">
+    <value>Fiscal Year = {0} Suffix = '{1}' Period = {2} is not between Start and End Dates.</value>
+  </data>
+  <data name="SomeLinesWithDeferredExpensesDontHaveAmortSchedule" xml:space="preserve">
+    <value>Some Lines with Deferred Expenses don't have Amortization Schedule.</value>
+  </data>
+  <data name="ThereIsAlreadyLineForFiscalYearPeriod" xml:space="preserve">
+    <value>There is already a line for Fiscal Year = {0} Period = {1}.</value>
+  </data>
+  <data name="BankReferenceNotValidFormat" xml:space="preserve">
+    <value>Expected banking reference number format is 999/9999/99999.
+The banking reference number will not be validated.
+Would you like to continue?
+</value>
+  </data>
+  <data name="AValidBillOfExchangeNumberIsRequired" xml:space="preserve">
+    <value>A valid Bill of Exchange number is required.</value>
+  </data>
+  <data name="AValidSupplierIsRequired" xml:space="preserve">
+    <value>A valid supplier is required.</value>
+  </data>
+  <data name="IsNotValidExpenseAmortCode" xml:space="preserve">
+    <value>'{0}' is not a valid Expense Amortization Code.</value>
+  </data>
+  <data name="MXRetentionCode" xml:space="preserve">
+    <value>MXRetentionCode,</value>
+  </data>
+  <data name="POLineFieldsAreRequired" xml:space="preserve">
+    <value>PO/Line fields are required</value>
+  </data>
+  <data name="LOCNotMatch" xml:space="preserve">
+    <value>Invoice Letter of Credit ({0}) does not match PO Letter of Credit ({1}) related to lines  {2}.</value>
+  </data>
+  <data name="BaseCurrency" xml:space="preserve">
+    <value>Base Currency was not found.</value>
+  </data>
+  <data name="TransReasonCodesHasNotBeenEnteredForSuppl" xml:space="preserve">
+    <value>Transaction reason code has not been entered for supplier {0}.</value>
+  </data>
+  <data name="InvalidTransReasonCode" xml:space="preserve">
+    <value>Invalid Transaction Reason Code!</value>
+  </data>
+  <data name="TransReasonCode" xml:space="preserve">
+    <value> Transaction Reason Code,</value>
+  </data>
+  <data name="InvalidApplyDate" xml:space="preserve">
+    <value>Apply Date cannot be blank. Enter a valid date.</value>
+  </data>
+  <data name="InvalidInvoiceDate" xml:space="preserve">
+    <value>Invoice Date cannot be blank. Enter a valid date.</value>
+  </data>
+  <data name="InvalidTaxPointDate" xml:space="preserve">
+    <value>Tax Point Date cannot be blank. Enter a valid date.</value>
+  </data>
+  <data name="InvalidTaxRateDate" xml:space="preserve">
+    <value>Tax Rate Date cannot be blank. Enter a valid date.</value>
+  </data>
+  <data name="TARCodeShouldBeNumeric" xml:space="preserve">
+    <value>TAR Code should be numeric. The maximum number of characters is 3.</value>
+  </data>
+  <data name="MXTARCode" xml:space="preserve">
+    <value>MXTARCode,</value>
+  </data>
+  <data name="DueDateCannotBeBlank" xml:space="preserve">
+    <value>Due Date cannot be blank. Please enter a valid date.</value>
+  </data>
+  <data name="TaxLiabilityFlagNotMatch" xml:space="preserve">
+    <value>Tax Liability 'Inclusive'/'Exclusive'  of PO does not match to the Tax Liability of Invoice</value>
+  </data>
+  <data name="TaxLiabTypeMatchPo" xml:space="preserve">
+    <value>Tax Liability Inclusive/Exclusive type should match PO related to Invoice lines</value>
+  </data>
+  <data name="PendingInvoiceToBePosted" xml:space="preserve">
+    <value>This invoice line cannot be set as Final Invoice. There are unposted partial invoices for this receipt line under Group ID "{0}".</value>
+  </data>
+  <data name="InvalidTaxCodeForTaxIncl" xml:space="preserve">
+    <value>Only Withholding Tax code could be added if Tax Liablity is 'Tax Inclusive Pricing' or Company set up is 'AP Tax Records for Invoice lines'</value>
+  </data>
+  <data name="AllSelected" xml:space="preserve">
+    <value>All Selected</value>
+  </data>
+  <data name="PartialInvoicingRequiresPartialQty" xml:space="preserve">
+    <value>Partial invoicing requires partial quantity to invoice. Please enter a supplier qty less than {0} before making this invoice line partial.</value>
+  </data>
+  <data name="UnableToCreateGRNIClearingWithExistingNormalInvoice" xml:space="preserve">
+    <value>Manual GRNI Clearing invoices cannot be processed in the same group as normal Invoices.</value>
+  </data>
+  <data name="UnableToCreateGRNIClearing" xml:space="preserve">
+    <value>GRNI Clearing invoices cannot be processed in the same group as normal Invoices.</value>
+  </data>
+  <data name="MixedDetractionRatesNotAllowed" xml:space="preserve">
+    <value>Mix items subject and NOT subject to Detractions or items with different detraction rates are not allowed</value>
+  </data>
+  <data name="DateCannotBeBlank" xml:space="preserve">
+    <value>{0} cannot be blank. Please enter a valid date.</value>
+  </data>
+  <data name="DateCannotBeEarlierInvDate" xml:space="preserve">
+    <value>{0} cannot be earlier than invoice date.</value>
+  </data>
+  <data name="NotDefined" xml:space="preserve">
+    <value>Not Defined</value>
+  </data>
+  <data name="SuppIsMissingPaymentProposalSchedConfi" xml:space="preserve">
+    <value>Supplier is missing payment proposal schedule configuration.</value>
+  </data>
+  <data name="CannotChgToTaxExclusive" xml:space="preserve">
+    <value>Tax records exist, cannot switch to a Tax Exclusive Liability.</value>
+  </data>
+  <data name="CannotChgToTaxInclusive" xml:space="preserve">
+    <value>Tax records exist, cannot switch to a Tax Inclusive Liability.</value>
+  </data>
+  <data name="THDebitMemoRefNotAllowed" xml:space="preserve">
+    <value>Reference to Debit Memo is not allowed</value>
+  </data>
+  <data name="THSelfRefNotAllowed" xml:space="preserve">
+    <value>Self-reference is not allowed</value>
+  </data>
+  <data name="CannotDeleteTaxAdjustment" xml:space="preserve">
+    <value>Cannot delete Tax Adjustment invoice created in Payment Statement.</value>
+  </data>
+  <data name="CannotDeleteTaxAdjustmentLine" xml:space="preserve">
+    <value>Cannot delete line of Tax Adjustment invoice created in Payment Statement.</value>
+  </data>
+  <data name="THRefToPostedInvOnly" xml:space="preserve">
+    <value>Only posted invoices can be used as reference.</value>
+  </data>
+  <data name="WithholdingTaxNotAllowedAtLineLevel" xml:space="preserve">
+    <value>Withholding tax type is not allowed at Line or Misc Charge Level, only at Header Level.</value>
+  </data>
+  <data name="InvoiceCollection" xml:space="preserve">
+    <value>Invoice</value>
+  </data>
+  <data name="SelfAssessment" xml:space="preserve">
+    <value>Self-Assessment</value>
+  </data>
+  <data name="SelfAssessmentDual" xml:space="preserve">
+    <value>Self-Assessment, Dual Entry</value>
+  </data>
+  <data name="Withholding" xml:space="preserve">
+    <value>WithHolding</value>
+  </data>
+  <data name="InvalidCommodityCode" xml:space="preserve">
+    <value>Invalid commodity code</value>
+  </data>
+  <data name="EmptyCommodityCode" xml:space="preserve">
+    <value>Commodity Code should be set.</value>
+  </data>
+  <data name="EmptyProductTaxCategory" xml:space="preserve">
+    <value>Product Tax Category should be set.</value>
+  </data>
+  <data name="CannotDeletePaymentSchedule" xml:space="preserve">
+    <value>Cannot delete a Payment Schedule.</value>
+  </data>
+  <data name="ImportCountryMustBeEntered" xml:space="preserve">
+    <value>Please enter country of import.</value>
+  </data>
+  <data name="ImportDateMustBeEntered" xml:space="preserve">
+    <value>Please enter import date.</value>
+  </data>
+  <data name="ImportNumberMustBeEntered" xml:space="preserve">
+    <value>Please enter import number.</value>
+  </data>
+  <data name="TermsCode" xml:space="preserve">
+    <value>Terms,</value>
+  </data>
+  <data name="SupplierRequired" xml:space="preserve">
+    <value>Supplier Number is required.</value>
+  </data>
+  <data name="TheInvoicePurPointIsInvalid" xml:space="preserve">
+    <value>Invoice Purchase Point is invalid.</value>
+  </data>
+  <data name="PurPointsWithHeaderTaxLiabilityIsAllowed" xml:space="preserve">
+    <value>Only Purchase Points with Tax Liability {0} are allowed.</value>
+  </data>
+  <data name="MultipleJobChargesNotAllowed" xml:space="preserve">
+    <value>Another Job Charge in this invoice has already been linked to the same Job Miscellaneous Charge for Non-Reimbursable Expense. Please update the existing Invoice Job Charge instead.</value>
+  </data>
+  <data name="SumOfInvoiceValueCannotBeGreaterThanLineSubTotal" xml:space="preserve">
+    <value>Sum of Invoice Value cannot be greater than Line sub total.</value>
+  </data>
+  <data name="InvalidAccountAmortizationDoc" xml:space="preserve">
+    <value>Invalid Deferred Expense GL Account {2} Book {3} for Invoice {0} Line {1}. </value>
+  </data>
+  <data name="InvalidAccountDoc" xml:space="preserve">
+    <value>Invalid GL Account {2} Book {3} for Invoice {0} Line {1}.</value>
+  </data>
+  <data name="InvalidExtAccountDoc" xml:space="preserve">
+    <value>Invalid External GL Account {2} Book {3} for Invoice {0} Line {1}. </value>
+  </data>
+  <data name="ReviewAmortizationTab" xml:space="preserve">
+    <value>Please review Lines/Amortization Tab.</value>
+  </data>
+  <data name="ReviewGLAnalysisTab" xml:space="preserve">
+    <value>Please review Lines/GL Analysis Tab.</value>
+  </data>
+  <data name="InvalidHeaderAccountDoc" xml:space="preserve">
+    <value>Invalid GL Account {1}  Book {2} for Invoice {0}.</value>
+  </data>
+  <data name="ReviewHeaderGLAnalysisTab" xml:space="preserve">
+    <value>Please review Header/Misc Charges/GL Analysis Tab.</value>
+  </data>
+  <data name="InactiveSupplierConfirmation" xml:space="preserve">
+    <value>Supplier {0} is Inactive. Are you sure you want to continue with this supplier?</value>
+  </data>
+  <data name="InactiveSupplierConfirmationLoggedInv" xml:space="preserve">
+    <value>One or more suppliers are Inactive. Are you sure you want to match approved logged invoice(s)?</value>
+  </data>
+  <data name="InactiveSupplierMiscLines" xml:space="preserve">
+    <value>Supplier {0} is Inactive. Miscellaneous lines cannot be added to invoice.</value>
+  </data>
+  <data name="InactiveSupplierRecurringInvoice" xml:space="preserve">
+    <value>One or more suppliers are inactive. Invoice(s) for inactive suppliers were not created.</value>
+  </data>
+  <data name="PLLegalNumberNotDefinedForTranDocType" xml:space="preserve">
+    <value>Legal number has not been defined for transaction document type {0}</value>
+  </data>
+  <data name="PLTranDocTypeNotDefined" xml:space="preserve">
+    <value>Transaction Document Type has not been defined</value>
+  </data>
+  <data name="GLAccountCantbeValidated" xml:space="preserve">
+    <value>GL Account {0} can't be validated.</value>
+  </data>
+  <data name="InactiveSupplierAssetLines" xml:space="preserve">
+    <value>Supplier {0} is Inactive. Asset lines cannot be added to invoice.</value>
+  </data>
+  <data name="InactiveSupplierJobMiscLines" xml:space="preserve">
+    <value>Supplier {0} is Inactive. Job Miscellaneous lines cannot be added to invoice.</value>
+  </data>
+  <data name="TheDebitMemoExceedsTheJobCharge" xml:space="preserve">
+    <value>The debit memo job charge exceeds the current Job Material Miscellaneous Charge Costs.</value>
+  </data>
+  <data name="ThisTaxRecPrepayReverse" xml:space="preserve">
+    <value>The Tax Record is reversing the Prepayment tax. Delete not allowed.</value>
+  </data>
+  <data name="PLInvoiceReferenceEmpty" xml:space="preserve">
+    <value>Invoice Reference Number is required</value>
+  </data>
+  <data name="AmortizationCodeIsRequired" xml:space="preserve">
+    <value>Expense Amortization Code is required.</value>
+  </data>
+  <data name="InvalidNewInvoiceNumber" xml:space="preserve">
+    <value>Invalid {0} Invoice number, the new invoice number can not be blank or match select invoice number.</value>
+  </data>
+  <data name="InvoiceHasAlreadyBeenCancelByInvoice" xml:space="preserve">
+    <value>Invoice has already been cancelled by Invoice {0}.</value>
+  </data>
+  <data name="typeOfCreation" xml:space="preserve">
+    <value>Invalid type of Invoice creation.</value>
+  </data>
+  <data name="HasDebitMemos" xml:space="preserve">
+    <value>Debit Memos cannot be cancelled.</value>
+  </data>
+  <data name="FinalInvoiceExists" xml:space="preserve">
+    <value>Final invoice exist for the Receipt referenced on this invoice. Unable to {0} this invoice.</value>
+  </data>
+  <data name="LineNotSupported" xml:space="preserve">
+    <value>This invoice has line types that cannot be cancelled</value>
+  </data>
+  <data name="PostedPaymentExists" xml:space="preserve">
+    <value>This invoice has posted payments. Unable to create cancellation. Please void the payments first.</value>
+  </data>
+  <data name="TheInvoiceHasPrepayments" xml:space="preserve">
+    <value>Invoice contains a pre-payment. Unable to cancel.</value>
+  </data>
+  <data name="IsCorrectionInvoice" xml:space="preserve">
+    <value>Correction Invoices can't be {0}.</value>
+  </data>
+  <data name="UnpostedPayments" xml:space="preserve">
+    <value>The invoice has Open Payments</value>
+  </data>
+  <data name="CantCancelPrepayments" xml:space="preserve">
+    <value>Can't Cancel Prepayments</value>
+  </data>
+  <data name="Cancellation" xml:space="preserve">
+    <value>Cancellation</value>
+  </data>
+  <data name="Correction" xml:space="preserve">
+    <value>Correction</value>
+  </data>
+  <data name="IsCancellationInvoice" xml:space="preserve">
+    <value>Cancellation Invoices can't be cancellated.</value>
+  </data>
+  <data name="UnableToCancelCorrectionInvoices" xml:space="preserve">
+    <value>Unable to cancel correction invoices</value>
+  </data>
+  <data name="UnableToCorrectCancellationInvoices" xml:space="preserve">
+    <value>Unable to correct cancellation invoices.</value>
+  </data>
+  <data name="LateCostExist" xml:space="preserve">
+    <value>Unable to Cancel Invoice with Late Cost</value>
+  </data>
+  <data name="InvoiceUsedInNetting" xml:space="preserve">
+    <value>Invoice {0} is being used in an open Netting transaction</value>
+  </data>
+  <data name="PODoesNotMatchReceipt" xml:space="preserve">
+    <value>PO number does not match receipt.</value>
+  </data>
+  <data name="ReceiptNotFound" xml:space="preserve">
+    <value>Receipt not found.</value>
+  </data>
+  <data name="ReceiptNotFoundOrIsInvoiced" xml:space="preserve">
+    <value>Receipt not found or is invoiced.</value>
+  </data>
+  <data name="InvcWithPostedAmortization" xml:space="preserve">
+    <value>Cannot cancel invoice with posted amortization</value>
+  </data>
+  <data name="LineTaxNotAllowed" xml:space="preserve">
+    <value>Taxes at line level not allowed.</value>
+  </data>
+  <data name="NewGLNotAllowed" xml:space="preserve">
+    <value>New GL not allowed.</value>
+  </data>
+  <data name="AValidSupplierIdIsRequired" xml:space="preserve">
+    <value>A valid Supplier ID is Required</value>
+  </data>
+  <data name="EnterVendorID" xml:space="preserve">
+    <value>Multiple entries located with this invoice number, enter the supplier ID to narrow the search.</value>
+  </data>
+  <data name="NoInvoiceLocated" xml:space="preserve">
+    <value>No record located for this invoice number.</value>
+  </data>
+  <data name="GroupIDInvalid" xml:space="preserve">
+    <value>Please, Provide a valid GroupID.</value>
+  </data>
+  <data name="GroupIDNotFound" xml:space="preserve">
+    <value>GroupID not found. Add new?</value>
+  </data>
+  <data name="NoRecordsSelected" xml:space="preserve">
+    <value>No Records have been selected.</value>
+  </data>
+  <data name="InvalidTransferApplyDate" xml:space="preserve">
+    <value>The value provided on Apply Date is not a valid date. Please review.</value>
+  </data>
+  <data name="CannotDisableAllowOverrideLI" xml:space="preserve">
+    <value>Cannot disable logged invoice override. Delete overridden invoice and match it again.</value>
+  </data>
+  <data name="InvIsLockedOrPosted" xml:space="preserve">
+    <value>Invoice is locked or posted.  Site cannot be changed.</value>
+  </data>
+  <data name="SiteCannotBeBlank" xml:space="preserve">
+    <value>Site cannot be blank.</value>
+  </data>
+  <data name="CannotDropShipGRNI" xml:space="preserve">
+    <value>Cannot create a line from drop shipments for GRNI invoices</value>
+  </data>
+  <data name="InvalidAPLateCost" xml:space="preserve">
+    <value>Invalid Late Cost header.</value>
+  </data>
+  <data name="LateCostTotalsNotFound" xml:space="preserve">
+    <value>Late Cost Totals not found.</value>
+  </data>
+  <data name="RcvHeadContainerNotFound" xml:space="preserve">
+    <value>No Container Header was found for this RcvHead.</value>
+  </data>
+  <data name="CannotDeleteLineOfPostedInvoice" xml:space="preserve">
+    <value>Cannot delete line of posted invoice.</value>
+  </data>
+  <data name="PlasticPackTaxReportHasAlreadyBeenSelected" xml:space="preserve">
+    <value>Plastic Packaging Tax Report has already been selected for costing.</value>
+  </data>
+  <data name="PlasticPackTaxReportIsNotFound" xml:space="preserve">
+    <value>Plastic Packaging Tax Report is not found.</value>
+  </data>
+  <data name="PlasticPackTaxReportIsNotSubmitted" xml:space="preserve">
+    <value>Plastic Packaging Tax Report is not submitted.</value>
+  </data>
+  <data name="CannotDeleteLateCost" xml:space="preserve">
+    <value>Deleting Late cost will result in negative charge amount for PackSlip {0} - {1}.</value>
+  </data>
+  <data name="WantToContinue" xml:space="preserve">
+    <value>Do you want to continue?</value>
+  </data>
+  <data name="QRReferenceIsRequired" xml:space="preserve">
+    <value>QR Reference is required.</value>
+  </data>
+  <data name="QRIBANQRReference" xml:space="preserve">
+    <value>QR IBAN, QR Reference,</value>
+  </data>
+  <data name="NegativeLateCost" xml:space="preserve">
+    <value>You have entered a negative Late Cost Charge. Answering yes will cause a negative part costs which are not supported by the system.</value>
+  </data>
+  <data name="ThePurchaseOrderAlreadyHasAnUnreceivedLineInv" xml:space="preserve">
+    <value>This PO line already has an unreceived line Invoice created. Multiple invoicing of receipts is not supported by the Invoice Receipt Match. Do you want to continue?</value>
+  </data>
+  <data name="CannotCancelCCPayInvoices" xml:space="preserve">
+    <value>Unable to Cancel Central Payment invoices.</value>
+  </data>
+  <data name="CannotCancelInterCompanyInvoices" xml:space="preserve">
+    <value>Unable to Cancel Inter-Company invoices.</value>
+  </data>
+  <data name="InvoiceAlreadyExistsNewInvoiceNum" xml:space="preserve">
+    <value>Invoice Number {0} already exists.</value>
+  </data>
+  <data name="NewInvoiceNumMayNotBeBlank" xml:space="preserve">
+    <value>The new invoice number may not be blank.</value>
+  </data>
+  <data name="LegalNumberVoidReason" xml:space="preserve">
+    <value>Invoice number changed from {0} to {1}.</value>
+  </data>
+  <data name="InvoiceNotFoundWithNewNumber" xml:space="preserve">
+    <value>Invoice not found with new invoice number {0}.</value>
+  </data>
+  <data name="WBSIsInactive" xml:space="preserve">
+    <value>The selected WBS is inactive.</value>
+  </data>
+  <data name="DocumentTypeIsRequired" xml:space="preserve">
+    <value>Document Type is required.</value>
+  </data>
+  <data name="GroupIsInUseByAnotherUser" xml:space="preserve">
+    <value>Group {0} is in use by another user.</value>
+  </data>
+</root>

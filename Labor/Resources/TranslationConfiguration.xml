@@ -1,0 +1,422 @@
+<Translation>
+  <Ignored>
+    <Ignore file="Labor.cs" class="LaborSvc" method="">ttLbrScrapSerialNumbers</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="">ttSelectedSerialNumbers</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="">ttSNFormat</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="">Procedure</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="">zzzzzzzzzz</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="Initialize">PlantConfCtrl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="Initialize">ApplyBurdenCost</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="adjustForGracePeriod">99</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="adjustForGracePeriod">.99</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="AfterUpdate">P,S</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="BeforeUpdate">P,J,V</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="BuildJobOperPrjRoleList"> or RoleCode = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="BuildJobOperPrjRoleList">RoleCode = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="BuildJobOperPrjRoleList">RoleCode = '!@#$%^'</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="calcTotHrs">-&gt;&gt;&gt;&gt;9</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="calcTotHrs">-&gt;9.99</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="ChangeEquipID">LaborEquip</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="ChangeEquipID">Equip</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="ChangeEquipID">Hrs</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="ChangeEquipID">Qty</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="ChangeIndirectCode">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="ChangeLaborType">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="ChangeResourceId">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="ChangeResourceId">ResourceID</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="CheckFirstArticleWarning">DataColl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="CheckResourceGroup">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="CheckResourceGroup">ResourceID</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="CheckWarnings">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="chgWcCode">LabEnt</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="chkPartQty">LaborPart</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="chkShopWarn">DataColl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="chkStartActShopWarn">DataColl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="clearRecordBuffer">MNT</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="clockInTimeMES">99</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="clockOutTimeMES">99</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="commonOprSeq">TM,CP,PP,FF</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="commonOprSeq">LaborHed</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="commonOprSeq">EmployeeNum</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="CopyLaborDetail">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="CopyLaborDetail">Company</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="CopyLaborDetail">IP</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="CopyTimeWeeklyView">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="CopyTimeWeeklyView">Company</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="createNonConfMtlQ">NonConf</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="createNonConfMtlQ">RequestMove</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="createNonConfMtlQ">NonConf:</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="createNonConfMtlQ">ASM-INS</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="createNonConfMtlQ">STK-INS</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="createNonConfMtlQ">SUB-INS</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="createNonConfMtlQ">INS</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultAssemblySeq">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultAssemblySeq">P,S</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultComplete">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultDate">LaborHed</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultDate">IP</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultDiscrpRsnCode">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultDiscrpRsnCode">DiscrpRsnCode</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultDtlTime">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultIndirect">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultJobNum">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultJobNum">MNT</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultJobNum">P,S</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultJobNum">PRJ</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultJobNum">ttTimeWeeklyView</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultLaborHrs">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultLaborQty">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultLaborQty">LaborQty</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultLaborQty">P,S</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultLaborType">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultLaborType">RowMod</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultLunchBreak">LaborHed</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultNextOprSeq">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultOpCode">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultOprSeq">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultOprSeq">P,S</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="defaultOprSeq2">ResourceGroup</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="defaultOprSeq2">Resource</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultPhaseID">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultPhaseID">RowMod</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultPhaseID">PhaseID</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultPhaseOprSeq">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultPhaseOprSeq">RowMod</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultPhaseOprSeq">PhaseOprSeq</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultProjectID">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultProjectID">RowMod</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultProjectID">ProjectID</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultProjectID">TimeWeeklyView</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultResourceID">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultResourceID">ResourceID</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultRoleCd">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultRoleCd">RowMod</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultRoleCd">RoleCd</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultRoleCd">JobNum</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultRoleCd">TM</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultScrapReasonCode">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultScrapReasonCode">ScrapReasonCode</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultSetupPctComplete">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultSetupPctComplete">SetupPctComplete</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultShift">LaborHed</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultShift">99</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultShift">.99</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultShift">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultTime">LaborHed</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultTimeTypCd">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultTimeTypCd">RowMod</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultTimeTypCd">TimeTypCd</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="DefaultWCCode">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="deleteSerialNumbers">REJECTED</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="deleteSerialNumbers">ASM-REJ</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="deleteSerialNumbers">INSPECTION</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="deleteSerialNumbers">ASM-INS</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="deleteSerialNumbers">OPR-CMP</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="disPrjFields">TM</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="disPrjFields">TM,CP,PP,FF</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="disPrjFields">OPR</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="disPrjFieldsTimeWeeklyView">TM</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="EndActivity">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="EndActivityComplete">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="GetDetail">LaborHed</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="GetDetail">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="getEnteredOprSeq">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="getEnteredOprSeq">NextOprSeq</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="getEnteredOprSeq">ResourceGroup</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="getEnteredOprSeq">Resource</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="GetNewLaborDtlNoHdr">IP</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="GetNewLaborDtlNoHdr">ttLaborHed</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="GetNewLbrScrapSerialNumbers">ttLaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="GetNewLbrScrapSerialNumbers">RowMod</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="GetNewLbrScrapSerialNumbers">JobAsmbl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="GetNewLbrScrapSerialNumbers">AssemblySeq</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="GetNewLbrScrapSerialNumbers">REJECTED</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="GetNewLbrScrapSerialNumbers">INSPECTION</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="GetNewLbrScrapSerialNumbers">COMPLETE</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="GetNewTimeWeeklyView">TimeWeeklyView</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="GetNewTimeWeeklyView">EmployeeNum</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="GetNewTimeWeeklyView">UserFile</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="GetNewTimeWeeklyView">TERetrieveByDay</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="GetRowsCalendarView">UserFile</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="GetRowsCalendarView">TERetrieveByDay</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="GetRowsWhoIsHere">EmpBasicSupervisorID</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="GetRowsWhoIsHere"> where </Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="GetRowsWhoIsHere">for each LaborHed no-lock</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="getSerialNumbers">JobAsmbl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="getSerialNumbers">WIP</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="getSerialNumbers">CONSUMED</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="getSerialNumbers">COMPLETE</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="getSerialNumbers">REJECTED</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="getSerialNumbers">INSPECTION</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="getSerialNumbers">OPR-CMP</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="GetTERetrieveByOption">UserFile</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="GetTERetrieveByOption">TERetrieveByDay</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="GetTERetrieveByOption">TERetrieveByWeek</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="GetTERetrieveByOption">TERetrieveByMonth</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="IsValidAssembly">MFG</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="IsValidAssembly">JobAsmbl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="IsValidAssembly">AssemblySeq</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="IsValidAssembly">JobHead</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="IsValidAssembly">JobNum</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlAfterGetRows">LaborCost</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlAfterGetRows">BurdenCost</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlAfterGetRows">HH:MM</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlAfterGetRows">&gt;9.99</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlAfterGetRows">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlAfterGetRows">Entered</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlAfterGetRows">Submitted</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlAfterGetRows">PartiallyApproved</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlAfterGetRows">Approved</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlAfterGetRows">Rejected</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlAfterGetRows">EmpBasic</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlAfterGetRows">DisallowTimeEntry</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlAfterGetRows">UserComp</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlAfterGetRows">CanUpdateTime</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlAfterUpdate">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlAfterUpdate">BurdenRate</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlAfterUpdate">JobOper</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlAfterUpdate">ActBurCost</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlAfterUpdate">ReworkBurCost</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlAfterUpdate">MNT</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlAfterUpdate">No</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlAfterUpdate">Hrs</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlAfterUpdate">Qty</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlAfterUpdate">Time</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlBeforeDelete">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlBeforeUpdate">P,J,V</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlBeforeUpdate">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlBeforeUpdate">I,J</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlBeforeUpdate">,E,R</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlBeforeUpdate">RoleCd</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlBeforeUpdate">SerialNo</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlBeforeUpdate">ResourceGrpID</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlBeforeUpdate">IP</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlBeforeUpdate">ttLaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlBeforeUpdate">JobOper</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlBeforeUpdate">RequestMove</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlCommentAfterGetNew">INV</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlCommentAfterGetNew">SUB</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlCommentAfterGetNew">APP</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlCommentAfterGetRows">HH:MM</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlCommentAfterGetRows">&gt;9.99</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlCommentAfterGetRows">SUB</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlCommentAfterGetRows">Submitted</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlCommentAfterGetRows">APP</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlCommentAfterGetRows">Approved</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlCommentAfterGetRows">REJ</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlCommentAfterGetRows">Rejected</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlCommentBeforeDelete">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlCommentBeforeUpdate">LaborDtlComment</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlCommentBeforeUpdate">INV</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlSetDefaults">PlantConfCtrl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborDtlSetDefaults">TimeAutoSubmit</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborHedAfterGetNew1">99</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborHedAfterGetNew1">.99</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborHedAfterGetRows">UserComp</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborHedAfterGetRows">CanUpdateTime</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborHedAfterGetRows">EmpBasic</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborHedAfterGetRows">DisallowTimeEntry</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborHedBeforeDelete">LaborHed</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborHedBeforeUpdate">LaborHed</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="LaborHedBeforeUpdate">TransferredToPayroll</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="OnChangeClockInDate">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="OnChangeClockInDate">IP</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="OnChangeQuickEntryCode">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="OnChangeQuickEntryCode">RowMod</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="OnChangeQuickEntryCode">TIME</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="OnChangeQuickEntryCode">QuickEntryCode</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="OnChangeQuickEntryCode">P,J,V</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="OnChangeResourceGrpID">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="OnChangeResourceGrpID">ResourceGrpID</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="Overrides">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="Overrides">ResourceGrpID</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="Overrides">ResourceID</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="OverridesResource">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="OverridesResource">ResourceID</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="populateTimeWeeklyView">EmpBasic</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="populateTimeWeeklyView">DisallowTimeEntry</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="populateTimeWeeklyView">UserComp</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="populateTimeWeeklyView">CanUpdateTime</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="processTimeWeeklyView">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="processTimeWeeklyView">C,A</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="processTimeWeeklyView">P,J,V</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="processTimeWeeklyView">IP</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="processTimeWeeklyView">ttLaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="processTimeWeeklyView">A,C</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="processTimeWeeklyView">S,P,A</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="processTimeWeeklyView">Time exists that is Submitted, Partially Approved or Approved and was unable to be updated.</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="RecallFromApproval">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="RecallFromApproval">for each LaborDtl exclusive-lock where </Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="RecallFromApproval">LaborDtl.Company = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="RecallFromApproval">' and </Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="RecallFromApproval">LaborDtl.EmployeeNum = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="RecallFromApproval">LaborDtl.PayrollDate = </Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="RecallFromApproval"> and </Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="RecallFromApproval">LaborDtl.LaborType = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="RecallFromApproval">LaborDtl.TimeStatus = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="RecallFromApproval">LaborDtl.LaborTypePseudo = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="RecallFromApproval">LaborDtl.ProjectID = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="RecallFromApproval">LaborDtl.PhaseID = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="RecallFromApproval">LaborDtl.TimeTypCd = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="RecallFromApproval">LaborDtl.JobNum = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="RecallFromApproval">LaborDtl.AssemblySeq = </Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="RecallFromApproval">LaborDtl.OprSeq = </Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="RecallFromApproval">LaborDtl.IndirectCode = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="RecallFromApproval">LaborDtl.RoleCd = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="RecallFromApproval">LaborDtl.ResourceGrpID = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="RecallFromApproval">LaborDtl.ResourceID = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="RecallFromApproval">LaborDtl.ExpenseCode = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="RecallFromApproval">LaborDtl.Shift = </Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="RecallFromApproval">LaborDtl.QuickEntryCode = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="RecallFromApproval">LaborDtl.LaborHrs &gt; 0</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="RecallFromApproval">JobNum</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="RecallFromApproval">WIPPosted</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="RecallFromApproval">TimeStatus</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="RecallFromApproval">LaborHedSeq</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="RecallFromApproval">LaborDtlSeq</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="SelectForWork">S,P</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="setDisplayTime">99</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="setDisplayTime">.99</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="setRetrieveRange">UserFile</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="setRetrieveRange">TERetrieveByDay</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="setRetrieveRange">TERetrieveByWeek</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="setRetrieveRange">TERetrieveByMonth</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="StartActivity">LaborHed</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="StartActivity">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="StartActivity">I,J</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="StartActivity">LaborType</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="SubmitForApproval">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="SubmitForApproval">A,P,S</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="SubmitForApproval">for each LaborDtl exclusive-lock where </Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="SubmitForApproval">LaborDtl.Company = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="SubmitForApproval">' and </Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="SubmitForApproval">LaborDtl.EmployeeNum = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="SubmitForApproval">LaborDtl.TimeStatus = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="SubmitForApproval">LaborDtl.PayrollDate = </Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="SubmitForApproval"> and </Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="SubmitForApproval">LaborDtl.LaborType = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="SubmitForApproval">LaborDtl.LaborTypePseudo = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="SubmitForApproval">LaborDtl.ProjectID = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="SubmitForApproval">LaborDtl.PhaseID = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="SubmitForApproval">LaborDtl.TimeTypCd = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="SubmitForApproval">LaborDtl.JobNum = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="SubmitForApproval">LaborDtl.AssemblySeq = </Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="SubmitForApproval">LaborDtl.OprSeq = </Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="SubmitForApproval">LaborDtl.IndirectCode = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="SubmitForApproval">LaborDtl.RoleCd = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="SubmitForApproval">LaborDtl.ResourceGrpID = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="SubmitForApproval">LaborDtl.ResourceID = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="SubmitForApproval">LaborDtl.ExpenseCode = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="SubmitForApproval">LaborDtl.QuickEntryCode = '</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="SubmitForApproval">LaborDtl.Shift = </Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="SubmitForApproval">LaborDtl.LaborHrs &lt;&gt; 0</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="SubmitForApproval">LaborHedSeq</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="SubmitForApproval">LaborDtlSeq</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="SubmitForApproval">Time</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="TimeWeeklyView_Foreign_Link">EmpBasic</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="TimeWeeklyView_Foreign_Link">DisallowTimeEntry</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="TimeWeeklyView_Foreign_Link">UserComp</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="TimeWeeklyView_Foreign_Link">CanUpdateTime</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="TimeWeeklyView_Foreign_Link">Time</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="updateSerialNumbers">jobOper</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="updateSerialNumbers">autoRecPartTran</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="updateSerialNumbers">REJECTED</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="updateSerialNumbers">ASM-REJ</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="updateSerialNumbers">REJ-ASM</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="updateSerialNumbers">INSPECTION</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="updateSerialNumbers">ASM-INS</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="updateSerialNumbers">INS-ASM</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="updateSerialNumbers">COMPLETE</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="updateSerialNumbers">OPR-CMP</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="updateSerialNumbers">INVENTORY</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="updateSerialNumbers">WIP</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateJob">PRJ</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateJob">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateJob">SRV</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateProject">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateProject">ProjectID</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateProject">LaborType</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateProject">I,J</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateProject">TM</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateProject">RoleCd</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateProject">TimeTypCd</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateSerial">ttLaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateSerial">RowMod</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateSerial">JobAsmbl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateSerial">LbrScrapSerialNumbers</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateSerial">WIP</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateSerial">CONSUMED</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateSerial">REJECTED</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateSerial">INSPECTION</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateSerial">COMPLETE</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateSerial">OPR-CMP</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateSerialAvail">ttLaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateSerialAvail">RowMod</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateSerialAvail">JobAsmbl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateSerialAvail">AssemblySeq</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateSerialAvail">OPR-CMP</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateSerialAvail">ASM-INS</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateSerialAvail">ASM-REJ</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="ValidateSerialBeforeSelect">ttLaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="ValidateSerialBeforeSelect">RowMod</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="ValidateSerialBeforeSelect">JobHead</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="ValidateSerialBeforeSelect">JobNum</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="ValidateSerialBeforeSelect">PlantConfCtrl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="ValidateSerialBeforeSelect">SerialTracking</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="ValidateSerialBeforeSelect">Part</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="ValidateSerialBeforeSelect">TrackSerialNum</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="ValidateSerialBeforeSelect">LaborQty</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateTimeTypCd">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateTimeTypCd">TimeTypCd</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateTimeTypCd">RoleCd</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateTimeTypCd">ProjectID</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateTimeTypCd">TM</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateTimeTypCd">HIER</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateTimeTypCd">PROJ</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateTimeTypCd">EMPL</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateTimeTypCd">ROLE</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateWcCode">MNT</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateWcCode">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="validateWcCode">ResourceGrpID</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="VerifySerialMatch">JobHead</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="VerifySerialMatch">JobNum</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="VerifySerialMatch">PlantConfCtrl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="VerifySerialMatch">Plant</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="VerifySerialMatch">COMPLETE</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="VerifySerialMatch">SerialNo</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="VerifySerialMatch">SerialNumber</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="VerifySerialMatch">JobMtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="VerifySerialMatch">ReassignSNAsm</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="VerifySerialMatch">JobAsmbl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="warnHrs">DataColl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="warnHrs">LabEnt</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="warnLabor">DataColl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="warnLabor">LabEnt</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="warnOpCode">LabEnt</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="warnQty">DataColl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="warnQty">LabEnt</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="warnScrapReasonCode">DataColl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="canApprove">LaborDtl</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="canApprove">Aprv</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="convDec">99</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="convDec">.99</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="convMin">99</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="genMtlQ">ResourceGroup</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="genMtlQ">Resource</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="getchkEmpPrjRole">TM,CP,PP,FF</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="getImagePath">empphoto/</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="getImagePath">.bmp</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="getJobType">MFG</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="getJobType">SRV</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="getJobType">PRJ</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="getJobType">MNT</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="getRoleCodeDefault">OPR</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="getRoleCodeDefault">EMP</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="getShiftDescription">xx:xx</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="getShiftDescription"> to </Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="getWipOrConsumed">WIP</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="getWipOrConsumed">CONSUMED</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="isLocation">Resource</Ignore>
+    <Ignore file="Labor.cs" class="LaborSvc" method="isLocation">ResourceGroup</Ignore>
+  </Ignored>
+</Translation>

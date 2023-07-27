@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32328.378
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Erp.Services.BO.ConfigurationRuntime", "Erp.Services.BO.ConfigurationRuntime.csproj", "{32FCC08E-2173-4BFB-86FB-8501D958C5BE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{32FCC08E-2173-4BFB-86FB-8501D958C5BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32FCC08E-2173-4BFB-86FB-8501D958C5BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32FCC08E-2173-4BFB-86FB-8501D958C5BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32FCC08E-2173-4BFB-86FB-8501D958C5BE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {771BC4E6-E4BA-4C41-BABD-4685E969AC6C}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 1
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://mps-tfs-main:8080/tfs/e10dev
+		SccProjectUniqueName0 = Erp.Services.BO.ConfigurationRuntime.csproj
+		SccProjectName0 = .
+		SccAuxPath0 = http://mps-tfs-main:8080/tfs/e10dev
+		SccLocalPath0 = .
+		SccProvider0 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,291 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFrameworkServer Condition=" '$(TargetFrameworkServer)' == '' ">net48</TargetFrameworkServer>
+    <TargetFramework>$(TargetFrameworkServer)</TargetFramework>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\..\Epicor.snk</AssemblyOriginatorKeyFile>
+    <RootNamespace>Erp.BO.IssueReturn</RootNamespace>
+    <WarningsAsErrors>NU1605;1570;1572;1573</WarningsAsErrors>
+    <OutputPath>..\..\..\..\..\Deployment\Server\Assemblies\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DefineConstants>DEBUG;TRACE;CODE_ANALYSIS</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DefineConstants>TRACE;CODE_ANALYSIS</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\..\..\SysAssemblyInfo.cs" Link="Properties\SysAssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition="!$(DefineConstants.Contains('NETFRAMEWORK'))">
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <Reference Include="Epicor.Ice.Hosting.AspNetCore.Controller">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Epicor.Ice.Hosting.AspNetCore.Controller.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Configuration.ConfigurationManager" />
+    <PackageReference Include="System.Data.DataSetExtensions" />
+    <PackageReference Include="System.Data.SqlClient" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Compatibility">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Compatibility.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Erp.Common.ContractInterfaces">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Common.ContractInterfaces.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Erp.Contracts.BO.InventoryQtyAdj">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Contracts.BO.InventoryQtyAdj.dll</HintPath>
+      <Aliases>inventoryQtyAdjAlias</Aliases>
+    </Reference>
+    <Reference Include="Erp.Contracts.BO.InvTransfer">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Contracts.BO.InvTransfer.dll</HintPath>
+      <Aliases>InvTransferAlias</Aliases>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Erp.Internal.CSF.China">
+      <Private>false</Private>
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.CSF.China.dll</HintPath>
+    </Reference>
+    <Reference Include="Erp.Internal.IM.GenSMIReceipt">
+      <Private>false</Private>
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.IM.GenSMIReceipt.dll</HintPath>
+    </Reference>
+    <Reference Include="Erp.Internal.IM.IMPlant">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.IM.IMPlant.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Erp.Internal.IM.PartTranSNtranLink">
+      <Private>false</Private>
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.IM.PartTranSNtranLink.dll</HintPath>
+    </Reference>
+    <Reference Include="Erp.Internal.Lib.AdvancedUOM">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.Lib.AdvancedUOM.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Erp.Internal.Lib.Allocations">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.Lib.Allocations.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Erp.Internal.Lib.AppService">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.Lib.AppService.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Erp.Internal.Lib.AsmCostUpdate">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.Lib.AsmCostUpdate.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Erp.Internal.Lib.ControlIDExtract">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.Lib.ControlIDExtract.dll</HintPath>
+    </Reference>
+    <Reference Include="Erp.Internal.Lib.DeferredUpdate">
+      <Private>false</Private>
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.Lib.DeferredUpdate.dll</HintPath>
+    </Reference>
+    <Reference Include="Erp.Internal.Lib.DynAttributes">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.Lib.DynAttributes.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Erp.Internal.Lib.EADValidation">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.Lib.EADValidation.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Erp.Internal.Lib.Extensions">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.Lib.Extensions.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Erp.Internal.Lib.FifoCostNVariLib">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.Lib.FifoCostNVariLib.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Erp.Internal.Lib.FindPart">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.Lib.FindPart.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Erp.Internal.Lib.GetAvailTranDocTypes">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.Lib.GetAvailTranDocTypes.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Erp.Internal.Lib.GetNewSNtran">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.Lib.GetNewSNtran.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Erp.Internal.Lib.GetNextOprSeq">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.Lib.GetNextOprSeq.dll</HintPath>
+    </Reference>
+    <Reference Include="Erp.Internal.Lib.GetResourceGrpID">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.Lib.GetResourceGrpID.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Erp.Internal.Lib.GetWarehouseInfo">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.Lib.GetWarehouseInfo.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Erp.Internal.Lib.InvCosts">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.Lib.InvCosts.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Erp.Internal.Lib.LegalNumberLib">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.Lib.LegalNumberLib.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Erp.Internal.Lib.MtlRcpt">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.Lib.MtlRcpt.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Erp.Internal.Lib.NegInvTest">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.Lib.NegInvTest.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Erp.Internal.Lib.NonQtyBearingBin">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.Lib.NonQtyBearingBin.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Erp.Internal.Lib.OffSet">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.Lib.OffSet.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Erp.Internal.Lib.PackageControl">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.Lib.PackageControl.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Erp.Internal.Lib.PackageControlBuildSplitMerge">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.Lib.PackageControlBuildSplitMerge.dll</HintPath>
+    </Reference>
+    <Reference Include="Erp.Internal.Lib.PkgControlAdjustReturnContainer">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.Lib.PkgControlAdjustReturnContainer.dll</HintPath>
+    </Reference>
+    <Reference Include="Erp.Internal.Lib.SerialCommon">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.Lib.SerialCommon.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Erp.Internal.Lib.Shared">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.Lib.Shared.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Erp.Internal.Lib.ValidateTranDocType">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.Lib.ValidateTranDocType.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Erp.Internal.SI.FSA">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Internal.SI.FSA.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Erp.Services.Lib.GlobalStrings">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Services.Lib.GlobalStrings.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Ice.Lib.NextValue">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Ice.Lib.NextValue.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Ice.Lib.Shared">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Ice.Lib.Shared.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Epicor.Ice">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Epicor.Ice.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Ice.Data.Model">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Ice.Data.Model.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Epicor.ServiceModel">
+      <HintPath>..\..\..\..\..\Deployment\Server\Bin\Epicor.ServiceModel.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Epicor.System">
+      <HintPath>..\..\..\..\..\Deployment\Server\Bin\Epicor.System.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Epicor.Customization">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Epicor.Customization.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Epicor.Customization.Bpm">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Epicor.Customization.Bpm.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Erp.Data.910100">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Data.910100.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Erp.Contracts.BO.IssueReturn">
+      <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Erp.Contracts.BO.IssueReturn.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup Condition="$(DefineConstants.Contains('NETFRAMEWORK'))">
+    <Reference Include="System.Transactions" />
+    <Compile Remove="Generated\IssueReturnController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\Strings.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Erp.Services.BO.IssueReturn.csproj.vspscc" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Strings.resx">
+      <Generator>ICEResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="History.txt" />
+    <Content Include="Resources\TranslationConfiguration.xml" />
+  </ItemGroup>
+
+  <Choose>
+    <When Condition="$(DefineConstants.Contains('USE_EF_CORE'))">
+      <ItemGroup>
+        <Reference Include="Microsoft.EntityFrameworkCore">
+          <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\Microsoft.EntityFrameworkCore.dll</HintPath>
+          <Private>false</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="EntityFramework">
+          <HintPath>..\..\..\..\..\Deployment\Server\Assemblies\EntityFramework.dll</HintPath>
+          <Private>false</Private>
+        </Reference>
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+
+</Project>

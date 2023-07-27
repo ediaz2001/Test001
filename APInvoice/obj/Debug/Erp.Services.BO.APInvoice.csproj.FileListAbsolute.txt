@@ -1,0 +1,5 @@
+C:\_projects\ERP\Current\Source\Server\Services\BO\APInvoice\obj\Debug\Erp.Services.BO.APInvoice.csproj.AssemblyReference.cache
+C:\_projects\ERP\Current\Source\Server\Services\BO\APInvoice\obj\Debug\Erp.BO.APInvoice.Resources.Strings.resources
+C:\_projects\ERP\Current\Source\Server\Services\BO\APInvoice\obj\Debug\Erp.Services.BO.APInvoice.csproj.GenerateResource.cache
+C:\_projects\ERP\Current\Source\Server\Services\BO\APInvoice\obj\Debug\Erp.Services.BO.APInvoice.GeneratedMSBuildEditorConfig.editorconfig
+C:\_projects\ERP\Current\Source\Server\Services\BO\APInvoice\obj\Debug\Erp.Services.BO.APInvoice.csproj.CoreCompileInputs.cache

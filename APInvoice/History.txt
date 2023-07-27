@@ -1,0 +1,1651 @@
+﻿//==========================================================================================
+//FixUpSvcConversion: Strings Extraction Completed at: 6/23/2012 12:49 AM
+//==========================================================================================
+/*------------------------------------------------------------------------
+	File        : bo/APInvoice/APInvoice.p
+	Author(s)   : smr
+	Created     : 01/16/04
+/// <summary>
+/// AP Invoice Business Object
+/// </summary>
+
+  Revision History:
+
+08/12/04  smr  scr15540 - When creating lines from receipts, invoice amounts were incorrectly calculated.
+09/22/04  smr  GL distribution records on misc charges were not updating properly.
+09/28/04  smr  scr16787 - Corrected calculation if invoice line totals.
+10/01/04  smr  scr17166 - Invoice Line PO information was missing in the display.
+10/04/04  smr  scr15893 - EnableExchangeRate was being set incorrectly.
+10/05/04  smr  scr17209 - Show supplier qty from podetail for advance bill lines.
+10/07/04  smr  Fixed SCRs 17244, 16935, 17324, 17325.
+10/08/04  smr  scr16457 - Rework legal numbers.
+10/13/04  smr  scr17364 - Deleting misc charges from received or unreceived caused gl analysis variance.
+11/30/04 Pradeep scr18650 - AP Invoice - receipt matching pulling the base cost as the Doc cost.
+02/18/05 Pradeep scr20654 - Enabled attachments for APInvHed, APInvDtl tables.
+03/15/05  LWS  scr20953 - Use the CostPerCode in cost calculations.
+04/12/05  MFG  SCR21887 - Modified the GetAPUninvoicedReceipts procedure to compare the InPONum with the RcvDtl.PONum 
+							instead of the RcvHead.PONum since they cab be different.
+05/10/05  abc  SCR22460 - PreUpdate was not checking for a valid InvoiceDate.
+05/18/05  mfg  SCR22570 - Modified the GetAPUninvoicedReceipts procedure to go back to the way it was before SCR21887. 
+08/04/05  gdd  SCR23989 - GetAPUninvoicedReceipts procedure is modified to assign VendorUnitCost as PODetail.DocUnitCost (not to re-convert it from the base cost).
+08/08/05  gdd  SCR24242 - ChangeManualTaxCalculations and ChangeTaxPercent procedures were modified to reduce the taxable amount by the tax amountif the Taxcode is flagged as "TermsDiscountReduced".
+							setDatesDiscount procedure was modified to remove the tax amounts which code is marked as "TermsDiscountReduce" from the  amount involved in discount amount calculation.
+09/16/05  abc  SCR25100 - Added afterUpdate code to refresh datasets.  
+10/03/05  ldb  scr 25326  Added refresh of APInvcTax to APInvMscAfterUpdate.   
+10/10/05 Pradeep SQL server find trigger mods.
+10/12/05  smr  scr25544 - In SQL taxes were not calculating for invoice header misc charges.
+10/31/05 sev   SCR24523 - GLAcct must be Active
+11/09/05 ldb   scr 25326  In SQL taxes were not being calculated for invoice line item misc. charges.
+11/10/05 Pradeep scr26107 APInvoiceEntry - get supplier from PO now failing.
+12/07/05 ldb   scr 26558 - Allow receipt type line to have a zero ext amount.
+19/01/06 YBA   SCR 27333 - Changed AddPOMiscChrgToInvoiceLine - Now it searches in POMisc table by SeqNum instead of MiscCode.
+01/20/06 tvv      SCR 27413 - XML Comments in BO Public methods are cleanup.
+02/10/06 tvv      scr 27413 XML Comments in BO Public methods are cleanup.
+02/14/06 diogenes scr 28132 - A validation changed for ttAPInvDtl.AllowGLDistAllocation in apInvDtlAfterGetRows.
+								It was causing Allocation button to be disabled.
+02/27/06 tvv   scr27413 - Public and Private methods are cleanup.
+03/10/06 tvv   scr28527 - In case enter last (not first) invoice in group related supplier defaults always used.
+03/10/06 tvv   scr27413 - Public and Private methods are cleanup.
+03/17/06 tvv   scr27413 - Public and Private methods are cleanup.    
+03/17/06 diogenes scr 28590 - Removed the Vista/Vantage validation for allocation button in apInvDtlAfterGetRows.
+04/07/06 acc  Job 3146 - In procedure GetAPUninvoicedReceipts, calculate ttAPUninvoicedRcptLines.DocLineAmount using RcvDtl.DocUnitCost.
+04/17/06 laq  Job 3088 - Changes for MultiCompany AP
+04/19/06 JeanetteP  SCR 3088 - More changes for Multi-Company GJ and AP project.
+05/03/06 Orv R.  The ApInvHedList lookup links were removed. Deleted getListRowLoaded so that program would compile.
+05/08/06 JeanetteP  SCR 3119 - Added changes for Central AP Invoice Payment project.
+05/19/06  JeanetteP SCR 3088 - More changes for the Multi-Company GJ project.  Do not allow
+									Multi-Company if no GlbGLSyst record available.
+06/19/06  JeanetteP SCR 30396 - Added the assignment of ScrInvoiceVendorAmt and ScrInvoiceVariance 
+						fields for APInvHedList.
+06/23/06  AndreaP SCR 30588 - Added the assignment of ScrInvoiceBal and ScrUnPostedBal 
+						fields for APInvHedList
+07/07/06 nzirbes scr 30440 - modified assignAPInvJobJobMtlFields to ensure the correct JobMtl record is available
+07/26/06 jajohnson - 3034 added logic to generate invoices from rebates
+08/03/06 jajohnson - 3034 added logic to allow deletion of rebate lines
+08/15/06 GlennB    - SCR 28044 - Modified code in ChangeCurrency method.  Wasn't calculating foreign currency or updating UI.
+09/07/06 fernanda scr31307 Performance fixes. Replaced all finds with findtbl.
+10/11/06 ludmilas scr32397 Modified apInvDtlAfterGetRows: receipt date is null if there is no receipt;
+										createApInvDtl: initial receipt date for new misc line is null.
+10/23/06 JuliaK  scr32632 Modified CalcExtCost - should calculate by reverse method as it is in other programs.        
+11/17/06  DmitriyK SCR 40779 Modified getListRowLoaded () to fill VendorNumName column with Vendor.Name data.
+01/11/07 EduardoR SCR41209 - Modified apInvJobBeforeUpdate to check the sum of costs and
+								don't allow the user to enter a debit memo that exceeds the costs.
+01/11/07 EduardoR SCR41209 - Modified apInvJobBeforeUpdate to check if the Cost got below zero on each operation and not in the total amount.
+01/29/07 JeanetteP SCR 41117 - Modified for VAT enhancements.
+04/10/07 EduardoR SCR29774 - Modified ChangeRefPONum, the Ref PO should populate the Terms from PO and not from Supplier.
+05/31/07 JeanetteP SCR 43236/44624 - Modified the logic added by SCR 41117 for VAT enhancements.                     
+06/04/07 JeanetteP SCR 44950 - Modified ChangePOLine to remove reference to the deleted getRevChargeMethod procedure.
+06/14/07 Pradeep scr45150 - Tax results not automatically returned for invoices created through Get process - except shipments
+06/27/07 TatyanaK SCR43508 - Searching of uninvoiced receipt lines was corrected 
+								for case several PO's in one receipt.
+06/28/07 VladimirD SCR 45005 - modified ChangeCurrency procedure. Amount calculated properly now.
+07/13/07 ludmilaS SCR 45446 - added CheckLegalNumsDisplay, this procedure checks is it necessary to generate legal numbers for DMR debit memos;
+								added GetLegalNumForDebitMemo, this procedure generates legal numbers for DMR debit memos.
+07/23/07 DanielG SCR 45821 - Modified apInvExpAfterGetRows procedure to populate (RefCodeDesc) Reference Code Description field.
+08/29/07 JeanetteP SCR 31576 - Modified the ChangeAdvPayAmt procedure to validate that the entered advance payment will
+						not exceed the PO's advance payment balance.
+09/03/07 DanielG SCR 45821 - Modified apInvExpAfterUpdate procedure to populate (RefCodeDesc) Reference Code Description field.
+09/11/07 DanielG SCR 46618 - Modified apihAPInvMscAfterUpdate and apInvHedChildDeleted procedures. Discount calculation process was modified to adjust it for SQL databases.
+09/26/07 FelipeM SCR 46500 - Modified getListRowLoaded to set the vendor ID
+10/30/07 dparillo scr 47184 - Modified whereclause in GetAPUninvoicedReciepts.
+11/08/07 YuriR SCR-40458 (op 361) - Tax Rounding logic is applied.
+11/23/07 AlexanderP SCR-40458 (op 382) - The applying of the rounding in overriden write-triggers.
+11/29/07 IrinaY SCR 40458 - Modified getAPInvDtlVariance to take in account rounding by decimals.
+12/06/07 IrinaY Scr 40458 - added calcVariance to recalculate Variance and Rounding for APInvHed.
+12/10/07 scottr scr41079 - Initial coding for TranGLC functionality.
+12/13/07 YuriR  SCR 40458 - Replace ConvertAmtRoundDec with ConvertAmtRoundDecimals
+12/20/07 felipeM SCR 41079 - Removed all the references of APInvHed.APAcctID and added Validations for fields APInvHed.GLControlType and APInvHed.GLControlCode on apInvHeadBeforeUpdate
+12/24/07 YuriR   SCR 40458 (opr.381) - Round of fields used in the next calculations before they will be rounded in the trigger (actual) or GetRows proc. (external).
+12/28/07 VictorI SCR 40458 (opr. 361) - Added calculation of new external field CurrencyCode in APInvPaySched, APInvPOMisc, APUninvoicedReceipts.
+12/28/07 felipeM SCR 41079 - Added the public method ChangeGLControlType, to set the initials values of combo GLControlCode in UI.
+01/03/07 KarinaM SCR 41083 Modified apInvHedAfterGetRows,apInvHedBeforeUpdate,getCurrency,getCurrencyInfo,getExchangeRate,getBaseCurrSymbol Procedures:
+								References to "BASE"  is replaced. New Query Currency was added.
+01/23/08 scottr scr 41079 - Changes for implementation in UI and with posting engine.
+01/29/08 AlexanderP SCR 40458 (opr. 387) - Calculations of CurrencyCode are added.
+01/30/08 rosalindaV SCR 41083 (opr. 349) - Update Reporting Currency fields and Currency Utility calls
+02/04/08 IrinaY SCR 40458 - Applied rounding by decimals for tt tables and  recalculated BASE fields from DOC in case they depend on CurrencySwitch
+02/06/08 SCR 41083 (opr. 349) - Update Reporting Currency fields and Currency Utility calls
+02/06/08 KMendoza SCR 41083 - to set the base currency into CurrencyCode field due the initial value 'Base' was removed from the OD and BD.
+02/08/08 IrinaY SCR 40458 - rework - return include ar/RebateInv.i
+02/13/08 rosalindaV SCR 41083 (opr. 349) - Update Reporting Currency fields and Currency Utility calls
+02/15/08 - JulioDV SCR 40600 (opr 307) - Added external fields RcptIUM,RcptOurQty,PORelOurQty,PORelIUM in OD. Regenerated Object.
+											Added logic to getLinePOInfo and getLineRcptInfo methods to fill external fields.
+											CosPerCode field: Changed "Code/Desc" definition in OD. "/Each" changed to "/1".
+02/15/08 rosalindaV SCR 41083 (opr. 349) - Update Reporting Currency fields and Currency Utility calls
+02/28/08 AlexanderP SCR 40650 (opr. 360) - Rounding of variables and fields according to the currency setup.
+03/17/08 scottr - scr41079 - Initial work on global account glcontrol.
+03/20/08 jajohnson - scr 41083 - multicurrency
+03/21/07  Todd scr41079 - scr41079 - Additional changes for implementation of TranGLC.
+04/15/08 KarinaM  scr 40616 (opr. 313) - add new type of taxes.
+04/22/08 LorenS - SCR 40611 - Opr 325 - Added fields Apply Date and Fiscal Year Suffix and supporint logic.
+04/23/08 ReneO - SCR 40734 - Op 323 - Added new assing in apInvDtlAfterGetRow 
+04/30/08 scottr - scr40631 - legal number changes
+05/15/08 galinad - scr 40616 - Tax Enhancements changes.
+05/15/08 LorenS SCR 40984 - New Terms Types.
+05/19/08 - Fmichel - SCR 41079 - added include lib/entityGLC.i and new logic to use the GL Control Tab
+05/20/08 - Fmichel - SCR 40985 - Modified index in Object Designer
+05/21/08 - andreaP - scr 40711 - added POType check in GetApUninvoicedReceipts.  
+									We don't want to invoice CMI type POs nor SMI types with AutoReceipt = false
+05/28/08  rosalindaV SCR 40641 (Opr. 328) - Methods for Logged Invoices.    
+05/29/08 nzirbes     scr 40611 removed edit against Fiscal table in APInvHedBeforeUpdate                             
+05/30/08 LorenS SCR 40984 - New Terms Types
+06/05/08 nzirbes scr 40641 - check to see if logged invoice has been voided.
+06/05/08 Juliak  scr 42513 - Inventory: GlDiv*,GLDep*,GLChart* were removed , should use GLCOntrol, logic was moved to booking rule.
+06/09/08 JulioDV SCR 40762 - Added OnShipmentIDChange and OnLCFlagOfLineMiscChargeChange methods.
+								Added logic to apInvDtlAfterGetRows, apInvDtlBeforeUpdate, apInvMscAfterGetRows, apInvMscBeforeUpdate and ChangeMiscCode methods.
+								Object Designer: Added ApInvDtl.EnableShipmentID and APInvMsc.LCEnabled external fields. Added ContianerID Link. Regnerated Object.
+06/10/08 nzirbes scr 40641 - updated the logged invoice logic.  Changed apinvhead to apinvhed for Loren.                             
+06/13/08 AlbertoC SCR 40734 - Added logic to process Drop Shipments as receipt lines.
+06/15/08 jajohnson scr 40616 - replace discountreduce
+06/16/08 LorenS SCR 40984 - Set the ttAPInvHed.PayDiscPartPay field value.
+06/17/08 YulianaR SCR 40680 operation 370 - Added into changeVendorID a Validation for PMUID
+07/01/08 PauloS SCR 40854 (op 310) - Added Dataset and methods to support Supplier XRef.
+07/02/08 PauloS SCR 40854 (op 310) - Removed some parameters from the method SetSupplierXRefParts
+07/02/08 jajohnson scr 52447 - update APInvExp.DocExpAmt and rpt fields
+07/07/08 scottr scr41079 - added new parameter option to tranglcbo.i
+07/10/08  jajohnson  scv 52687 - update tax amounts for withholding
+07/11/08 galinad scr 52634 - changes to remove  APInvTax records deleted by Tax Engine from  display
+07/15/08 galinad scr48694 - added additional parameter to caltaxes call
+07/15/08 jajohnson scr 52839 - chnages to changeMtlSeq procedure to change the field name
+07/16/08 jajohson scr 41083 - selfassessment adjustments
+07/18/08 AlbertoC SCR 52610 - Added proc getLineDropShipInfo, call it in apInvDtlAfterGetRows to fill receipt info for drop shipments.
+07/23/08 scottr scr41079 - return EntityGLC records created when APInvHed was created 
+07/30/08 EduardoR SCR 52336 - Modified GetAPUninvoicedReceipts to set correctly the Supplier Unit Cost.
+07/30/08 galinad  SCR 52706 - changes to SetReadyToCal procedure to process taxes for all invoices of the Group on Group - Calculate All Taxes action.
+08/05/08 Rvillalobos SCR 53151 - Fixed TaxAmt logic for logged invoices.
+08/05/08 Rvillalobos SCR 52968 - Changed logic that retrieves the data of the logged invoice. 
+08/11/08 galinad scr 53910 - changes to apihAPInvMscAfterUpdate and apInvMscAfterUpdate to re-find APInvMsc record after the call to tax engine.
+08/12/08 galinad scr 50058 - changes to apInvcHedBeforeUpdate and OnChangeofApplyDate procedures to change exchange rate
+08/12/08 nzirbes scr 53968 - modified MatchedInvoice logic - added ECAcquisitionSeq to the for each LogAPInvTax statement.  The APInvTax after update
+								method creates the reversing tax.
+08/12/08 jajohnson scr 52162 - fixed ttAPUninvoicedRcptLines.VendorUnitCost assignment
+08/18/08 galinad   SCr 53117 - changes to ChangeTaxCode procedure to assign default Rate Code if the Tax code is assigned for the first time for the invoice.
+08/18/08 scottr scr 52817 - CheckLegalNumsDisplay checking incorrect table.
+08/20/08 AlbertoC SCR 12345 - Renamed field PartXRefVend.VendNum to PartXRefVend.VendorNum.
+08/25/08 jajohnson scr 40616 - remove obsolete fields
+08/27/08 jsjohnson scr 40616 - populate new TextCode field on taxes
+09/02/08 galinad SCR 54138 - changes for correct display the fixed part of the tax amount in case if the invoice type is Debit Memo.
+09/03/08 VladimirJ scr 51169 - modified apInvHedAfterGetRows, apInvHedBeforeUpdate: fullfill new fields IsLcked, RvnJrnUID, LockStatus.
+09/04/08 jajohnson scr52685 - update APIHAPInvExp doc and reporting ExpAmt on save
+09/17/08 scottr scr 55232 - remove apacct and aracct references
+09/23/08 tatyanak scr 53148 - AP GL control copy was added into logged invoice match operations.
+09/23/08 YuriR    scr 53114 - Calculations of Rpt-fields was fixed, new include file RptCopy is used
+09/24/08 PauloS   scr 54171 - Removed methods GetSupplierXRef\SetSupplierXRef and regen the object.
+09/25/08 nzribes scr 40608 - removed references to obsolete tables/fields related to div/chart/dept/glacct
+09/29/08 ReneO   scr 55446 - Modified the method getLineDropShipInfo.
+09/30/08 TatyanaK scr 54681 - modified apInvHedBeforeUpdate to process payment method correctly.
+09/30/08 YuriR   scr 50071  - modified ChangeCurrency avoid Recalculation of Invoice Amount for new record
+10/01/08 RosalindaVC SCR 55388  - Fixed issue of Legal number when getting a Logged invoice.
+10/05/08 YuriR  SCR 55320 - Modified CheckRateGrpCode - let user enter empty Rate Group if there is only Base currency.
+10/06/08 jajohnson - scr 50600 - added basecurrencyid fields for display in toolbar
+10/13/08 scottr scr56522 - validate apply date against earliest apply date
+10/20/08 galinad scr 40616 - populate ttLinetypes.DocTermsTaxableAmt field
+10/29/08 jajohnson scr 41083 - added rpt fields to APInvJob
+10/29/08 tkampa scr 57095 - Fixed error checking for vendor 
+11/03/08 Rvillalobos SCR 56916 - Fixed Rpt1MiscAmt error message displayed in the appserverlog 
+11/08/08 VladimirJ scr 56765 - proc CheckDocumentIsLocked was added.
+11/19/08 irinaY scr 57770 - modified MatchLoggedInvoice to correct calculation APInvHed.WithholdAmt.
+11/19/08 JeanetteP SCR 55657 - Modified how Landed Cost related Miscellaneous Charge is validated and maintained.
+11/20/08 galinad  SCR 57753 - changes to MatchLoggedInvoice, MatchLoggedScrUpdate, UpdGetLogApInv, SetReadyToCalculate to correct the dispaly and saving of Tax related fields for Debit Memos.
+11/21/08 VladimirD SCR 57834 - If invoice created from Logged and AllowOverrideLI set to true, reference GLCOntrols should be deleted.
+11/24/08 galinad SCR 57863 - changes to getVendorDefaults procedure to get default Payment Method for the invoice as Vendor's default Payment Method
+12/02/08 galinad SCR 57863 - The invoice payment method should not default from supplier Bank , only from supplier (Vendor) record.
+12/10/08 galinad SCR 40616 - changes to ChangeTaxRate procedure to assigne the TaxRateDate.
+
+01/28/09 galinad SCR 59362 - changes to ChangeCurrency procedure to correctly recalculate invoice header amounts if currency code is changed to base currency.
+02/06/09 YeseniaA SCR 44720 - ":U" was added for non-translatable strings.
+01/22/09 galinad SCR 59989 - changes to APInvHedAfterGetRows, InvcHeadBeforeUpdate, InvcHeadAfterUpdate, new procedures OnChangeOfTransApplyDate, applyDateChanged, recalcInvoiceAmounts to add the ability to change Apply Date for transferred invoices
+02/26/09 FelipeM SCR 60294 - Added code to save and retrive APInvHed.TaxDestination Patch field
+03/03/09 PPhillips SCR 60566 - getAPUninvoicedReceipts() - Don't select receipts that aren't marked "Received".
+03/09/09 PPhillips SCR 60566 - Correct previous fix.
+03/20/09 YuriR     SCR 60274 - added proc OnChangeTranDocTypeID, handle new fields: TranDocType, GUI-fields. 
+03/21/09 amiletin  SCR 60274 - fill taiwan localization data from patch field in OnChangeTranDocTypeID procedure.
+03/24/09 YuriR     SCR-60274 - modified ValidateInvoiceID, added isGUIFormat, isDigit for TW localization.   
+03/24/09 amiletin  SCR 60274 - set default taiwan values for new invoice and credit memo.
+03/25/09 amiletin  SCR 60274 - set default taiwan values for new invoice and credit memo.
+04/02/09 YuriR     SCR 60274 - removed Validation of the number to BPM
+04/02/09 TatyanaK  SCR 61216 - GL Analysis multi-company functionality was corrected.
+04/16/09 TatyanaK  SCR 61216 - GL Analysis multi-company functionality was corrected.
+05/19/09 TatyanaK  SCR 61216 - GL Analysis multi-company functionality was corrected.
+05/20/09 SergeyK   SCR 61138 - Validate operators was added.
+06/14/09 HeribertoC SCR 61671 - Use Tax Project: Tax Connect calculation is now available for AP Invoices.
+07/03/09 HeribertoC SCR 61671 - Use Tax Project: Enter code defaulting the TaxExempt and TaxCatId fields in APInvDtl
+												Added ChangeTaxCatID procedure.
+07/09/09 YeseniaA  SCR 63305 - Added code to fill BookId and GLAccount (new fields in APInvExp table)
+07/13/09 CristianG - SCR 64709 - Enhance the code of the UsePatchFld.i library that provides the necessary procedures to manipulate PatchFld records.
+07/14/09 LorenS    SCR 61012 - Opr 375 - Implementaion of new JobTypes "PRJ" & "MNT".
+08/05/09 - Pradeep scr61014 - Project Billing Changes.
+08/05/09 - jajohnson scr 63581 - poland localization
+08/05/09 - scottr scr64938 - sweden-finland localization: validate Bank Reference number 
+08/06/09 IrinaY SCR 58164 - added percentage allowance for Miscellaneous charges
+08/06/09 galinad SCR 64992 - changes for Estonia localization
+08/11/09 - HeribertoC - SCR 65383 - TranDocType.GUIFormatCode makes no reference to the PatchFld table anymore.
+									TranDocType.GUITaxTypeCode makes no reference to the PatchFld table anymore.
+									TranDocType.GUIDeductCode makes no reference to the PatchFld table anymore.
+									TranDocType.GUIWineCigarette makes no reference to the PatchFld table anymore.
+									APInvHed.GUIFormatCode makes no reference to the PatchFld table anymore.
+									APInvHed.GUITaxTypeCode makes no reference to the PatchFld table anymore.
+									APInvHed.GUIDeductCode makes no reference to the PatchFld table anymore.
+									APInvHed.GUIWineCigarette makes no reference to the PatchFld table anymore.
+08/11/09 - HeribertoC - SCR 61671 - Use Tax Project. Some data cleaned before process the Invoice.                                     
+08/11/09 FelipeM - SCR 60195 - Added Sweden and Finland Localization
+08/12/09 TatyanaK - SCR 62833 - Creation of the correction invoice was implemented. 
+08/13/09 VladimirJ - SCR 64476 - proc ChangeExtCompanyID was modified.
+08/13/09 JuliaK scr 62250 - new ExtGLAccoutn and new ExtCoaCode have been added.
+08/12/09 TatyanaK - SCR 62833 - Corrections in the creation of correction invoice. 
+08/21/09 FelipeM SCR 65782 - Fixed to trow the Banking Refence warning only when the OCR changed
+							or when is a new AP Invoice.
+08/27/09 amiletin - SCR 61014 - Filled reportable and documented fields for APInvJob and APInvPB tables.
+09/10/09 - HeribertoC - SCR 65750 - IncomeTaxCode is now validated in apInvDtlBeforeUpdate procedure
+									- ChangeIncomeTaxCode procedure was added                                     
+10/08/09 JeanetteP SCR 40674 - Changes for the Asset Management project.    
+10/14/09 YeseniaA SCR 64858 - apInvExpAfterGetRows procedure was modified to fill ApInvExp.GlAccountDesc field.
+							apInvExpTGLCAfterUpdateLocal procedure was added to fill the description when a new record is created.
+				SCR 65251 - ttAPInvExp.GLAccount: validation of GLAccount was modified to take place only when multicompany is in use.
+10/19/09 irinay scr 67063 - check PODetail.DocAdvancePayBal instead of its Base value.
+10/20/09 YuriR  scr 61014 - avoid exchange errors in OnChangeAPInvPB proc. 
+10/22/09 amiletin scr 66250 - Using ttApInvHed instead of ApInvHed in BuildCurrencyRates.
+10/22/09 HeribertoC SCR 65750 - Mexico Phase II. Default Income Tax Code for Invoices created.
+11/02/09 YeseniaA   SCR 66433 - Code modified to generate Legal number correctly depending of Document Type selected.
+11/10/09 scottr scr63319 - new parameters to calcTaxes (processTaxes.i)
+11/13/09 DebbieP - SCR-68252 - updates to ChangeJobMiscCode.
+11/25/09 IrinaY SCR 58164 - set MiscAmt and Percentage when MiscCode is changed.
+12/18/09 galinad SCR 67522 - Taiwan localization - phase II - changes to APInvHedAfterGetRows, new public procedure ChangeGUITaxBasisAmt is added
+21/12/09 TatyanaK - SCR 62833 - Creation of correction invoice was corrected. 
+
+01/08/10 scotth - SCR 63847 - Added logic to create DMR Credit Lines
+01/11/10 Pradeep - scr68733 - Changed logic of creating default record.
+01/11/10 Pradeep - scr68252 - Misc issues creating JobMtl.
+01/11/10 KrisM - scr 66667 - added ChangeLOC proc for letter of credit.
+01/12/10 Pradeep - scr68252 - PhaseDescription was not being set.
+01/12/10 CCORTEZ - SCR 66667 - Added ChangeLOCIDInvPosted to validate APLOCID column on change event. apInvHedBeforeUpdate modified to acept changes of APLOCID
+							and discard changes of APLOCIDDescription. APLOCID added to APInvHedList table. Added APLOCIDDescription column by Link to APLOC.
+							BO regenerated.
+01/19/10 DebbieP - SCR-70192 - updates for APInvJob relating to projects/phases/misc charge code, added ChangeJobMiscProject  
+01/25/10 galinad - SCR 70765 - Sweden/Finland/Estonia localization - changing the criteria to validate Banking Reference number entered by the user                                                      
+01/28/10 FelipeM - SCR 67338 - Added code to use the default Tax Category and disable Intrastat option with Tax Category Exclude From Intrastat field
+01/29/10 KrisM SCR 71087 - replaced ExtCompany.APPurchType with XBSyst.APPurchType.
+02/11/10 IrinaY SCR 58164 - not allow negative values for Misc Charge Percentage and Amount 
+02/18/10 CCORTEZ - SCR 63817 - Set ttAPInvHed.ReadyToCalc to APSyst.InvcReadyToCalcDflt when creating a new invoice.
+03/03/10 TatyanaK - SCR 65738 - 3rd party late cost functionality was added.
+03/11/10 YuriR - SCR-72930 - Modified ChangeMiscCode: update fields LCDisburseMethod of appropriate tables.
+03/11/10 SergioJ - SCR 61400 - (Thailand Localization) Assign Plant on APInvHed.Plant only when Thailand Localization it's active.
+03/15/10 IrinaY - SCR 72020 - modified getListRowLoaded to avoid the error 'No APInvHed record is available.'.
+06/17/10 galinad - SCR 63088 - changes to OnChangeApplyDate, APInvHedBeforeUpdate, APInvHedAfterGetRows procedure to enable Apply Date for Invoice Header related to DMR, recalculation of Amounts/Rates on change of Apply Date is based on User's answer 
+03/17/10 nzirbes - scr 72756 - modified method ChangeLOCID 
+03/19/10 TatyanaK - SCR 71709 - Check of the apply date in case update of a posted invoice was switched off.
+03/23/10 IrinaY - SCR 70460 - Allow to  Misc Charge Amount less then zero for Correction record.
+03/24/10 nzirbes - scr 73373 - changed signature to processtaxes;Modified apInvHedBeforeDelete to use the correct TaxSvcID
+03/25/10 JessicaR - SCR 71813 - Modified getAPUninvoicedDropShipments. Drop Shipment can be invoiced when ReceivedShipped=true, added filter for this condition.
+03/29/10 galinad  - SCR 72926 - changes to ChangePOLine method to populate APInvDtl.TaxExempt and APInvDtl.TaxCatId fields
+04/06/10 gjh - SCR#73874 - Updated calls to deleteRow to reflect new parameters.
+04/08/10 VladimirJ - SCR 58485 - replaced ExtCompany.APDiscount with XBSyst.APDiscount.
+04/12/10 IrinaY - SCR 73643 - cancel last change by scr 58164 to allow negative values for MiscCharge Percentage and Amount.
+04/09/10 scotth - SCR 73759 - Added calls to calcBaseAmt, calcExtCost and getLineTotals when creating a new DMR credit line.
+04/14/10 amiletin - scr 69998 - Added check TranDocTypeID in apInvHedBeforeUpdate procedure.
+04/15/10 amiletin - scr 69998 - Added check for TranDocTypeID using lib\ValidateTranDocType.i.
+04/16/10 amiletin - scr 69998 - Added check for TranDocTypeID using lib\ValidateTranDocType.i.
+04/20/10 RosalindaVC - SCR 72571  - Modified logic to fill DescCollectionType according to APInvTax.CollectionType instead of SalesTax.CollectionType.
+04/21/10 galinad 74448/SCR 74255 - Taiwan localization - validation for Invoice Number (GUI and nonGUI) is done on condition of GUI Format code.
+04/23/10 JuliaK     SCR 72929 - refresh of GLAccount, Description and Disp fields has been corrected. Number of temp-table for TGLC has been corrected.
+05/03/10 LorenS     SCR 74675 - CSF Czech Republic - Bank Account on Supplier Invoice.
+05/04/10 LorenS     SCR 74675 - CSF Czech Republic - Bank Account on Supplier Invoice.
+05/06/10 Juliak     SCR 72929 - Using of number of TGLC tables have been modified to Define, it's easy  to change in one place. 
+05/10/10 LorenS     SCR 74675 - Added Bank ID validation.
+05/11/10 KrisM      SCR 71535 - allow all unposted invoice to change applydate.  apInvHedAfterGetRows.
+05/11/10 LorenS     SCR 74675 - APInvHed validation.
+05/12/10 LorenS     SCR 74675 - APInvHed validation.
+05/14/10 LorenS     SCR 74119 - Czech Republic CSF - Support Changing Currencies - Section 4.8.
+05/17/10 AbrahamG   SCR 67328 - Denmark CSF
+05/17/10 LorenS     SCR 74675 - CSF Czech Republic - Bank Account on Supplier Invoice.
+05/18/10 LorenS     SCR 74119 - CSF Czech Republic - Support Changing Currencies - Section 4.8.
+05/21/10 AbrahamG   SCR 67328 - Denmark CSF update.
+05/26/10 LorenS     SCR 74119 - Czech Republic CSF - Support Changing Currencies - Section 4.8.
+06/02/10 LorenS     SCR 74119 - Czech Republic CSF - Support Changing Currencies - Section 4.8.
+06/03/10 MarcoA     SCR 66577 - Enhancement for LAC tax calculation. 
+06/07/10 galinad    scr 74190 - new procedure is added - CheckPaymentMethod - AP Bank file Import related Payment method is not allowed to be selcted as Payment Method for AP Invoice
+06/08/10 JesusC SCR 75796 - Modified setReadytoCalc to handle apostrophes in InvoiceNum.
+06/15/10 Lorens     SCR 76065 - Populate the Payment Method correctly for localizations for Sweden & Finland.
+06/14/10 CCORTEZ   SCR 76123 - Replaced TaxRate.TaxPercent with TaxPercent patch field (A decimal added in the format).
+06/17/10 AlbertoC SCR 75136 - Modified proc GetAPUninvoicedReceipts, fixed logic for misc receipt lines in order to calculate correct amounts.
+06/17/10 RosalindaVC SCR 74639 - Fixed retrieve of Exchange Rate on change of currency.
+06/28/10 amiletin   SCR 69998 - Fixed validation of TranDocTypeID in CreateCorrectionInvoice.
+07/30/10 andreaP scr 77296 - performance enhancement - reduce number of BL calls so some calls got combined.
+08/02/10 andreaP scr 77296 - performance enhancement - reduce number of BL calls so some calls got combined.
+08/16/10 KarinaM SCR 67343 - 
+08/20/10 scottr scr 78113 - correct procedure not found error when adding a new header gl expense record
+08/25/10 RosalindaV SCR 70882  - Mexico Localization - Fixed default of Income Tax code.
+08/25/10 galinad SCR 66786 Estonia Localization - additional changes (rework) to chkBankRefCore to bring a warning if Bank Reference number is not assigned
+08/31/10 jhmartinez SCR 77846 - Czech Republic CSF - Default LoC on ChangeRefPONum.
+09/01/10 ABuslenko - SCR 76380 - AP Debit Exchange Rates support (Romania CSF).
+09/01/10 JessicaR SCR 77669 - Modified getLinePOInfo, added validation before runnig BuildCurrencyRates.
+09/08/10 MZelensky scr 76396 - apInvHedAfterGetNew() is changed to take default TransDocType for User. getAvailTranDocTypes lib included.
+09/24/10 TatyanaK SCR 78195 - AllocateLateCost was corrected on pupose to avoid processing the same late cost line twice. 
+10/05/10 andreaP  SCR 79439 - Addition of UpdateMaster method needs to support BPMs existing on Update method.
+10/06/10 ABuslenko SCR 79020 - AP Adjustment Invoices support (Poland CSF).
+10/06/10 AVPopov SCR 76379 - New procedures 'ChangePrePayment' and 'ChangePrePaymentAmt' were added. Procedures 'apInvHedBeforeUpdate', 'recalcInvoiceAmounts' were updated
+10/11/10 TatyanaK SCR 78202 - Code mistake in the rcvMiscBeforeDelete was corrected.
+10/18/10 MarcoM SCR 58985 - Added apInvExpAfterUpdate method in order to refresh the APInvDtl temp-table.
+10/19/10 ABuslenko - SCR 76380 (315) - AP Debit Exchange Rates support (Romania CSF).
+10/20/10 AVPopov - SCR 76379 - Loading of company field 'APSyst.ApplyAPPrePayAuto' into the external field of 'APInvHed' table with the same name was added.
+11/04/10 JesusC  - SCR 75796 - Modified setReadytoCalc to handle apostrophes in the whereClause with AdjustQuotes.
+11/08/10 ABuslenko - SCR 76380 (322) - AP Debit Exchange Rates support (Romania CSF).
+11/18/10 ABuslenko - SCR 76380 (329) - AP Debit Exchange Rates support (Romania CSF).
+11/17/10 MarcoA    - SCR 80235 - Change LAC tax flag to different temp table
+11/29/10 ABuslenko - SCR 80251 - Credit Adjustment Invoice and Exports use deferred tax support (Poland CSF).
+12/02/10 TatyanaK  - SCR 81173 - Query creation and processing was corrected. 
+12/11/10 amiletin  - SCR 79602 - Removed check isSEOrFILocalization to get Payment Method of Vendor. 
+01/19/11 SergioJ    SCR 78886 - Fix issue on Tax Exempt defaulting.
+01/20/11 AVPopov    SCR 82210 - An error related with field 'PrePaymentAmt' was fixed in 'RecalcInvoiceAmounts' procedure.
+01/24/11 ABuslenko  SCR 80354 - Additional patch fields calculation added.
+01/27/11 BillE      SCR 82104 - Correcting creation of Uninvoiced Receipts for multiple PO's.
+01/02/11 galinad    SCR 82325 - changes to UpdAPInvoiceMatched procedure to exclude Tax total related fields from being copied from Logged Invoice header to ttAPInvHed.
+01/02/11 galinad    SCR 82201 - changes to assign the correct exchange rate for AP correction invoices if Copy Exchange Rate for correction invoices flag is off
+02/16/11 KrisM      SCR 81288 - Peru CSF - Bill of Exchange.
+02/16/11 galinad    SCR 82818 - changes to chkBankRefCore to correct code for Finland localization
+02/17/11 KrisM      SCR 81288 - more Peru Bill of Exchange changes.
+02/25/11 KrisM      SCR 81288 - more Peru Bill of Exchange changes.
+03/01/11 galinad    SCR 82671 -changes to APInvHeadChildDeleted to call for APInvExp update
+03/02/11 KrisM      SCR 81288 - Peru CSF changes.
+03/03/11 jajohnson  scr 81288 - Peru CSF withholding tax changes
+03/04/11 TatyanaK   SCR 81689 - Misc amount in document currency is being sent to the ap/SyncAPInvExp.p.
+03/07/11 KrisM      SCR 81288 - Peru CSF changes.
+03/12/11 KrisM      SCR 81288 - Peru CSF changes.
+03/13/11 KrisM      SCR 81288 - Peru CSF changes.
+03/17/11 KrisM      SCR 81288 - Peru CSF changes.
+03/23/11 KrisM      SCR 81288 - Peru CSF changes.
+04/11/11 amiletin   SCR 82539 - Fixed creating memo for transfering invoice.
+04/22/11 DanielM    SCR 85003 - Modified apInvHedChildDeleted to not call ap/SyncAPInvExp, and also changed CreateCorrectionInvoice to create the records in the right order
+								otherwise the logic would override the ApInvHedExp records.
+04/22/11 DanielM    SCR 75198 - Modified GetAPUnInvoicedReceipts to calculate the rounded LineAmount by passing the calculated unit cost directly to RoundDecimalsTT
+04/22/11 DanielM    SCR 85003 - Modified CreateCorrectionInvoice and its related procedures to create the correction invoice in a specific order to maintain relations with the APInvExp records.
+04/27/11 LorenS     SCR 83783 - Fix currency exchange rate calculation.
+04/22/11 DanielM    SCR 75198 - Modified GetAPUnInvoicedReceipts to use the base quantity to calculate the line amount since that is how it is calculated for the pur-stk transactions
+05/18/11 SergioJ    SCR 85334 - Peru CSF - Add Field PEDUARefNum for patch field.
+05/20/11 FelipeM    SCR 83558 - Peru Loc - Added pESUNATDtlview view to MaintTransaction.cs
+05/23/11 FelipeM    SCR 83558 - Peru Loc - Modified to update SUNATRefNum
+05/24/11 FelipeM    SCR 83558 - Peru Loc - Added pESUNATDtlAfterGetRows and pESUNATDtlAfterGetNew procedures
+05/26/11 RPeterson  SCR 85875 - Added field list to query to improve performance.
+06/01/11 JEPerez    SCR 83980 - Changes to apInvHedBeforeUpdate procedure to consider primary BankID when a new record is created 
+06/09/11 TatyanaK   SCR 84338 - 'Matched' flag assignment was removed from MatchLoggedInvoice to apInvHedAfterUpdate. 
+06/10/11 RosalindaV SCR 86166 - Removed code that prevented BoE related invoices from been displayed in trackers 
+06/13/11 RosalindaV SCR 86172 - Peru Csf - Added logic to handle partial payments for referenced invoices in multple BoE Invoices.
+06/22/11 LevR       SCR 85668 - Added new external field APInvHed.PostInvtyWipCos (copy from GLSyst.PostInvtyWipCos).
+06/29/11 RosalindaV SCR 85993 - Peru Loc - Added pEAPInvTaxView view to MaintTransaction.cs
+06/30/11 RosalindaV SCR 85993 - Peru Loc - Added Peru fields to valid list to update after posted.
+06/30/11 RonM       SCR 86345 - Sweden/Finland - Added NoBankingReference patch fields, reworked chkBankRefCore method.
+07/05/11 jajohnson  scr 85193 - use new company flag to default exchange rate from apply date or invoice date
+06/29/11 DanielM    SCR 75198 - Modified GetAPUnInvoicedReceipts to calculate the mtlUnitCost in a variable with the same format as PartTran.MtlUnitCost so the line amounts match PartTran
+07/08/11 RosalindaV SCR 85993 - Peru Localization - Added two external fields for currency calculations.
+07/22/11 scottr     scr 87595 - better handling of record if posting failed due to payment not posting
+07/28/11 ronm       SCR 86345 - Sweden/Finland - modify NoBankingReference patch field to use vendor.
+08/02/11 RosalindaV SCR 85994 - Peru CSF - Added Detractions Taxes Logic for BoE Invoices.
+08/02/11 RosalindaV SCR 85994 - Peru CSF - Added Detractions logic/filterin GetRefInvoicesForBOE.
+08/03/11 CarlosC    SCR 86156 - Added validation to avoid overriding the original ExchangeRate for Logged Invoices.
+08/04/11 RosalindaV SCR 85994 - Peru CSF - Fixed a pair of bad references.
+08/11/11 RosalindaV SCR 87517 - Fixed Line Ext. Amount when retrieving a PO Line for supplier with diff. currency than base.
+08/15/11 SergioJ    SCR 85994 - Peru CSF - Add functionality to calculate WHT on BOE invoice process.
+09/02/11 IrinaY     SCR 88082 - modified APInvTaxBeforeUpdate to update Balance of the Taxable/Tax amounts that has been deferred until payment.
+09/13/11 RonM       SCR 86345 - Sweden/Finland CSF - Added NoBankingReference patch field to apInvHedAfterGetRows method.
+09/15/11 RonM       SCR 89181 - Sweden/Finland CSF - Modify chkBankRefCore to remove NoBankingReference check for "X" SEBankRef.
+09/21/11 RosalindaV SCR 85994 - Peru CSF - Added Detractions Taxes Logic for BoE Invoices.
+10/17/11 galinad    SCR 75209 - locked and manually changed exchange rate is supposed to be used in Reporting currencies calculations
+10/24/11 ABokarev   SCR 90164 - CSF SE - check OCR reference number corrected.
+10/24/11 galinad    SCR 75209 - changes to CalcDocAmt and CalcBaseAmt procedures ro use the correct rate converting amounts to report currencies
+10/28/11 MarioL 	 SCR 87116 - UOM validation was added to apInvDtlbeforeUpdate.
+11/15/11 galinad    SCR 24755 - changes to apihAPInvExpAfterGetRows, apihAPInvExpBeforeUpdate, apInvDtlAfterGetRows, apInvExpBeforeUpdate, apInvHedAfterGetRows, assignAPInvHedExtAmtFields, new procedures ChangeExpHeaderAmt ChangeExpLineAmt getAPInvDtlVar getMiscChargeVar 
+11/16/11 Bill R     SCR 89354   caclulation is vendor based if SMI potype 
+11/18/11 RonM       SCR 89784 - Modified apInvExpAfterDelete to store APInvExp records before deleted by SyncAPInvExp. 
+11/21/11 Bill R     SCR 90248 - SImilar to 89354 but it exposed that whole calc was wrong not just for SMI 
+11/28/11 RonM       SCR 89784 - Moved ttAPInvExp update from apInvExpAfterDelete to DeleteMaster.
+11/28/11 Bill R     SCR 90248 - additional testing by qa indicated conversion issues due to decimal truncation.  expanded decimal size of mtlunit cost but also change calc when pur um diff than rcv um
+12/05/11 RonM       SCR 90418 - Fix costing using new costFactor function to cleanup all variables for cost calcutions, Remove assignCostVariables procedure.
+							- Modify GetAPUninvoicedReceipts, getApUninvoicedDropShipments, poRelNumChanged calcExtCost and calcUnitCost to use costFactor function.
+							- Modify GetAPUninvoicedReceipts to fix how vendor costing was claculated.
+12/06/11 RonM       SCR 90418 - Basic cleanup.
+12/07/11 RonM       SCR 89784 - Add new saveBeforeSyncAPInvExp and refreshAfterSyncAPInvExp procedures to store APInvExp records before deleted by SyncAPInvExp.
+							- Modified apInvDtlAfterUpdate and apInvDtlChildDeleted to call saveBeforeSyncAPInvExp procedure.
+							- Modified DeleteMaster and afterUpdate to call refreshAfterSyncAPInvExp procedure. 
+12/12/11 RonM       SCR 89784 - Renamed restoreAfterSyncAPInvExp to refreshAfterSyncAPInvExp in apInvMscAfterUpdate.
+12/14/11 RonM       SCR 89784 - Remove saveBeforeSyncAPInvExp from apInvDtlChildDeleted and apInvDtlAfterUpdate procedures.  
+							- Remove refreshAfterSyncAPInvExp from DeleteMaster procedure.                           
+							- Modified apInvExpBeforeDelete, apInvExpBeforeUpdate and apInvDtlBeforeUpdate to call saveBeforeSyncAPInvExp procedure.                            
+							- Modified apInvMscAfterUpdate and apInvDtlChildDelete to call refreshAfterSyncAPInvExp procedure.
+12/14/11 MarioL 	 SCR 87116 - New validation for UOM was added to apInvDtlbeforeUpdate checking linetype different of "A".
+12/14/11 RonM       SCR 89784 - Remove extra "p" from refreshAfterSyncAPInvExpp.  
+12/21/11 RonM       SCR 91672 - Renamed refreshSyncAPInvExp to refreshAfterSyncAPInvExp in apihAPInvMscAfterUpdate.
+12/22/11 RonM       SCR 89784 - Modify apInvDtlChildDeleted to not call SyncApInvExp to rebuild and delete G/L expense records, let the user manually resolve the variance.
+01/04/12 galinad    SCR 24755 - GLAllocation public method - additional parameter vCurrencySwitch is added
+01/05/12 RonM       SCR 89784 - Modify apInvDtlChildDeleted, apInvExpAfterDelete, apInvJobAfterDelete, and apInvMscAfterDelete to pass inRunSyncApEvpInv option.
+							- Modify apInvDtlAfterUpdate to refresh G/L Expense details when PartNum changes.
+01/19/12 KrisM      SCR 91823 - Added AssignLegalNumber and GenLegalNumOpts to generate a single legal number for debit memos.  Added message to GenLegalNumForDebit for MANUAL generation typs.
+02/03/12 galinad    SCR 24755 - Display Allocation amount is set on condition of currency switch, new public method PresetAllocationAmt is created, changes to GLAllocation public procedure
+02/22/12 FelipeM    SCR 88631 - Modified BoE to create APPayments when the APBoE is created.
+02/24/12 DEpifanov  SCR 90699 - VAT Report enhacements.
+02/27/12 FelipeM    SCR 88631 - Modified apInvHedChildDeleted to delete patch filed of ApTranNo
+02/28/12 DMashkov   SCR 93566 - Procedure getVendorDefaults was modified for reassigning of Banking Reference.
+03/01/12 DEpifanov  SCR 92484 - PeruCSF: Computational cost field.
+03/01/12 DEpifanov  SCR 90699 - VAT Report enhacements (linking changed). 
+03/11/12 DEpifanov  SCR 90699 - VAT Report enhacements (redesign).
+03/16/12 OSaveliev  SCR 90697 - CSF Turkey, New field <DocumentPrinted>.
+03/16/12 DEpifanov  SCR 90699 - VAT Report enhacements (Correct linking).
+03/22/12 ABokarev   SCR 94599 - CSF Peru, edit Taxable Amount/Tax Amount was corrcted (PROCEDURE pEAPInvTaxAfterUpdate).
+03/26/12 OSaveliev  SCR 90697 - CSF Turkey: Return functionality implemented.
+03/28/12 MarioL     SCR 94770 - Adding functionality to validate Discount Treatment for taxes.
+04/05/12 OSaveliev  SCR 90697 - CSF Turkey: Legal Number must be voided to delete Return Debit Memo.
+04/05/12 ToddK      SCR 87680 - Invoice Entry AP - GL accounting missing for logged matched invoice, unable to post invoice.
+04/09/12 DEpifanov  SCR 95398 - using AR Date Setup parameters for "Get" created invoices.
+04/11/12 DEpifanov  SCR 95482 - using AP Date Setup parameters for "Get" created invoices.
+04/17/12 AnnaM      SCR 95153 - Peru CSF. Tax Detraction Amounts calculating corrected.
+04/17/12 ABokarev   SCR 95919 - CSF Turkey: Crash then "New Return Debit Memo" was eliminated.
+04/17/12 ABokarev   SCR 95844 - CSF Turkey: System default document type for return Debit Memo are loaded.
+04/18/12 AnnaM      SCR 95977 - Peru CSF. Using AP Date Setup parameters corrected to avoid crash for BOE creating.
+04/19/12 ABokarev   SCR 95844 - CSF Turkey: PatchField PK was corrected.
+04/24/12 galinad    SCR 96318 - AP Tax Deductible for manual Tax Line is supposed to re-calculated (not set to 0) when Tax Amount or Taxable Amount or Tax Percent or Tax Fixed Amount are changed.
+04/25/12 DEpifanov  SCR 89667 - Peru CSF: corrected retentions processing.
+04/25/12 OSaveliev  SCR 95868 - CSF Turkey: Supplier's terms are taken as default for new Return Debit Memos. 
+04/26/12 ABokarev   SCR 95974 - CSF Turkey: "Get DMR Debit Memo" procedure corrected.
+04/28/12 AnnaM      SCR 94599 - Peru CSF. Recalculate DocPEDetAmt if PEDetAmt has been changed. 
+05/02/12 DEpifanov  SCR 96351 - Peru CSF: Correct Unit cost plus the tax amount verifying.
+05/02/12 AnnaM      SCR 94599 - Peru CSF. Missed :U were added.
+05/05/12 FelipeM    SCR 96485 - Peru CSF: Fixed to create apChkGrp with ApChkGrp.CheckDate = APInvHed.ApplyDate
+05/07/12 RonM       SCR 95279 - Modified apInvJobBeforeUpdate to update APInvJob.DocExtCost field.
+05/08/12 FelipeM    SCR 96485 - Peru CSF: Fixed to updated CheckHead if APInvHed is modified
+05/09/12 galinad    SCR 95746 - changes to setExchangeRate procedure for calculation of amounts in report currencies with different types of Conversion rule / Display Mode.
+05/10/12 OSaveliev  SCR 95868 - CSF Turkey: Terms Code are properly saved for Return Debit Memos.
+05/15/12 galinad    SCR 89387  - when PO referenced has "Locked" exchange rate, the amounts in reporting currencies should use the exchange rates from this PO
+05/15/12 RonM       SCR 95279 - Modified apInvJobBeforeUpdate to fix missing else clause for debit.memo logic.
+05/16/12 SLevchenko SCR 96344 - CSF Peru: AP BoE should not have its own Tax Liability
+05/16/12 galinad    SCR 89387 - additional change
+05/18/12 DAlvizo    SCR 93815 - Added logic to process Taxes when "invoice tax in amount" is check or invoice amount doesn't have the minimum required
+05/18/12 DEpifanov  SCR 89667 - Peru CSF: corrected retentions processing for non-base currency.
+05/22/12 galinad    SCR 95746 - additional minor change
+05/29/12 DAlvizo    SCR 95249 - Added withholding amount calculation to Line totals calculation.
+05/31/12 AnnaM      SCR 91670 - CSF Russia. Added patchfields RevisionNum, RevisionDate. Revision fuctionality was implemented.
+06/01/12 AnnaM      SCR 91670 - CSF Russia. Message text corrected.
+06/05/12 RonM       SCR 95279 - Modifty apInvJobBeforeUpdate to update DocScrExtCost, this was causing a variance on G/L Analysis tab.
+06/29/12 RonM       SCR 97332 - Modify apihAPInvMscAfterUpdate, apInvHedChildDeleted, and setDatesDiscount to allow discounts for ApInvMsc items.
+07/02/12 RonM       SCR 97332 - Rename DiscountApplies patch field to TakeDiscount.
+07/03/12 DAlvizo    SCR 95249 - Peru CSF: Deleted use of InvcHead search for foreingkey
+07/04/12 DEpifanov  SCR 95711 - Return Debit memos default dates setting fixed.
+07/04/12 DEpifanov  SCR 95612 - DMR correction invoice requests default dates setting fixed.
+07/04/12 SLevchenko SCR 85199 - Thailand CSF: license check has been corrected.
+06/19/12 AnnaM      SCR 91850,SCR 91670 - Russia CSF. Revision correction invoice fuctionality was implemented. Added Patchfield filling for APInvHedList(SCR91670).
+08/01/12 DMashkov   SCR 91850 - Russia CSF. Procedure apInvDtlBeforeUpdate was corrected for saving only positive or negative lines.
+08/01/12 AnnaM      SCR 91850 - Russia CSF. For correction invoice revision copy reversed lines 'as is' in RefInvoice.
+08/16/12 AnnaM      SCR 100566 - Russia CSF. Corrective invoices: not adjusted lines are deleted during posting, invoice contain only positive or negative adjustments limitation corrected
+01/23/13 IrinaY     SCR 114142 - move changes by scr 91850 and 100566 from 9.05 to E10
+02/25/13 MikeV      SCR 100076 - Modified ChangeMtlSeq method to only validate Job Material when one is entered
+03/14/13 MikeV      SCR 100076 - Modified amount validation in APInvJobBeforeUpdate
+04/05/13 OLunochkina SCR 94635 - Uplifted Turkey CSF to 2012R
+04/10/13 ToddK      SCR 114073 - Added parameter to voidLeganumber procedure 
+04/11/13 AnnaM      SCR 114385 - CSF 99229 uplifted to 2012R (APInvoice BO & Adapter part)
+04/25/13 RonM       SCR 120544 - Add LNBasedOnDate logic to use Apply or Invoice date when creating legal number.
+05/09/13 MikeV      SCR 118639 - Removed loop deleting APInvExp records in SetReadyToCalc since they are referenced and deleted in ap/SyncAPInvExp.p 
+06/04/13 YuriR      SCR 119338 - Modified apInvExpTGLCRunPE - Avoid delete ttAPInvExpTGLC records of the mapped Books; getAPInvDtlVar - added parameter ipUpdateMode to avoid updates in AfterGetRows, call this proc in update mode from afterUpdate.
+06/19/13 RonM       SCR 118089 - Recalculate amounts when Rate Type changes in ChechRateGrpCode procedure.
+06/20/13 TatyanaK   SCR 102607 - Invoice tax line timing is taken from the related tax type for a new line.
+06/27/13 RonM       SCR 118089 - Modify setExchangeRate to not override exchange rate unless locked rate.
+ 
+//------------------------------------------------ Epicor 10 Comments ----------------------------------------------
+
+02/19/13 galinad - SCR 113472 - changes to fix AP Invoice problems reported
+02/21/13 nzirbes - SCR 116152 - Modified method CalcVariance to eliminate the null exception -> APInvHed was used when the values passed to convertAmtRoundDecimals should be from ttAPInvhed.
+								Resolved FX Cop error 
+02/26/13 galinad - SCR 113472 - changes to fix AP Invoice problems reported 
+03/04/13 galinad - SCR 117331 - changes to avoid error on Logged Invoice match
+03/04/13 galinad - SCR 116004 - changes to bring the error message if Invoice date is not assigned
+03/05/13 galinad - SCR 116002 - changes to assign APInvTax external fields for the correct diplay on the Tax grid
+03/07/13 NancyA  - SCR 103219 - Uplift for SCR 92371.
+03/13/13 nzirbes - scr 116857 - resolved row has been modified exceptions
+03/20/13 galinad - scr 118197 - changes to APInvoice.Queries.cs to avoid Primary Key error when adding third Invoice Line. 
+03/31/13 nzirbes - scr 116857 - Modified method SetReadyToCalc.  Moved the final validate and txscope.complete back to its previous location.  Moved the call to setDatesdiscounts and implemented a validate and
+								a buffer copy.  Call assignAPINvHedExptAmtFields.  See the code for detailed explanation for why the changes were made.  Search on this scr number and 94770 to find the comments.
+04/03/13 galinad  - SCR 118552 (50141) Uplift for changes done for AP Tax inclusive project
+		 nzirbes (checked in by galinad) - SCR    Changes for Reccur invoices  
+04/04/13 galinad - SCR 114475 (103711) uplifft for Debit Memo sttlement Discount Handling project
+04/05/13 galinad - SCR 99170 (97332) changes checked in 07/26/12 (changeset 603903) is uplifted
+04/05/13 galinad - SCR  101115 - Uplift for 99481
+04/09/13 galinad - SCR 114362 (91154) Uplift for SCR 94154 - Legal numbering changes - changeset 61024
+04/09/13 galinad - SCR 102130 (99844) Uplift for SCR 99844 -  Non-reimbursable expenses are not captured by the Project Billing Invoice Preparation Process - changset 65650.
+04/09/13 galinad - SCR 103392 (102554) Uplift for SCR 102554 - Invoice Entry AP GL Analysis Line Document Amount not updated when Line ext amount is changed changeset 68319
+04/10/13 galinad - SCR SCR 102130 (99844) Uplift for SCR 99844 - changeset 70202
+04/11/13 AnnaM   - SCR 114385  CSF 99229 uplifted to 2012R (APInvoice BO & Adapter part)
+04/15/13 jajohnson SCR 115369 - APInvoice.Queries.cs - lastordefault obsolete for JobMtl
+04/19/13 galinad  - SCR 118552  Uplift for changes done for AP Tax inclusive project
+04/23/13 galinad  - SCR 101126 - Tax Inclusive project
+04/25/13 RonM       SCR 120544 - Add LNBasedOnDate logic to use Apply or Invoice date when creating legal number.
+05/03/13 galinad  - SCR 120548 - changes to CreateCorrectionInvoice to fix tax calculation for Inclusive taxes.
+05/03/13 RonM     - SCR 119063 - Add transaction scopt in AllocateLateCost to handle exclusivelock used in BufRcvMiscExpression2.
+05/06/13 galinad  - SCR 120355 - fix for correction invoices with Misc charges (only NOT Tax Inclusice fix)
+05/06/13 JGracia  - SCR 114475 - CSF Germany (Removed IsDiscountDebitM patchfield, value is now on XbSyst table)
+05/06/13 galinad  - SCR 120355 - changes to APInvMscAfterUpdate - re-structure conditional statement to avoid error 
+05/08/13 RonM     - SCR 119063 - Close transaction scope in AllocateLateCost method.
+05/08/13 RonM     - SCR 105962 - Add getAPInvJobOrExpTotals, AdjustRoundingVar, getGLDistTotals procedures and change getApInvDtlVar and getMiscChargeVar to use them.
+05/08/13 RonM     - SCR 120861 - Add APIHAPInvExpTGLCAfterGetNewLocal and modify APIHAPInvExpTGLCRunPE to use it. 
+05/13/13 galinad  - scr 105290 - 2 new public methods are added (Phase 1 - no logic for CreateRecurInvoice)
+05/14/13 galinad  - scr 105290 - Additional changes for Recurring invoice
+05/15/13 RonM     - scr 118695 - Modify SelectUninvoicedRcptLines to handle "Collection was modified; enumeration operation may not execute" error.
+05/15/13 galinad  - scr 105290 - Additional changes for Recurring invoice
+05/17/13 RonM     - scr 120920 - Modify GetLegalNumforDebitMemo to use transactionscope.
+05/20/13 RonM     - SCR 120861 - Modify APInvExpTGLCAfterUpdate, APInvExpAfterGetNew, APInvExpAfterUpdate methods to handle G/L Analysis changes.
+05/21/13 galinad  - SCr 105290 -  - new method GetAPInvRecurInfo ws added for AP invoice tracker - recur invoices, changes to APInvoice.Queries.cs
+05/22/13 JGracia  - SCR 106627 - Removed redundant code. When matching an AP Invoice from Logged Invoice data should be copied from Logged Invoice to AP Invoice as is.
+05/24/13 galinad  - SCR 105290 - chnages to APInvoice.sc for Recurring invoices
+05/24/13 JGracia  - SCR 110611 - Added missing Transaction Scope for "ChangeInvoiceRef" method.
+05/29/13 galinad  - SCR 114301 - changes to ApInvHedAfterGetRows to assign ScrInvoiceRef for Recurring Invoices
+05/30/13 AlbertoC - SCR 119604 - APInvoice.cs - Method APInvHedBeforeDelete, added to legalnumber delete validation, to allow delete on matched logged invoices (uplift SCR 118264)
+05/31/13 PElagin  - SCR 119910 - CSF Sweden/Finland - If the 'Use Banking Reference Number' is set to false, no error message should be displayed (uplift SCR 119449).
+05/31/31 galinad  - SCR 113470 - deletion of Recurring invoices
+05/31/13 RonM     - SCR 106834 - Modify calcExtCost to recalculate totals when DocUnitCost is zero (uplift SCR 85302).
+05/31/13 RonM     - SCR 106476 - Modify APInvHedAfterGetRows and APInvDtlAfterGetRows to use AdjustRoundingVar for rounding (uplift SCR 102586).
+06/03/13 galinad  - SCR 114369 - option Copy Latest invoice is corrected, the problem with filtering/selection  of source invoices is fixed
+06/04/13 galinad  - SCR 114657 - changes to APInvHedBeforeUpdate - do not re-set Exchange Rate and re-create CurrExChain in case of Recurring invoice since this is done when invoice is created in ap - CopyApInvoice.cs
+06/05/13 RonM     - SCR 96807  - Modify createttAPInvHed, GetNewAPInvHedBOE, GetNewAPInvHedRetDebitMemo logic to check if XbSyst.UseTaxRate is available.
+06/06/13 galinad  - SCr 105290/117085 - multiple changes to Row Rules for Recurring invoices
+06/07/13 RonM     - SCR 106476 - Modify the adjustRoundingVar, getAPInvDtlVar, getMiscChargeVar methods in APInvoice.cs file to pass if rounding adjustments have been made, modify the APInvDtlAfterGetRows method to refresh the APInvDtl records when changed.
+06/07/13 RonM     - SCR 106746 - Modify AddPOMiscChrgToInvoiceLine method to recalculate after adding PO Misc charge.
+06/07/13 galinad  - SCR 117085 - additional changes
+06/11/13 galinad  - SCR 117089 - APInvoice.cs - APInvHedAfterGetRows - Recurring invoice is not supposed to copy CycleIncactive and InvoiceHeld flags fronm the Recurring Source invoice
+06/14/13 galinad  - SCR 117082 - APInvoice.cs - when Invoice header was not saved before the Max Recur value is assigned the the Build exchange rate logic is supposed to be called
+06/17/13 galinad  - SCr 117866 - changes for new invoice date (weekly billing)
+06/18/13 PElagin  - SCR 122912 - CSF Sweden/Finland - Fixed issue with unnecessary warning if Bank reference is blank
+06/20/13 Elsam	  - SCR 119538 - Add parameter to the VoidLegalNumber method VendorNum
+06/25/13 RonM     - SCR 96807  - Rollback changes to not use XBSyst.UseTaxRate, the E9 code is incorrect.
+06/26/13 SEvdokimov SCR 123796 - (CSF Norway) - Warning message corrected. 
+06/26/13 DEpifanov- SCR 123720 - Norway CSF: KID validated as entered.
+06/26/13 PElagin  - SCR 123722 - CSF Finland - Modify query for checking Bank Referencing Number that not allow to save APInvoice.
+06/26/13 RonM     - SCR 96807  - Modify CreateCorrectionInvoice to call RunSetDefaultInvoiceDates to assign dates.
+06/26/13 Elsam	  - SCR 119538 - Add parameter to the VoidLegalNumber method VendorNum
+07/01/13 CarlosM  - SCR 121205 - Added bit field IsModifiedByUser to table TranGLC, default false, generated model and all the BO which use this table.
+07/01/13 RonM     - SCR 106746 - Modify AddPOMiscChrgToInvoiceHead method to recalculate after adding PO Misc charge.
+07/01/13 Elsam	  - SCR 123028 - Incorrect Decimal rounding when using foreign currency causing invoice variance
+07/02/13 PElagin  - SCR 123955 - Incorrect Banking reference verification
+07/02/13 galinad  - SCR 123307 - changes to APInvoice.cs and APInvoice.Queries.cs - Issue # 9 - Filtering Supplier on Manual Selection is corrected
+07/02/13 galinad  - SCR 123307 - changes to APInvoice.cs and APInvoice.Queries.cs -Issue # 6 - not skipping a deleted instance
+07/02/13 galinad  - SCR 123307 - changes to APInvoice.cs Issue # 6 - skipping a deleted instance
+07/03/13 DEpifanov- SCR 117227 - Norway CSF: Correct message.
+07/04/13 Elsam	  - SCR 123684 - Late Cost Invoice without lines posts Partial Payment Tax to incorrect Account
+07/04/13 Elsam	  - SCR 120156 - Added code to use index when deleting memos. 
+07/09/13 galinad  - SCr 123307 - issue 7
+07/09/13 DMashkov - SCR 115915 - CSF Thailand - Remove BPM Thailand.bpm
+07/09/13 AlbertoC - SCR 113479 - APInvoice.cs - Method APInvHedAfterUpdate, use of Date2Int method to set the value for APInvHed.PayDates and then make sure APInvHed write trigger is run
+												Method chkPMUIDCore, add a couple of exceptions for invalid valid of Payment Method
+								 String.resx - Added string InvalidPaymentMethod
+07/09/13 galinad  - SCr 123307
+07/11/13 galinad - -SCR 123307 - 07/10 removed changed were restored
+07/11/13 - PabloS - SCR 123102 - Added condition to memo queries and RelatedToSysRowID to methods Do_1390 and Do_1380 inside XAP05.cs
+07/16/13 - andreaP - scr 121785 - APInvoice.cs: added TriggerType to override trigger logic.
+07/16/13 - galinad - SCR 124396 - changes to APInvoice.Queries.cs to exclude APInvDtl with TaxExempt <> "" from the Tax calculations
+07/16/13 - galinad - SCR 123022 - changes to APInvoice.cs (ChangeTaxRgn method) and APInvoice.Queries.cs to update the "Tax Inclusive" fields when Tax Liability is changed to Tax Inclusive
+07/18/13 DMashkov - SCR 115915 - CSF Thailand - Method UpdateMaster was corrected (under Thai license).
+07/19/13 Elsam	  - SCR 123684 - Late Cost Invoice without lines posts Partial Payment Tax to incorrect Account
+07/24/13 OLunochkina - SCR 125386 - CSF India, uplifted to 2012R
+07/24/13 RPerez      - SCR 123915 - Modified parameters on ProcessTaxes_CalcManualTax to return TaxSvcHead and TaxSvcDetail data.
+08/02/2013 - gheier - SCR 125748 - Fixed bad BufferCopyExceptFor calls.
+08/06/13 Elsam	 - SCR 122688 - E9 Uplift from SCR 119338 Multibook transaction unable to enter GL account 
+08/06/13 AlbertoC - SCR 125964 - APInvoice.cs - Method GlbAPIETGLCBeforeCreate, initialize object bTranGLC being used in LibNextValue.Set.
+08/06/13 Elsam	 - SCR 122688 - Add missing comment from E9
+08/09/13 Dpedorenko - SCR 115911 - CSF Poland - add code from Poland BPM
+08/09/13 Elsam	 - SCR 122688 - Add APInvExpTGLCBeforeCreate to save SysGLControlCode when a New GL Line is added.
+08/12/13 Dpedorenko - SCR 115911 - CSF Poland - bug on saving misc line fixed
+08/12/13 andreaP  - scr 126433 - APInvoice.cs: added a TriggerType to override trigger logic.
+08/12/13 KevinF - SCR 123981 - Find Last issue.  Changed to order by descending with find first to behave as find last behaved in E9
+08/13/13 VladimirD - SCR 117525 - AP invoice multi-Company logic corrections.
+08/15/13 PElagin   - SCR 99235 - Enable CSF functionality only through Country License check.
+08/16/13 Elsam	   - SCR 124713 - Change value for resource TaxInclNotAllwd
+08/19/13 JGracia	- SCR 126733 - Replaced Db.ReadCurrent(APInvHed) with Db.Validate(APInvHed) to Trigger changes and make sure we are getting the last values updated for APInvHed.
+08/20/13 Elsam		- SCR 126192 - Display External GL Account description after save
+08/21/13 PElagin   - SCR 99235 - Remove unneeded XbSyst check.
+08/21/13 DPedorenko - SCR 127084 - CSF Poland - Fixed creation of correction invoice, fixed creation invoice from logged invoice for Poland
+08/21/13 DPedorenko - SCR 127084 - Fixed calculation of invoice lines's adjustment values, on APInvDtlAfterGetRows() method
+08/22/13 galinad    - SCR 123981 - issue # 10 - remove unnecessary recalculation of Rpt display  fields
+08/23/13 galinad    - SCR 127158 - New  RPt fields are added to APHedList used on the Group panel
+08/26/13 Elsam		- SCR 127179 - Filter legal number to get only the last one added.
+08/26/13 Elsam		- SCR 127184 - Fix wrong parameter value in GetAvailTranDocTypes
+08/27/13 SEvdokimov - SCR 127212 - (CSF Estonia) - Substring function corrected.
+08/28/13 SEvdokimov - SCR 127354 - (CSF Estonia) - Warning message added.
+08/29/13 DPedorenko - SCR 115351 - Fixed calculation of amounts and exchange rates when creating of correction invoice.
+08/29/13 PElagin    - SCR 127451 - CSF Taiwan, Uplift AP Invoice Entry.
+08/30/13 galinad    - SCR 127629 - changes to APInvoice.cs - APInvHedBeforeUpdate - InctanceNum field is added to the list of fields available to be changed for Posted invoice (changed internally by the logic)
+											  Strings.resx  - PaymeHeldPaymentMethodLetterOfCreditAndInvoice string is changed to add "Recurring Invoice fields"
+09/04/13 PElagin    - SCR 127451 - CSF Taiwan, Uplift AP Invoice Entry - uplift queries and add two columns in List DataSet.
+09/04/13 ElsaM		- SCR 127182 - Legal Number generated with no Transaction Document Type associated
+09/05/13 RonM       - SCR 127350 - Modify APInvExpTGLCRunPE procedure to update G/L Account info on multi-company.
+09/05/13 vcardenas  - SCR 127175 - Added validation in GetLegalNumberOpts method to assign a Legal Number only when exists a valid Document type
+09/05/13 Elsam		- SCR 127350 - Modify APInvExpAfterUpdate to calculate intercompany GL account for a new GL Line
+09/10/13 RonM       - SCR 127350 - Modify APInvExpAfterUpdate, APInvExpTGLCRunPE and APInvExpTGLCBeforeCreate to not update TranGLC records until save.
+09/11/13 RonM       - SCR 127350 - Modify APInvExpAfterUpdate to delete any multi-company external expense records left over from deselecting the multi-company prompt.
+09/12/13 vcardenas  - SCR 127093 - Modify APInvDtlAfterGetRows to get the original amount from the previous posted invoice when create a Correction Invoice.
+								   Also modified calcExtCost to update Adjustment Value when change Qty or Unit Cost.
+09/13/13 PElagin    - SCR 127451 - CSF Taiwan, Uplift AP Invoice Entry - Default document type setting is activated.
+09/13/13 DPedorenko - SCR 115910 - CSF Peru - Added	functionality from Peru BPM.
+09/16/13 DPedorenko	- SCR 115910 - CSF Peru - Small code refactoring.
+09/17/13 PElagin    - SCR 127451 - CSF Taiwan, Uplift AP Invoice Entry - Try to apply supplier default document type without errors.
+09/18/13 SEvdokimov - SCR 103922 - (CSF Peru) - Correction of uplifted code.
+09/18/13 OLunochkina - SCR 128078 - CSF India, uplift DB changes, change Locals to newly created BOs
+09/19/13 PElagin    - SCR 127451 - CSF Taiwan, Uplift AP Invoice Entry - Remove '(Taiwan localization)' from error messages.
+09/20/13 Elsam		- SCR 129106 - Set the correct value for string PY_KEY
+09/20/13 galinad    - scr 128894 - changes to CreateCorrectionInvoice method to prevent copying Recurring invoice related fields from the original invoice if Recurring invoice being corrected.
+09/23/13 DEpifanov  - SCR 129385 Peru CSF: Posting AP Bill of Exchange.
+09/25/13 DEpifanov  - SCR 129582 Peru CSF: DUA Invoice Number counter is company dependent.
+09/25/13 PElagin    - SCR 129471 - CSF Taiwan, Checking Legal Number settings should be ignored for Taiwan if AP Legal Number source is "Default AP Invoice Number".
+09/26/13 PElagin    - SCR 129471 - CSF Taiwan, Checking Legal Number settings should be ignored.
+09/26/13 DEpifanov  - SCR 129386 Peru CSF: DUA Invoice Number reference saved.
+09/26/13 galinad    - SCr 128460 - correction for addtl issue found (unchecking Recurring Source flag on posted invoice) 
+09/30/13 Elsam		- SCR 129196 - Fix ChangeInvoiceRef to set correctly the current exchange rate
+10/01/13 PElagin    - SCR 129471 - CSF Taiwan, Standard Legal Number can be used only if AP Legal Number source is "Manual".
+10/01/13 OLunochkina - SCR 126404 - CSF India, Convert IndiaCSF.bpm to BO code in E10
+10/02/13 vcardenas     - SCR 129362 - Corrected ChangeAdvancePayAmt method adding a loop to evaluate DocAdvancePayAmt 
+10/02/13 calrodriguez  - SCR 128407 - Db.Validate(); was missing before the trans.Complete(); sentence.
+10/04/13 PElagin       - SCR 129671 - Expand Bank Reference Field Size from nvarchar(25) to nvarchar(40).
+10/04/13 RonM          - SCR 127350 - Modify ChangeMultiCompany to restore GL information after multi-company unchecked.
+10/05/13 galinad       - SCR 129782 - when new TranGlc record is created a new SysGLControlCode (nex) should be assigned.
+10/05/13 SEvdokimov    - SCR 103922 - (CSF Peru) - Withholding tax calculation corrected if Sum of all BOE Lines >= Min. Payment Amnt
+10/07/13 DEpifanov     - SCR 99477  - Peru CSF: Detractions tax type processing fixed.
+10/07/13 DPedorenko	   - SCR 115351 - CSF Poland, fixed calculation of invoice amount during creation of correction invoice.
+10/07/13 OLunochkina   - SCR 130111 - CSF India, added ignore case string comparison; corrected some typos and errors in queries
+10/07/13 ElsaM		   - SCR 129196 - Use the apply date to calculate the exchange rate instead of the current invoice apply date.	
+10/07/13 ElsaM		   - SCR 130185 - Validate that Purchase Terms is not null before query the PurTermD table.
+10/08/13 OLunochkina   - SCR 130111 - CSF India, moved Tax category logic to GreateAPLinesFromRcptDtl lib
+10/10/13 ElsaM		   - SCR 129196 - Change logic to call FindCurrencyRates instead of BuildCurrencyRates when Company flag for Copy Exchange Rate is false.
+10/10/13 RonM          - SCR 127350 - Basic clean up.
+10/10/13 RonM          - SCR 127350 - Modify APInvExpAfterUpdate, APInvExpBeforeUpdate, and APInvExpTGLCBeforeUpdate to update multi-company account information.
+10/11/13 ElsaM		   - SCR 129196 - Check if the currency has been changed manually to calculate the exchange rate.
+10/14/13 SEvdokimov    - SCR 130309 - (CSF Peru) - APTran records removed when AP BOE line deleted.
+10/14/13 ElsaM		   - SCR 129196 - Validate if it's debit memo before calculating the exchange rates
+10/14/13 ElsaM		   - SCR 129196 - Calculate exchange rate when rate has been locked.
+10/15/13 ElsaM		   - SCR 129196 - Correct calculates when exchange rate is locked.
+10/15/13 ElsaM		   - SCR 129196 - Calculate the exchange rate based on invoice ref num only when the CopyExcRateDM flag is true.
+10/18/13 ElsaM		   - SCR 129196 - Calculate the exchange rate based on invoice ref num only when the CopyExcRateDM flag is true.
+10/23/13 DMashkov      - SCR 129482, 129483, 129485 - CSF Vietnam - Uplift Code for Vietnam CSF.
+10/30/13 DEpifanov     - SCR 96217  - Peru CSF: Detractions validation for AP BoE.
+10/31/13 SEvdokimov    - SCR 96368  - (CSF Peru) - Legal Number generation removed from new BoE creation method.
+11/05/13 DEpifanov     - SCR 96948  - Peru CSF: AP Detractions recalculated.
+11/07/13 SEvdokimov    - SCR 95100  - (CSF Peru) - Invoice Type field added onto search display results.
+11/12/13 DEpifanov     - SCR 132139 - Peru CSF: Correct AP BoE line amount.
+11/18/13 ElsaM	       - SCR 60906  - Calculate taxes on group details tab.
+11/19/13 SEvdokimov    - SCR 96368  - (CSF Peru) - Automatic generation of Legal Number.
+11/20/13 RonM          - SCR 74264  - Modify to update GLAcctDisp file for dynamic GL numbers.
+11/25/13 vcardenas	   - SCR 131979 - Passed altAPInvHed.DocUnpostedBal value to calculate the correct amount in document amount when calls method ChangePrePaymentAmt. and converted the doc amount using LibRoundAmountEF.ConvertAmtRoundDecimals
+11/25/13 DEpifanov     - SCR 132889 - Peru CSF: AP Detractions calculated correctly for group.
+11/19/13 SEvdokimov    - SCR 96368  - (CSF Peru) - Automatic generation of Legal Number moved to UI.
+11/28/13 EDvoretsky    - SCR 120119 - CSF Sweden and Finland.If client does not use "banking reference functionality" then validation empty "banking reference" was removed.
+12/10/13 galinad       - SCR 131979 - correction to the logic related to Prepayment amount conversion to document, base and reporting currencies
+12/11/13 PElagin       - SCR 90608  - CSF Taiwan, Remove field 'GUIWineCigarette'.
+12/13/13 IrinaY        - SCR 119386 - corrected work with Transaction Document Type
+12/13/13 galinad       - SCR 125732 - changes to APInvoice.cs to add the condition of having any Tax Line for Invoice to ttAPInvHed.LineOrMscChrgExists field which is used in criteria to enable or discable Currency Code and Rate Group Code.
+12/16/13 vcardenas     - SCR 124936 - Uplift: It's possible to set less advanced payment to zero without errors in case multiple receipt lines.
+12/23/13 IEgorov       - SCR 131117 - CSF Thailand, Field DMReason added to APInvHed table
+12/27/13 IEgorov       - SCR 131117 - CSF Thailand, Initialization of Tax ID and Branch ID added
+12/27/13 IrinaY        - SCR 119386 - corrected work with Transaction Document Type
+12/27/13 IEgorov       - SCR 131117 - CSF Thailand, The list of fields allowed to be updated for a posted AP invoice has been extended.
+01/09/13 galinad       - SCR 131840 - (changes done by SCR 125127/EPICOR 9 to APInvoice) allocation of variance amount to APInvJob ExtCost to allow posting
+01/20/14 vcardenas     - SCR 135048 - Added IsAdvanceBilling to make available Less Adv Pay field when comes from Advance Billing.
+01/22/14 PElagin       - SCR 133532 - CSF Switzerland - Decode ISR Code Line and fill Invoice Header with extracted data.
+01/23/14 RonM          - SCR 117650 - Modify ChangeRefPONum method to use PO Currency Rate Group.
+01/24/14 FYudin        - SCR 131236 - CSF India. Add Tax region default logic.
+01/24/14 PElagin       - SCR 133584 - CSF Switzerland - Validate manual entered ISR Code Line and ISR Reference Number.
+01/24/14 PELagin       - SCR 134951 - CSF Switzerland - Allow updating Urgent Payment flag for Posted Invoice.
+01/27/14 PElagin       - SCR 133584 - CSF Switzerland - Update Vendor Bank search for ISR Code Line.
+01/29/14 galinad       - SCR 131840 - in Before Update logic Invoice Vendor Amount is supposed to be re-calculated to RPT currencies using the same criteria as re-calculating base amount 
+01/30/14 galinad       - SCR 131840 - when Invoice vendor amount is changed and amounts are recalculated in reporting currencies the recalculated display field should be copied to the db fields
+01/31/14 PElagin       - SCR 133584 - CSF Switzerland - Replace using field CHDTAID with BankCustNum and correct error messages.
+02/10/14 vcardenas     - SCR 135048 - Added POLine to evaluate if Invoice Line(s) comes from Advance Billing.
+02/13/14 FYudin        - SCR 131236 - CSF India. Fixed TL calculation logic.
+02/14/14 PElagin       - SCR 136138 - CSF Switzerland - Enable processing Red ISR Payment Slips.
+02/20/14 AlbertoC	   - SCR 136165 - APInvoice.cs - Method ChangeVendorID, added logic to default Bank for the Supplier
+02/25/14 galinad       - SCR 137297 - APInvoice.cs - adding IsMaxValue field to the list of fields allowed to be changed for Posted Invoice to avoid error
+02/26/14 galinad       - SCR 137433 - APInvoice class was generated since external field ScrDocInvoiceBal format was changed to ->>>,>>>,>>>,>>9.99
+02/27/14 galinad       - SCR 137264 - changes to APInvoice.cs and APInvoice.Queries.cs to determine if after deleting header misc change the amounts of changes and related APInvExp are not in synch
+02/28/14 EDvoretsky    - SCR 133907 - CSF Norway - Computing and Validating CheckDigits and Payment Reference Numbers. Removed libs OCRGenerate and KIDGenerate
+02/28/14 ElsaM		   - SCR 136989 - Change the message when recurring invoices are created.
+02/28/14 ElsaM		   - SCR 136165 - Remove bank id validation to get the bank every time a vendor is enter.
+03/03/14 ElsaM	       - SCR 135068 - Regenerate service to make Fiscal Period a required field.
+03/03/14 ElsaM		   - SCR 136989 - Change condition to calculate the last date on the reference invoice last date when delete an instance.
+03/05/14 ElsaM		   - SCR 136165 - Clear bank id before search for a new vendor to avoid getting invalid bank id.
+03/11/14 OSaveliev     - SCR 136411 - CSF Vietnam: Manual adjustment of Due Date implemented.
+03/13/14 EDvoretsky    - SCR 133907 - CSF EE FI DK SE. Change Validation Payment reference Numbers.
+03/17/14 OSaveliev	   - SCR 136411 - CSF Vietnam: Manual due date, stabilization issues fixed.
+03/21/14 PElagin       - SCR 138805 - CSF Switzerland - Correct query for validating ISR Party ID/Bank Customer Number combination.
+03/26/14 EDvoretsky    - SCR 138810 - CSF Norway. Change the error message displayed before posting to confirmation message if any KID number is not provided.
+03/31/14 vcardenas	   - SCR 138987 - Added IsAdvance column to avoid use call to BO when row rule evaluate if line comes from Advance billing
+04/01/14 RonM          - SCR 138796 - Modify ChangePartNum to use PartXRefVend for vendor part.
+04/01/14 galinad       - SCR 122410 - changes to APInvoice.cs to recalculate Prepayment amount according the exchange rates of the AP Invoice (locked or changed)
+04/02/14 RonM          - SCR 138713 - Change CreateCorrectionInvoice method to validate the new correction invoice number is correct
+04/02/14 RonM          - SCR 138713 - Change CreateCorrectionInvoice method clear APInvHed balance fields on new correction invoice
+04/11/14 galinad       - SCR 139534 - changes for the correct recalculation of Payment discount for invoice with Line misc charges
+04/13/14 SEvdokimov	   - SCR 139860 - CSF Estonia: added warning message "The Bank Reference is not assigned. Do you wish to continue?".
+04/14/14 galinad       - SCR 139534 -  added logic to populate APInvTax.SysCalcTaxableAmt and APInvTax.SysCalcReportableAmt in base and rpt currencies
+04/17/14 FYudin        - SCR 131121 - CSF Argentina, uplifted to 2012R
+4/18/14 galinad        - SCR 140424 - ApInvDtlAfterGetRows - use buffer aAPInvDtl when isAdvanse flag is set up since if not found the APInvDtl record is not available for other functionality
+04/22/14 vcardenas     - SCR 140424 - Included POLine in Query Expression when evaliates for Advance Billing line.
+05/09/14 calrodriguez  - SCR 139822 - Fixed the problem of adding header misc charges when the PO is not referenced in the Ref PO field.
+05/12/14 calrodriguez  - SCR 100432 - Changed negative amount validation from UI to BO. Added validation for Russia CSF.
+05/14/14 PElagin       - SCR 141359 - CSF Switzerland - Ignore bank type for searching Supplier by ISR Code Line.
+05/19/14 RonM          - SCR 139912 - Modify calcDocAmtByTableName to pass back RateGrpCode, CurrencyCode and ApplyDate to update RcvMisc in AllocateLateCost for latecost.
+05/19/14 OLunochkina   - SCR 141434 - CSF Argentina, Uplift BPM to 2012R
+05/20/14 OLunochkina   - SCR 141434 - CSF Argentina, small corrections after peer review
+05/22/14 vcardenas     - SCR 141099 - Assigned previously searched CurrencyCode after call method ChangeVendorID.
+05/23/14 OLunochkina   - SCR 141434 - CSF Argentina, fix IndexOutOfRangeException
+05/27/14 OLunochkina   - SCR 141434 - CSF Argentina, fix Document Letter validation
+06/04/14 EDvoretsky    - SCR 142086 - CSF Argentina. Sequence length and Invoicing point are not validated in the invoice number. It causes system crash in the line.
+06/24/14 ElsaM		   - SCR 142876 - Get the APInvExpTGLC default values to calculate the AP intercompany GL Account
+06/24/14 SEvdokimov    - SCR 143338 - (CSF Peru) - Patch fields for table APInvDtl replaced to DB fields.
+06/27/14 EDvoretsky    - SCR 143492 - CSF Finland Sweden Norway. Supplier with 'No Banking Reference=ON' not need define Paym.Ref.Num in Check Digit Algorithm for saving
+07/01/14 ElsaM		   - SCR 125633 - Remove TaxPercent patch field
+07/01/14 EDvoretsky    - SCR 143530 - CSF Norway -Warning if entered a payment reference number with a length more than 25 chars.
+07/02/14 scottr		   - SCR 125641 - Replace TranDocType PatchFlds with db fields
+07/02/14 SEvdokimov    - SCR 143338 - (CSF Peru) - Patch fields for table APInvDtl replaced to DB fields.
+07/02/14 hcoss         - SCR 124497 - Replaced PurMisc patch fields with db ones.
+07/03/14 PElagin       - SCR 143502 - CSF Switzerland - Use Bank Customer Length and Start Position parameters for parsing ISR Code Line.
+07/04/14 PElagin       - SCR 143162 - CSF Switzerland - Use Bank Payment Address instead of Supplier Mailing address.
+07/08/14 - ElsaM	   - SCR 124424 - Remove TaxSvcID and TranDocTypeID patch fields from APInvHed table
+07/08/14 - ElsaM	   - SCR 124424 - Regenerate BO
+07/08/14 - AlbertoC	   - SCR 144135 - APInvoice.cs - Changed code to use new fields in the table APSyst instead of the fields of the table Local001.
+07/08/14 SEvdokimov    - SCR 143825 - (CSF Peru) - TaxEngine - Replace PatchFld used on TaxRate table with DB fields on TaxRate
+07/09/14 SEvdokimov    - SCR 143807 - (CSF Peru) - Convert PatchFld usage on ApInvGrp to use APInvGrp
+07/10/14 PElagin       - SCR 143502 - CSF Switzerland - Show error if more than one Supplier is found while parsing ISR Code Line.
+07/10/14 ElsaM		   - SCR 124782 - Remove EmpExpenseNum and EmpId patch fields from APInvJob table
+07/11/14 ElsaM	       - SCR 124424 - Remove TranDocTypeId patch field from the APInvHed table
+07/14/14 SEvdokimov    - SCR 143916 - (CSF Peru) - check conversion of patch fields into database fields in E 10.1
+07/15/14 SEvdokimov    - SCR 143916 - (CSF Peru) - Object reference corrected.
+07/15/14 PElagin       - SCR 144447 - CSF Switzerland - Replace using Patch Field NoBankingReference with physical one.
+07/15/14 SEvdokimov    - SCR 144662 - (CSF Peru) - check conversion of patch fields into database fields in E 10.1
+07/16/14 ElsaM	       - SCR 124785 - Remove CorrectionDtl patch field from the APInvMsc table
+07/17/14 SEvdokimov    - SCR 144678 - CSF Peru - InvoiceType check corrected.
+07/15/14 EDvoretsky    - SCR 144442 - CSF Sweden, CSF Norway - Replace using PatchFld NoBankingReference to Vendor table.
+07/17/14 MBaranov      - SCR 144163 - CSF Taiwan - Replace APInvHed Patch fields with DB fields
+07/17/14 JGracia	   - SCR 124429 - APSyst query cleanup. Now using tempRow for specific columns used instead of creating a full APSyst instance.
+07/17/14 JGracia       - SCR 124429 - APSyst Patchfields to DB fields conversion
+07/18/14 SEvdokimov    - SCR 144678 - (CSF Peru) - Replace PatchFld used on Customer, InvcHead, InvcGrp and invcDtl  tables  with DB fields in real tables.
+07/18/14 MBaranov      - SCR 144163 - CSF Taiwan, Replace Company Patch fields with DB fields.
+07/18/14 galinad       - SCR 143801 - APInvoice.cs / APInvHedBeforeCreate - validation for the correct Legal number set up should be done on the condition when APSyst.LNReqForInvc field is true
+07/21/14 RonM          - SCR 143164 - Modify APInvExpAfterUpdate to fix SCR 127350 changes to delete any multi-company external expense records left over from deselecting the multi-company.
+07/29/14 calrodriguez  - SCR 144599 - Added a validation for inactive Miscellaneous Charges.
+07/29/14 MBaranov      - SCR 144163 - CSF Taiwan, Replace Local tables with regular DB tables.
+07/31/14 EDvoretsky    - SCR 144445 - CSF Poland, Replace using PatchFld to regular DB tables.
+08/04/14 calrodriguez  - SCR 144599 - Validation for inactive Misc Charge (Header/Line).
+08/05/14 PElagin       - SCR 145646 - CSF Switzerland - Search Supplier by POBankAcctNum field when entering 'Short' Red ISR slip.
+08/05/14 ATarasov      - SCR 145782 - CSF Peru. remove build warning after latest FW drop
+08/07/14 ATarasov      - SCR 144678 – CSF Peru. replace patch fields. additional fix for Changeset 130640
+08/08/14 EDvoretsky    - SCR 144448 - CSF Czech. Replace using PathcFld to regular table
+08/08/14 EDvoretsky    - SCR 145974 - CSF EMEA. remove build warning after latest FW drop
+08/18/14 SEvdokimov    - SCR 144678 - (CSF Peru) - Selection query parameter corrected.
+08/18/14 galinad       - SCR 145945 - Convert APInvHed Patch Flds related to PrePayment
+08/18/14 SEvdokimov    - SCR 144678 - (CSF Peru) - Parameter renamed.
+08/19/14 ATarasov	   - SCR 145781 - CSF Peru, logic of DUA counters moved to CSFPeru library
+08/21/14 FYudin        - SCR 146200 - CSF India. Local tables used for TranDocType replaced with DB fields.
+08/25/14 galinad       - SCR 145761 - changes to APInvoice.cs and APInvoice.Queries.cs to correctly  retrieve PO Charges for AP invoice Header
+08/25/14 calrodriguez  - SCR 144806 - Added Code1099 functionality for US localization.
+08/26/14 EDvoretsky    - SCR 144446 - SCF Romania. Replace using Local010 to TranDocTypeAuth table
+08/26/14 calrodriguez  - SCR 146305 - Fixed problem with wrong value in DueDate field.
+08/27/14 galinad       - SCR 145945 - Convert APInvHed Patch Flds related to PrePayment - Prepaymet fields are not supposed to be copied to the correction invoice
+08/28/14 OSaveliev	   - SCR 147026 - CSF Peru: PESUNATDtl moved from Local010 to physical table.
+09/03/14 galinad       - SCR 147295 - changes to Initialize() method to avoid the error and be able to create Receipt lines
+09/04/14 FYudin        - SCR 147235 - CSF India. Local table data replaced with fields in the Vendor & VendorPP tables
+09/10/14 galinad       - SCR 147978 - changes to APInvHedBeforeUpdate to correct the validation of entered Prepayment amount
+09/11/14 galinad       - SCR 147978 - changes to APInvHedBeforeUpdate to correct the validation of entered Prepayment amount - additional change to avoid error
+09/12/14 OSaveliev     - SCR 147026 - BO Initialization corrected.
+09/12/14 DMashkov      - SCR 147125 - CSF Peru. Local010 table fields were replaced with fields in the APInvHed table.
+09/15/14 vcardenas     - SCR 146914 - Added validations in ChangeRefPONum to get the BankID for the new vendor.
+09/17/14 gdreytser     - SCR 147832 - Set Advance payment gain/loss amounts to zero when changing line Advance Pay amount
+09/18/14 EDvoretsky    - SCR 148228 - SCF Germany. Z4/10 Report. Add validation for new fields.
+09/19/14 KeithW		   - SCR 146202 - APInvoice.Queries.cs: Removed queries over Local tables that were no longer used.
+09/24/14 calrodriguez  - SCR 144807 - Expanded 1099 CSF for USA.
+09/30/14 SandraN	   - SCR 148792 - Changed RefInvoiceNum patchfield for existing field DMRActn.RefInvoiceNum
+10/01/14 AnnaM         - SCR 147180 - CSF Mexico. New field APInvHed.MXFiscalFolio added and processed.
+10/03/14 FelipeM	   - SCR 148792 - Fixed GetDMRCorrInvRequests to set the correct Invoice line to DMR lines.
+10/07/14 ATarasov      - SCR 147696 - CSF Peru - Generation of DUA numbers changed.
+10/07/14 vcardenas     - SCR 146672 - Added APInvHed.TranDocTypeID in GetLegalNumberOpts when looking for default DM Legal number
+10/03/14 FelipeM	   - SCR 148792 - Fixed GetDMRCorrInvRequests to set the correct invoice description.
+10/08/14 FYudin        - SCR 149472 - CSF Mexico. Removed reference to TaxDestination PatchFld
+10/10/14 DMashkov      - SCR 147125 - CSF Peru. Some corrections after peer-review.
+10/13/14 DMashkov      - SCR 147125 - CSF Peru. Global variable APInvHed was changed to the local variable in FilterBOEReferences() method.
+10/14/14 DMashkov      - SCR 147167, 147169 - CSF Peru. Local tables: Local010 WHERE localname = 'Peru' and Key1 = 'PEAPInvTax'; Local001 WHERE localname = 'PE' and Key1 = 'SalesTax'; 
+									  Local020 WHERE localname = 'PE' and Key1 = 'TaxRate' were changed on real fields.
+10/22/14 DMashkov      - SCR 147167 - CSF Peru. The refreshttPEAPInvTax() method corrected.
+10/29/14 EDvoretsky    - SCR 148228 - CSF Germany. Assign APInvDtl.DEInternationalSecuritiesID, DEIsInvestment, DEIsSecurityFinancialDerivative, DEIsServices, DEPayStatCode from Part table
+11/05/14 ATarasov      - SCR 151006 - CSF Peru, using of APCHkGrp and APIncGrp fixed.
+11/11/14 DMashkov      - SCR 147167 - CSF Peru. PEAPInvTaxAfterGetNew() method was added for ttPEAPInvTax.GroupID assignment.
+11/11/14 AlbertoC	   - SCR 149380 - APInvoice.cs - Removed parameter dsList from method GetApInvHeadListLoaded, it is not necessary.
+11/12/14 AlbertoC	   - SCR 149380 - APInvoice.cs - Changed return type for method ChangePaymentAmount, return void instead of dataset.
+11/14/14 DMashkov      - SCR 151617 - CSF Peru. PEAPInvTax.GroupID assignment was made while PEAPInvTax creation.
+11/19/14 EDvoretsky    - SCR 149044 - CSF Germany. Assign APInvDtl.DEDenomination from Part table
+11/19/14 DMashkov      - SCR 151617 - CSF Peru. PEAPInvTaxAfterGetRows() method was added for ttPEAPInvTax.GroupID assignment.
+11/20/14 DMashkov      - SCR 151617 - CSF Peru. PEAPInvTax.GroupID field was made as "External".
+11/20/14 ElsaM		   - SCR 151934 - Add Print1099 column to validate if a supplier is 1099.
+11/21/14 MBaranov      - SCR 151789 - Deferred Expenses Amortization prototype implemented
+11/26/14 MBaranov      - SCR 151789 - Manual adjustment of Deferred Expense Amounts implemented
+11/28/14 SEvdokimov    - SCR 151617 - (CSF Peru) - Detraction taxes recalculation corrected.
+11/28/14 MBaranov      - SCR 151789 - Manual adjustment of Deferred Expense Schedule implemented
+12/01/14 MBaranov      - SCR 151789 - Manual adjustment of Deferred Expense Schedule stabilization
+12/01/14 OLunochkina   - SCR 152135 - CSF Peru - AP Multiple Bill of Exchange - Group creation for AP BOE
+12/02/14 MBaranov      - SCR 151789 - Deferred Expense Amortization for Debit Memos supported
+12/02/14 hcoss         - SCR 152263 - Prevent incorrect Prompt Payment Discount calculation when using an already existing invoice number.
+12/03/14 OLunochkina   - SCR 152144 - CSF Peru - AP Multiple Bill of Exchange - AP BOE UI adjustment
+12/08/14 MBaranov      - SCR 151789 - Manual adjustment of Deferred Expense Account implemented
+12/08/14 OLunochkina   - SCR 153128	- CSF Peru - AP Multiple Bill of Exchange - Corrected Invoice Balance if BoE is applied
+12/09/14 MBaranov      - SCR 151789 - Deferred Expense Amortization actions menu items implemented: Generate, Restore, Delete Schedule
+12/10/14 MBaranov      - SCR 151789 - Deferred Expense Amortization: Error message strings corrected
+12/11/14 TatyanaK      - SCR 152895 - Statistical only accounts are prohibited.
+12/11/14 MBaranov      - SCR 151789 - Deferred Expense Amortization: TranGLC.SysGLControlCode field must be populated
+12/16/14 EDvoretsky    - SCR 151181 - CSF Belgium. Payment Reference Number.
+12/16/14 OLunochkina   - SCR 153127 - CSF Peru - Fixed AP BOE amount validation
+12/16/14 OLunochkina   - SCR 153587 - CSF Peru - New flag added to APInvHed: Is Multi Generated BOE(DB+regen changes only)
+12/16/14 MBaranov      - SCR 151789 - Deferred Expense Amortization: APInvDtlTGLC fields related to AP Invoice (VendorNum, APInvoiceNum, InvoiceLine) populating corrected to fix issues with tables relation
+12/17/14 TatyanaK      - SCR 152895 - Statistical only accounts are prohibited.
+12/23/14 EDvoretsky    - SCR 151181 - CSF Belgium. Changed messages about wrong Payment Reference Number.
+12/23/14 OLunochkina   - SCR 153378 - CSF Peru, replace invoice with bill of exchange in error messages for AP BOE.
+12/24/14 AMendez       - SCR 147103 - Added getVendorBankInfoDefault method, to default the Supplier's primary bank when available.
+12/23/14 EDvoretsky    - SCR 151181 - CSF Belgium. Changed messages about wrong Payment Reference Number.
+12/28/14 MBaranov      - SCR 153520 - Selection of unrelated to AP module Amortization code by typing it into the field was prohibited.
+12/28/14 MBaranov      - SCR 152621 - Common Deferred Expense Amortization Code Scope for AP and GL ('GA') created
+01/02/15 galinad       - SCR 154093 - if blank then Tax Point Date and Tax Rate Date of Invoice Header should be defaulted to Invoice Apply Date
+01/06/15 angelicam	   - SCR 153576 - Currency Conversion was not done when adding receipt lines 
+01/09/15 JGracia	   - SCR 154484 - Moved validation for 1099 Vendor. If Vendor is configured as 1099 then the Code 1099 is enabled.
+01/09/15 JGracia	   - SCR 154484 - Changed validations for 1099 Vendor. If Vendor is configured as 1099 then the Code 1099 is enabled, but only for Invoices (not included Debit Memos and Correction Invoices)
+01/15/15 ABokarev      - SCR 151403 - Queries unreferenced parameters and instance members corrected.
+01/20/15 EDvoretsky    - SCR 155093 - CSF SE FI NO DK EE - AP Invoice Bank Reference entry filling leading zeros.
+01/21/15 AMendez       - SCR 155036 - Removed validations to allow Invoices to be created without a Bank.
+01/22/15 EDvoretsky    - SCR 155093 - CSF SE - Remove filling leading zeros AP Invoice Bank Reference.
+01/22/15 MBaranov      - SCR 155198 - Amortization Schedule shouldn't be adjustable when Invoice is locked.
+01/28/15 TatyanaK      - SCR 152895 - Enable to add accounts for different books in Misc. Charge GL Analysis and Line GL Analysis.
+02/04/15 AMendez       - SCR 156125 - Now, when changing the Ref PO num, the Bank will be updated correctly.
+02/11/15 MarcoM        - SCR 155571 - Added the parameter MtlSeq in GetNewAPInvJob method in order allow use a Job Number and Material twice.
+02/26/15 MBaranov      - SCR 157850 - Violation of TranGLC primary key on retrieving Deferred Expense account for the multi-book case fixed.
+03/05/15 LorenS        - SCR 157717 - Regenerated the APInvoice BO.
+03/06/15 AngelicaM     - SCR 153482 - Avoid setting Tax Exempt by default for Asset Lines
+03/11/15 OLunochkina   - SCR 157782 - CSF Mexico - Electronic Accounting - Changes in Anexo24 (Jan 2015) should be implemented (GL Journals)
+03/11/15 MBaranov      - SCR 158452 - Amount in reporting currencies should be completely allocated between schedule lines without a rounding difference
+03/26/15 hcoss         - SCR 155150 - Retrieve UD fields for RcvDtl table.
+04/01/15 SLevchenko    - SCR 160141 - Intrastat button is enabled after line saving.
+04/06/15 EDvoretsky    - SCR 159838 - CSF Estonia. Added validation Bank Reference if Reference is not equal Supplier Bank Reference
+04/07/15 ElsaM		   - SCR 160476 - Set isAdvance flag equal true when an Adv Bill line is created
+04/09/15 DPedorenko	   - SCR 160576 - CSF Peru - Fixed search of TaxRate by EffectiveFrom.
+04/21/15 YuriR         - SCR 133872 - APInvoice.cs - Modified getLineDMRInfo: Convert qty from IUM to PUM.
+04/22/15 LuisZ         - SCR 154828 - Removing warnings from LegalNumberLib use context constructor
+04/28/15 DEpifanov     - SCR 160758 - Peru CSF: Correct detraction tax delete.
+04/29/15 galinad       - SCR 161633 - changes to avoid error and allow to create Correction invoice with taxes
+04/29/15 galinad       - SCR 161633 - changes per peer review notes - using correct end transaction scope
+05/11/15 ElsaM		   - SCR 161685 - Recalculate exchange rates when invoice ref is cleared and set Lock Rate = false for initial value
+05/14/15 ElsaM		   - SCR 133458 - Remove delete record TranGLC when MatchedFromLI and AllowOverrideLI are true from APInvHedBeforeUpdate
+05/20/15 ScottR        - SCR 162890 - Correct object reference error when generating invoices from rebates
+05/25/15 AnnaM		   - SCR 162718 - CSF Mexico. New MXRetentionCode field for Electronic Accounting functionality
+05/29/15 OLunochkina   - SCR 163111 - CSF Peru, Electronic Invoicing (DB and UI, Rev.2 of Story)
+06/02/15 SEvdokimov    - SCR 163408 - (CSF Peru) - Default AP BOE invoice Apply date inherited from Group Apply date.
+06/02/15 JuliaK        - SCR 163126 - Added Context to constructor 
+06/02/15 LuisV		   - SCR 158812 - APInvoice.cs - Remove TranGLC records before create new ones.
+06/03/15 ElsaM		   - SCR 162327 - Make ttAPInvDtl.PONum and ttAPInvDtl.POLine required fields for advance and unreceived lines
+06/04/15 galinad       - SCR 163028 - The logic is added to bring the message to the user if Letter of Credit is assigned to Invoice and Invoice lines have related PO with different Letter of Credit
+06/06/15 LuisV		   - SCR 158812 - APInvoice.cs - ROLLBACK previous changes.
+06/05/15 YuriR         - SCR-164008 - Mass change - added missed transaction block for Db.ReadCurrent(…LockHint.UpdLock) after SCR-111588;
+06/08/15 LuisV		   - SCR 158812 - Assign SysRowID when empty and correct TGLCTranNum to avoid duplicated primary key in TranGLC table. Set CopyToLocal = False in some references.
+06/22/15 TatyanaK      - SCR 163760 - New method to retrieve invoices for asset addition UI was added.
+06/22/15 calrodriguez  - SCR 163904 - Fixed the issue of not displaying the fixed discount on the report.
+06/26/15 galinad       - SCR 165832 - changes to APInvoice.Queries.cs in order not to use .LastOrDefault logic which does not work.
+06/30/15 JRIVERA	   - SCR 164817 - APInvoice.Queries.cs - It was added the GetSeparatorChar query
+									  APInvoice.cs - It was validated that ttTranGLCs table has at least more than one item in the APInvExpTGLCRunPE method. It was added the GetGLAccountDesc method in order to return the GLAccount description
+07/03/15 calrodriguez  - SCR 48646  - Deleted the validations (BO) for avoiding invoices that were only open, for invoice reference.
+07/06/15 calrodriguez  - SCR 48646  - (Rework) Added the same queries (BO) but modified them to ignore the condition of OpenPayable.
+07/08/15 AngelicaM     - SCR 100926 - Improve performance by loading details on demand instead of filling dataset with all information.
+07/08/15 jgracia       - SCR 151288 - Using Ice.ExtendedData, we are getting now the UD Fields to include them into the cFieldsAllowed variable, so UD Fields can now be updated even if the Invoice is posted.
+07/09/15 JRIVERA	   - SCR 126079 - Removing old set Linked field logic which was fill from the ComXRef table
+07/13/15 MBaranov      - SCR 166723 - Deferred Expense GL Account should be retrieved after Actions -> Deferred Expense -> Generate Schedule.
+07/14/15 AlbertoC	   - SCR 166682 - APInvoice.cs - Fixed Total Available and Selected Total calculations used in New Receipt Line forms
+07/14/15 JRIVERA	   - SCR 166373 - APInvoice.cs - Fixed APInvExpTGLC to populate G/L fields and let the GLAccount control be enabled.
+07/15/15 vcardenas     - SCR 141317 - Removed Thailand condition to assign the value APInvHed.Plant for all invoices.
+07/15/15 DMashkov      - SCR 166733 - CSF Vietnam - The setDatesDiscount() method was corrected with PurTerms checking to Null value.
+07/16/15 galinad       - SCR 166196 - When Self-Assessment tax is added by the user the AP Invoice Header Total should display the correct amount
+07/21/15 vcardenas     - SCR 141317 - Assign the value APInvHed.Plant for invoices: Open Load Invoice,Prepayment Invoice,Rebate Invoice,DMR Correction Invoice,Approve Logged Invoice.
+07/23/15 LuisZ         - SCR 164920 - Exchange Rate calculations will be done in updated library when Lock Rate is true and Company Configuration is Conversion through base
+07/24/15 ElsaM	       - SCR 167353 - Add PONum parameter to method DeselectSelectedRcptLines
+07/28/15 ElsaM		   - SCR 166877 - Recalculated report currencies based on the CurrencySwitch flag
+07/29/15 PElagin       - SCR 167297 - CSF Norway - Add Transaction Reason Code validation.
+08/06/15 galinad       - SCR 96775  - CSF - Argentina - Changes for Withholding taxes - Partially and fully paid timing
+08/07/15 PElagin       - SCR 168792 - CSF Norway - Confirmation Message box should appear only for Supplier with  'No Banking Reference' = OFF.
+07/13/15 galinad       - SCR 166784/166776 - when Tax code is added manually the Maximum/Minimum amounts assigned should be honored (always as at 'Line level')
+08/14/15 ElsaM		   - SCR 168935 - Make LCFlag read only
+08/18/15 ElsaM		   - SCR 167938 - Fix variance calculation for GL distribution
+08/18/15 galinad       - SCR 166784/166776 - when Tax code is added manually the Maximum/Minimum amouts assigned should be honored (always as at 'Line level') - additional chagnes 
+08/20/15 galinad       - SCR 168596/96775 CSF - Argentina - Changes for Withholding taxes - Partially , fully paid  and First payment timing
+08/18/15 ElsaM		   - SCR 167938 - Remove unnecessary lockHint from SelectTotalExpAmt query
+09/09/15 ElsaM		   - SCR 171041 - Validate null reference for invoices that have no details
+09/10/15 eduardo.gonzalez - SCR 167449 - Modified ttAPUninvoicedReceipt queries from DeselectSelectedRcptLines method.
+09/14/15 AlbertoC	   - SCR 168850 - APInvoice.cs - Modified method ChangeExtCost, changed logic that validates amount versus advance payment balance when there is a relation with a PO.
+09/23/15 MBaranov      - SCR 170375 - CSF Malaysia - Import Declaration Number in GAF export.
+10/09/15 FYudin		   - SCR 172936 - CSF India. Removed extra query.
+10/23/15 AlbertoC	   - SCR 169742 - Added key "UpdateExt" to ErpCallContext, use key in ErpCallContext in order to avoid running some methods that create APInvExp records
+10/26/15 vcardenas	   - SCR 170244 - Use CalcCurrencyRatesEF.CalcCurrencyRates library to calculate amounts when PO has LockRate.
+11/06/15 jgracia       - SCR 172924 - Validate if proposedDateTime or newApplyDate is null, if so throw exception. (Invoice Date and Apply Date cannot be blank)
+11/08/15 LuisV		   - SCR 167512 - APInvoice.cs - APInvExpTGLCBeforeUpdate - Set correct segment values from GLAccount that will be used in GL
+AcctDisp library to create GL Account Display rows.
+11/13/15 ElsaM		   - SCR 175108 - Use a physical field for LACTaxCalcEnabled instead a patch field
+11/13/15 AngelicaM	   - SCR 174982 - APInvoice.cs - GetAPUninvoicedDropShipmentLines and GetAPUninvoicedReceiptLines- Validate DropShip value when retrieving the header information to get 
+									  the correct header when Receipt and DropShipment has the same PackSlip.
+11/18/15 OSaveliev     - SCR 175115 - CSF Taiwan: GUI Registration Number.
+11/19/15 JGracia       - SCR 172924 - [Rework] Validate if ProposedDateTime is null, if so throw exception. (Transfer Invoice Apply Date, Tax Rate Date and  Tax Point Date cannot be blank)
+11/19/15 AngelicaM	   - SCR 174982	- [Rework] APInvoice.cs - SelectUninvoicedRcptLines- Validate DropShip value when retrieving the information to get the correct row when Receipt and DropShipment has the same PackSlip.
+11/20/15 SandraN	   - SCR 172980 - APInvoice.cs, APInvoice.Queries.cs - Added method to get multicompany GL Account descriptions.
+11/26/15 AngelicaM	   - SCR 176236 - APInvoice.cs, APInvoice.Queries.cs - Removed query build on the fly on SetReadyToCalc and replaced it with 2 linq queries. 
+12/02/15 AngelicaM	   - SCR 176236 - [Rework]APInvoice.cs - SetReadyToCalc- Minor changes after peer review.
+12/14/15 calrodriguez  - SCR 176994 - Fixed UnitCost calculated value in order to avoid negative values.
+12/18/15 calrodriguez  - SCR 176994 - Fixed issue Row has been modified by another user and couldn't be updated.
+01/15/16 ElsaM	       - SCR 93049  - Add DocInvoiceAmt column to APInvHedList to display it instead of the ScrDocInvoiceAmt
+01/19/16 AnnaM	       - SCR 178145 - CSF Mexico - Field TARCode added
+01/20/16 AnnaM	       - SCR 178145 - CSF Mexico. Error message description is changed
+01/21/16 ElsaM		   - SCR 179015 - Send the vendorNum as parameter to get the correct bank id, also make the setBankName method private since there's no need to have public
+02/04/16 galinad       - SCR 175786 - Detail validations are added when the user adds or changes Letter of Credit ID
+02/08/16 calrodriguez  - SCR 178630 - Added the creation of the XFile records for Invoice which hold the attachments information from LogInvoice.
+02/12/16 galinad       - SCR 180209 - when tax amount is calculated in base currency the correct currency(base) should be sent as parameter
+02/12/16 galinad       - SCR 180169 - Posted invoice update - it is not allowed to save blank due date
+02/19/16 galinad       - SCR 180199 - as default AP Invoice should be assigned Currency Rate Group defined as 'Purchase and Expenditure' on Company maintenance
+02/29/16 galinad       - SCR 181473 - correct currency set up should be used when calculating the display fields in reporting currencies
+02/29/16 RayRuiz      - SCR 180919 - Validation was added to take into account the tax liability, regardless if it's at Header or Detail.
+03/03/16 galinad      - SCR 181579 - additional parameter for purchase order is added to calcTaxes method
+03/03/16 vcardenas    - SCR 181659 - Added value to obtain Document type for Manual GRNI Clearing
+03/07/16 NoeMtz       - SCR 181663 - Added logic to fill ttAPSelectedRcptLines.InvoiceQty external field and fixed code cop analyzer warnings.
+03/09/16 NoeMtz       - SCR 181688 - Added changes to support GRNI Clearing document creation.
+03/10/16 NoeMtz       - SCR 181688 - Fixed multiple code cop analyzer warnings.
+03/11/16 vcardenas	  - SCR 181584 - Enhancement to default Tax Liability, Product Tax Category, and Tax Exempt Code from PO
+03/11/16 NoeMtz 	  - SCR 181688 - Added validation of APSyst.AllowMultInvcReceipts flag to enable Manual GRNI clearing functionality.
+03/28/16 galinad      - SCR 182928 - Changes for 'Tax Inclusive' Advance Billing Lines
+03/28/16 vcardenas	  - SCR 181584 - Rework: Added negative condition when TaxExempt code is updated.
+03/28/16 NoeMtz       - SCR 181663 -  Added logic to update vendor qty correctly for partial receipt line invoicing enhancement.
+03/29/16 galinad      - SCR 182929 - adding Tax Inclusive functionality for AP Invoice Unreceived lines - step 1 
+03/29/16 NoeMtz       - SCR 181663 -  Added Methods UpdateVendorQtyRelatedFields() and  UpdateFinalInvoiceFlag().
+03/31/16 YuriR        - SCR 180568 - Rolled back change for 133872 (avoid conversion of qty from DMR Debit Memo) 
+03/31/16 vcardenas	  - SCR 181694 - Mass  Generation of GRNI Clearing document
+03/31/16 NoeMtz		  - SCR 181663 - Modified query getPackSlipInvoicedQtyQuery and fixed a small bug.
+04/01/16 AngelicaM	  - SCR 182445 - On ChangeTaxLinePercent method change reference from ttAPInvDtl to ttAPLnTax to use the correct object. 
+04/04/16 galinad      - SCR 182929 - adding Tax Inclusive functionality for AP Invoice Unreceived lines - step 2 - applying Advance billing amounts.
+04/04/16 NoeMtz		  - SCR 181663 - Modified SupplierUnInvcReceiptQty to not being defaulted to zero.
+04/06/16 SEvdokimov   - SCR 167042 - Allow to manually update Due Date field in Invoice Header.
+04/06/16 SLevchenko   - SCR 183055 - CSF EU - The CSFBE functionality should be adapted to provide the bank reference number in the payment file regardless of CSF if there is a bank reference number defined on the invoice.
+04/08/16 SEvdokimov   - SCR 167042 - Fix after Peer review.
+04/08/16 galinad      - SCR 182928 - when  Tax Region Code is defaulted from reference PO, 'InPrice' flag is supposed to be defaulted from PO.
+04/11/16 galinad      - SCR 111478 - changes to implement Tax Inclusive functionality for AP invoice Receipt lines
+04/11/16 NoeMtz		  - SCR 181694 - Added logic to get GRNI clearing document sequence invoice id.
+04/12/16 galinad      - SCR 111478 - changes to implement Tax Inclusive functionality for AP invoice Receipt lines - adding PO misc charges
+04/12/16 calrodriguez - SCR 181694 - Manual selection part of Mass Creation story.
+04/12/16 noemtz       - SCR 183683 - added logic to validate there are no pending partial invoices to be posted.
+04/13/16 SLevchenko   - SCR 183055 - CSF EU - The CSFBE functionality should be adapted to provide the bank reference number in the payment file regardless of CSF if there is a bank reference number defined on the invoice.
+04/13/16 galinad      - SCR 181586 - additional parameter for Withholding tax with Tax Inclusive pricing is added to calcTaxes method
+04/14/16 galinad        SCR 181586 - changes for Withholding taxes included to 'Tax Inclusive Pricing' tax liability
+04/15/16 noemtz       - SCR 183683 - added logic to set final invoice flag to true when supplier qty is greater or equals to receipt line un-invoiced qty.
+04/15/16 UrielF		  - SCR 181698- Invoice Entry AP  - AP Invoice Posting engine New Type GRNI Manual
+04/18/16 galinad      - SCR 181586 - changes for Withholding taxes included to 'Tax Inclusive Pricing' tax liability 
+04/19/16 SEvdokimov   - SCR 183829 - Due date should be enabled in AP Invoices created by Get Action the same way as in created manually.
+04/22/16 VladimirD    - SCR 179257 - Fixed GL line TranGLC calculation issue.
+04/25/16 vcardenas    - SCR 181694 - Full check in for Mass creation of new AP Document(Manual GRNI Clearing)
+04/26/16 AnnaM        - SCR 183619 - CSF Colombia - IFRS financial instrument changes. Net Present Value calculation added.
+04/26/16 vcardenas	  - SCR 181694 - Added code to obtain currency code value from PO
+04/27/16 vcardenas    - SCR 181694 - Fixed issue deleting lines in mass creation also added code to return the number of invoices generated in the process
+04/27/16 UrielF		  - SCR 181698 - Fixed issue on Invoice Tracker ("posted" epishape not being displayed after posting the GRNI clearing invoice) by setting the APInvHed.Posted flag to true after successfully generating  the GRNI clearing entries.
+04/27/16 galinad      - SCR 182929 - adding Tax Inclusive functionality for AP Invoice Unreceived lines  - additional change (correcting typo)
+04/28/16 vcardenas    - SCR 181694 - Added where clause for results in receipt not invoiced grid, also renamed column to "U/M"
+04/28/16 noemtz       - SCR 183683 - Fixed small bug when assigning FinalInvoice Value in ChangeVendorQty() method and also moved validation from client side to server side.
+04/29/16 galinad      - SCR 184550 - adding Tax inclusive pricing functionality for AP Invoice Drop ship lines
+04/29/16 UrielF		  - SCR 181694 - Prevented GRNI Clearing invoices from being created on the same Group as normal Invoices. Also corrected issue with OpenInvoice field being left as true when it was supposed to be false.
+04/29/16 UrielF		  - SCR 181694 - Set APInvHed.OpenPayable field to false when the invoice is posted.
+05/03/16 UrielF		  - SCR 181694 - Modified query to fix the bug which prevents reusing GroupIDs
+05/04/16 UrielF		  - SCR 179717 - Transfer Multiple Invoices AP, Added required Temporary Table and method to populate the table form the data in list table.
+05/04/16 AnnaM        - SCR 184284 - CSF Colombia - IFRS financial instrument changes. Assign Interest Rate on the new invoice record. Enable calculation PV if checkbox is off.
+05/05/16 vcardenas	  - SCR 181694 - Modified the way to obtain grid values in order to avoid display incorrect information, also move code to display the correct number of invoices created in Mass creation.
+04/06/16 noemtz		  - SCR 183683 - Modified logic to validate final invoice flag and update related fields on save instead of on column change event.
+05/09/16 UrielF		  - SCR 179717 - Transfer multiple Invoices AP- added a column to Temporary Table.
+05/10/16 MBaranov     - SCR 184010 - Due Date calculation is corrected for the case when Purchase Terms have no Discount.
+05/10/16 noemtz       - SCR 183683 - Added validation so UpdateFinalInvoiceFlag() and UpdateVendorQtyRelatedFields () are called only when line type is receipt type.
+05/11/16 vcardenas	  - SCR 181694 - Added method to validate if Mass Creation of GRNI documents Invoice can be created in the current group.
+05/11/16 noemtz       - SCR 183683 - Fixed existsUnpostedInvoiceLine query adding company and vendor number conditions.
+05/11/16 UrielF		  - SCR 179717 - Added a method to validate the existence of a Group and another one to create a group manually.
+05/12/16 UrielF		  - SCR 179717 - Modified TransferInvoiceToGroup method to receive the ApplyDate parameter as a DateTime object to prevent culture inconsistencies.
+05/12/16 vcardenas	  - SCR 181694 - GRNI: Modified code to obtain the invoice number from APInvDtl in case of RefPONum is empty
+05/16/16 UrielF		  - SCR 179717 - Added Invoice "type" validation to prevent mixing GRNI with normal invoices in the same group when transfering invoices between groups.
+05/17/16 noemtz		  - SCR 181694 - GRNI: Populated PONum, POLine and PORelNum fields when creating APInvDtl record.
+05/20/16 CarlosRdz    - SCR 185684 - GRNI: Fixed OK button, removed InvoiceNum field and fixed GRNISeq generation.
+05/27/16 - vcardenas  - SCR 185857 - Changes to Mass Creation to create the GRNI Clearing for uninvoiced receipts and evaluate if the receipt is invoiced and the invoice is posted
+05/31/16 Masanchez SCR 179967 - ARSyst table was removed as a parameter for SetDefaultInvoiceDates.RunSetDefaultInvoiceDates method.
+05/31/16 JonathanD		SCR 184689 - Added method GetRowsForTracker and APInvHedAfterGetRowsTracker to use new Dictionaries to increase performance when getting data from Supplier Tracker.
+06/01/16 JonathanD		SCR 184689 - Fixed some warnings and some peer review changes.
+06/01/16 vcardenas	  - SCR 185857 - Added changes in criteria for uninvoiced receipts, also added changes to the way to calculate the difference amount
+06/01/16 JonathanD		SCR 184689 - Fixed closure found in one of the new queries, also added code to skip getting the currency rates when getting data from Supplier Tracker.
+06/02/16 galinad      - SCR 185823 - For AP Invoice created on match of Logged Invoice 'Ready to Calculate' flag is supposed to default from related Approved Logged Invoice
+06/02/16 vcardenas    - SCR 185857 - Changes to display and create clreaing invoices for receipts with 0 amount
+06/03/16 JonathanD		SCR 184689 - Fixed G/L Total incorrect amount issue found by FIN AP Autotest. Method getGLDistTotals was assinging the values to the incorrect object.
+06/03/16 JonathanD		SCR 92307  - Modified calcMiscAmtByPercent to use reverse the sign for ExtCost when using debit memo.
+06/08/16 UrielF			SCR 186317 - Corrected code to recalculate the exchange rate when an invoice is transfered to another group and the ApplyDate is modified for the transfered invoice(s).
+06/10/16 DEpifanov      SCR 186436 - Peru CSF: Detraction Tax rounding to nearest number.
+06/14/16 UrielF			SCR 186317 - Called the general Db.Validate to fix and unhandled exception error.
+06/30/16 VMorales       SCR 187828 - Correcting a join in the SelectDMRDMQuery in order to avoid duplicated rows in the DMR Debit Selection dialog box.
+06/30/16 VMorales       SCR 187828 - Modified the query SelectDMRDMQuery to improve performance when filtering by supplier (Using Contains instead of ListLookup).
+07/01/16 galinad        SCR 188305 - Changes to exclude Tax records from discount calculations if Payment Discount treatment is Payment Discount Before Tax.
+07/01/16 galinad        SCR 188305 - change to the query for Peer review note
+07/08/16 noemtz		    SCR 185857 - Added logic to calculate OurQty when crating DMR lines.
+07/01/16 galinad        SCR 188305 - additional change to the query for Peer review note
+07/13/16 ScottR         SCR 188853 - DMR Debit memos not linked to an RcvDtl record were not displaying in manual selection of DMR Debit Memos
+18/07/16 VMorales       SCR 188964 - APInvoice.cs: Added the method ValidatePaymentDate and renamed the method ChangeDueDate to ValidateDueDate.
+									 APInvoice.Queries.cs: Created a new query called FindFirstAPInvoiceDate.
+18/07/16 VMorales       SCR 188964 - Adding the changes described above, they weren't include in the last check due to a mistake.
+18/07/16 VMorales       SCR 188964 - Checking in changes in APInvoiceSvcFacade.cs
+18/07/16 ElsaM          SCR 188753 - Implement legal number fucntionality for correction invoices with manual generation type for legal numbers
+18/07/16 VMorales       SCR 188964 - Rolling back changes for this SCR where I renamed the public method ChangeDueDate as it would be a Software Interface Change and it isn't worth the risk.
+21/07/16 ElsaM          SCR 188753 - Add validations to the transaction document type to prevent invalid values
+07/21/16 SFlores        SCR 187280 - APInvExpTGLCBeforeUpdate:  GLAccountCore.ValidateGLAccount is now called to validate that account entered is active and valid.
+07/22/16 SEvdokimov     SCR 186961 - (CSF Peru) - Fields PEFiscalCreditOperStatus,PEInternatTaxAgr,PERentType,PEPurchaseType added to available to editing.
+07/27/16 AngelicaM		SCR 188753 - Validate if Legal Number is not in used before creating the APInvHead, to avoid errors.
+07/27/16 AngelicaM		SCR 188753 - Code Clean Up - Remove ABL comments
+08/01/16 AngelicaM		SCR 188753 - [Rework] Delete records for CurrExChain in case they exist, before creating the Correction Invoice. 
+08/01/16 VMorales       SCR 190019 - Modifying an incorrect condition in the method CreateRecurInvoice that was impeding to create more than one recurring invoice for different suppliers when the invoice numbers were the same.
+08/02/16 ElsaM			SCR 190332 - Add PELock.LockMessage for delete invoices that are in review journal
+08/04/16 noemtz			SCR 190174 - Modified existsRcvDtlNotInvoiced queries to search by VendorNum instead of PONum which causes issues when a packslip has lines for multiple POs.
+08/05/16 vcardenas		SCR 185857 - GRNI Clearing: Fixed formule that calculates the difference amount aldo added an extra condition on queries in order to do not retrieve unreceived receipts
+08/05/16 vcardenas		SCR 185857 - Refactor of GRNI Clearing code. New private method called "calcGRNIvalues" was created in order to unify the obtention of comparision parameters
+08/08/16 noemtz			SCR 190174 - Fixed issue where packslip was displaying all of its lines for receipt and not only the ones from the referenced PO number.
+08/10/16 vcardenas		SCR 185857 - GRNI Clearing: Fixed calcGRNIvalues method
+08/10/16 UrielF			SCR 190175 - Corrected a bug which caused Receipt lines to display the wrong currency value for the amounts when two or more POs were included in one packslip.
+08/19/16 galinad        SCR 190122 - if Supplier does not have Tax Liability assigned AP invoice Tax Liability is defaulted from Supplier's Country 'Supplier Tax Liability'
+08/23/16 calrodriguez   SCR 190791 - Modified amount of decimals on LateCostLines temp.table and also added ConvertAmtRoundDecimals to get correct calculations for Actual Amount.
+08/29/16 vmorales       SCR 72764  - APInvoice.cs: Added the private method VerifyLocMismatch to check if there is any mismatch with Letter of Credit assigned to invoice and Letter of Credit assigned to PO related to invoice lines
+									 APInvoice.Queries.cs: Modified Query SelectAPInvDtl to include APLOCID.
+08/29/16 calrodriguez   SCR 190791 - Using RoundDecimalsApply library to round the amounts for base and doc.
+09/02/16 YuriR          SCR 187465 - Find specific UOM classes by their types instead of ID-s
+09/02/16 galinad        SCR 179719 - Changes to fix the tax calculations for manually added tax records for Header charges when no lines are added to AP Invoice
+09/05/16 vcardenas		SCR 190868 - Changes to display deselected lines in New receipt line when PO number is 0
+09/20/16 calrodriguez   SCR 190791 - Fixed calculation of allocated cost different currencies.
+09/21/16 UrielF			SCR 190693 - Removed unnecessary condition on APInvExpAfterUpdate event handler which was causing the paste Insert Operation to fail inexplicably.
+09/26/16 JGracia		SCR 192132 - Changed GetGLAccountDesc() from the BO to call the GetAccountDesc() from GLAccountCore library to find the GL Account description regardless the display order.
+10/03/16 vcardenas		SCR 192147 - GetAPInvPOMisc: condition modified in order to be able to display PO misc header charge when click retrieve button
+10/03/16 vcardenas		SCR 192147 - (rollback changeset 30032). GetAPInvPOMisc: condition modified in order to be able to display PO misc header charge when click retrieve button
+10/07/16 vcardenas		SCR 190791 - Implemented code in order to fix allocated cost lines amount for base currency
+10/10/16 galinad        SCR 193281 - Exchange rate is supposed to be saved for Debit Memos when the Lock checkbox is checked.
+10/18/16 galinad        SCR 193918 - changes for AP Invoice lines tax exclusive project (EN 94) 
+10/22/16 KrisM          SCR 193918 - (EN 93) added external field for collection type desc and populated it.
+10/28/16 VadimV         SCR 183100 - upgraded SysGLCntrlCodeSeq and CorrAccSeq to bigint
+11/02/16 galinad        SCR 193918 - En-267 story - changes for manually added and manual tax records (original changes and per peer revoew)
+11/10/16 ScottR         EN-240 - Warn the user when the invoice date or apply date is greater than today
+11/14/16 KrisM          SCR 193918 - EN-309 Add new table to dataset.
+11/15/16 KrisM          SCR 193918 - EN-309 added new _ZFW_APInvoiceAPInvLnMscTax_GetBySysRowID.sql to TFS spocs folder.
+11/17/16 SEvdokimov     SCR 194711 - CSF Japan - AP Shime Payment Cycle. Summarization date added.
+11/21/16 galinad        SCR 193918  - EN-447 - first step changes to used new table APInvHedMscTax for AP Invoice header taxes (instead of APLnTax )
+11/22/16 BillE          SCR 193918 - EN-420 - APInvoice.cs - Added validation to the TaxRegionCode.
+11/23/16 galinad        SCR 193918  - EN-447 - using the prior table APLnTax until db issue investigated
+11/23/16 galinad        SCR 193918  - EN-447 - additional - using the prior table APLnTax until db issue investigated
+
+11/25/16 OSaveliev      SCR 195098 - CSF Thailand: Invoice Reference in AP Payments.
+11/28/16 DEpifanov      SCR 194713 - CSF Japan: AP Shime Payment Cycle - Print Payment Proposal Statement.
+11/28/16 DEpifanov      SCR 194718 - CSF Japan: AP Shime Payment Cycle - AP Invoice Entry.
+11/29/16 OSaveliev	SCR 195098 - CSF Thailand: Invoice validation and Context menu are fixed.
+11/30/16 LorenS         SCR 193918 - EN-444 Populate the Collection Type when running ChangeTaxLineCode.
+12/01/16 LorenS         SCR 193918 - EN-526 APlnTax tax amounts for debit memos were positive and should have been negative.
+12/02/16 BillE          SCR 193918 - EN-553 - Added new external columns for currency to APInvLnMscTax.
+12/05/16 KrisM          SCR 193918 - EN-446 - correctly filter ApLnTax in grid for self assess taxes.
+12/05/16 BillE          SCR 193918 - EN-571 - APInvoice.cs - Added check for if APInvTax records exist for validation of Tax Liability.
+12/06/16 galinad        SCR 193918 - EN-249 - changes for separate AP Invoice line misc charge taxes. Some code is commented out to be replaced by new tables later
+12/08/16 ScottH         SCR 193918 - EN-545 - Added validations to prevent adding WithHolding taxes at Line Level.
+12/09/16 BillE	        SCR 193918 - EN-579 - APInvoice.cs - Added functionality to correct error "Row has been modified by another user and could not be updated"
+12/09/16 galinad        SCR 193918 - EN-95 (EN-447) add new table to dataset - APInvHedMscTax.
+12/09/16 RayRuiz			SCR 196108 - Amortization functionality for AR, AP and GL was merged into one library to have more consistency on these modules.
+12/15/16 KrisM          SCR 193918 - EN-601 - Add line charge tax logic - APInvLnMscTaxAftergetrows.
+12/16/16 OSaveliev      SCR 195477 - CSF India: HSN/SAC codes in PO/SO and AP/AR Invoices.
+12/18/16 DEpifanov      SCR 196785 - CSF Peru: Retentions calculated incorrectly.
+12/28/16 DMashkov       SCR 196041 - CSF India - Remove the setup for app Cenvat Determination Maintenance from Inventory Man./Setup.
+12/30/16 OSaveliev      SCR 196917 - CSF India: Product Tax Category in Purchase modules.
+01/05/17 JRIVERA		SCR 195026 - Checking if the srcTable is null in the calcAllocBasis method in order to avoid object reference exceptions when accesing to columns
+01/05/17 galinad        SCR 193918 - EN-249 - changes for manually added/updated AP invoice misc charge taxes
+01/06/17 andreaP        SCR 197243 - EN-751 - populate APInvSched.GroupID in AfterGetRows.
+01/06/17 ScottH         SCR 193918 - EN-673 - corrected logic that refreshes temp-tables after tax calculation.
+01/09/17 LorenS         SCR 193918 - EN-516 - Calculate new APInvDtl Tax Amounts 
+01/09/17 galinad        SCR 193918 - EN-249 - changes for manually added/updated AP invoice misc charge taxes
+01/10/17 DMashkov       SCR 195881 - CSF India: Removing fields in Transaction Document Type and any logic linked to them.
+01/10/17 LorenS         SCR 193918 - EN-516 - Fixed bad reference.
+01/10/17 galinad        SCR 193918 - EN-249 - changes for manually added/updated AP invoice misc charge taxes
+01/11/17 KrisM          SCR 193918 - EN-599 - add APInvHedMscTax afterGetRows.
+01/12/17 DMashkov       SCR 195881 - CSF India: Some unused methods is removed.
+01/12/17 galinad        SCR 193918 - EN-851 - changes for manually added/updated AP invoice Header misc charge taxes
+01/12/17 ScottR         SCR 197243 - EN-754 - Added logic to support new table APInvSched
+01/13/17 ScottR         SCR 197243 - EN-754 - Additional AP Invoice schedule changes
+01/14/17 NeilT          SCR 189801 - EN-132 - Now checks the receipt header tax liability type as opposed to the PO header liability type when adding new receipt lines.
+01/15/17 galinad        SCR 193918 - EN-851  - changes for manually added/updated taxes related to header misc charges
+01/16/17 OSaveliev      SCR 197208 - CSF India: Commodity Codes are optional for AP Invoice Asset Lines.
+01/16/17 ScottR			SCR 197243 - EN-754 - Don't allow delete of APInvSched
+01/15/17 galinad        SCR 193918 - EN-851  - changes for manually added/updated taxes related to  misc charges
+01/17/17 ScottH         SCR 193918 - EN-638  - Modified logic to avoid "Object reference not set to an instance of an object" errors against the SalesTax buffer in multiple before update and change methods.
+01/18/17 ScottR      -  SCR 197243 - EN-574 - APInvSched was being updated unnecessarily causing a row has been modified error in the APInvoic service
+01/18/17 BillE          SCR 193918 - EN-696 - Added new validation to ChangeTaxLineCode.
+01/19/17 SEvdokimov     SCR 197209 - (CSF India) - Using of Import Country, Import From, Import Date fields.
+01/19/17 BillE          SCR 193918 - EN-696 - Added new validation to APLnTaxBeforeUpdate.
+01/19/17 galinad        SCR 193918 - (EN-249) - additional validation for Tax code entered for line misc charge tax
+01/19/17 galinad        SCR 193918 - (EN-851) - additional validation for Tax code entered for header misc charge tax
+01/20/17 OLunochkina    SCR 197724- CSF Colombia - AR Invoice - Fix crash, remove CO IFRS logic from GetByID and GetRows events
+01/20/17 SEvdokimov     SCR 197209 - (CSF India) - Fix after peer review.
+01/20/17 ScottR         SCR 197243 - EN-574 - APInvSched pay amounts were being updated incorrect for debit memos
+01/20/17 - andreaP     - SCR 197243 - EN-756 - TermsCode can now be modified on posted invoices is the OpenPayable flag is true.
+01/22/17 - KrisM        SCR 193918 - EN-516 - Fixes for line tax total fields.
+01/23/17 - galinad      SCR 193918 - (EN-851) - Strings table - correction of the message text (per Peer review)
+01/23/17 - ScottR       SCR 197243 - EN-754 - Return deleted APInvSched records in the dataset when APInvHed.TermsCode changes so the UI displays the records properly
+01/24/17 - KrisM        SCR 193918 - EN-516 - additional fix for line tax total fields.
+01/24/17 - ScottR       SCR 197243 - EN-574 - Incorrect validations on pay amounts for debit memos.
+01/24/17 - KrisM        SCR 193918 - EN-893 - add header and line charge tax totals.
+01/25/17 - ScottR       SCR 197243 - EN-754 - Reorder the payment schedule so it is always in date order
+01/25/17 - KrisM        SCR 193918 - EN-893 - header charge tax totals fix.
+01/26/17 - galinad      SCR 193918 - EN-856 - change to APInvDtlAfterDelete to check if APInvHed exists to avoid error on recurring invoice deletion
+01/26/17 - galinad      SCR 193918 - En-267 - change to fix incorrect field name 
+01/27/17 - ScottR       SCR 197767 - EN-837 - Implement new legal number configuration options for AP Invoice
+01/27/17 - galinad      SCR 193918 - EN-95 - removing code which is not used anymore because the new table APInvHedMscTax for Header misc charges tax was implemented instead of using APLnTax with line number = 0
+01/27/17 - galinad      SCR 193918 - EN-249/EN-851 - changes to correct the behavior  of 'Manual' flag for manually added Header and Line Misc charges tax records
+02/03/17 - KrisM        SCR 193918 - EN-719 - FIx 'Row has been Modified' error after adding new taxes.
+02/05/17 - gheier      - EN-1349 - Removed APInvoice.GetAPInvPaySched and APInvoice.UpdateAPInvPaySched as they are now obsolete (used by old payment schedule logic)
+02/10/17 - andreaP      scr 197243 (EN-1376) - Removed APInvoice.ChangePaymentAmount and APInvoice.ValidatePaymentDate as they are now obsolete (used by old payment schedule logic)
+02/13/17 - LuisZ	    SCR 197218 - GetAPUninvoicedReceiptLines will need the PONum selected to get correctly the receipt lines. If PO is 0 all receipt lines will be shown, otherwise only the PONum referenced.
+02/13/17 - ScottR       SCR 197767 - EN-837 - Before posting, validate legal numbers have been assigned when necessary
+02/14/17 - BillE        SCR 193918 - EN-894 - Added new column for GL Line Total on Line>GL Analysis tab to not include tax amounts.
+02/15/17 - BillE        SCR 193918 - EN-894 - Added GLLineTotal to pFieldList for currency conversion.
+02/15/17 - dparillo     SCR 197243 - EN-1399 - update APInvSched.PayDueDate with APInvHed due date
+02/17/17 - BillE        SCR 193918 - EN-889 - Added functionality to correct error "Row has been modified by another user and could not be updated".
+02/20/17 - SEvdokimov   SCR 199021 - (CSF Japan) - UpdateTaxAdjustment method rewritten.
+02/21/17 - SEvdokimov   SCR 199021 - (CSF Japan) - UpdateTaxAdjustment method returned back as obsolete to avoid SIC.
+02/21/17 - BillE        SCR 193918 - EN-899 - Changed to use ttAPInvHed instead of APInvHed in APInvDtlAfterUpdate.
+02/21/17 - JRIVERA		SCR 197783 - Added method ValidateAllDeferredLinesHaveGLAccount to validate that all Deferred Expense Lines have GLAccount selected
+02/21/17 - galinad      SCR 193918 - EN-1355 - changes to avoid error when AP Invoice line misc charge tax record is deleted
+02/24/17 - galinad      SCR 193918 - EN-1419 - when the users approves the change of Tax Liability for Expense AP Invoice the invisible field APInvDtl.TaxRegionCode should be re-set to the new value to have the correct tax calculation for dirent and indirect expense lines.
+02/28/17 - ValeryZ      SCR 199193 - CSF India - fixed getting TaxCatID from Receipt line.
+03/01/17 - ScottR       SCR 197243 - EN-1531 - Payment schedule pay days was not getting updated when the invoice due date changed
+03/02/17 - galinad      SCR 193918 - EN-1535 - Changes to properly refresh all the taxes for all misc charges after the taxes are re-calculated
+03/06/17 - ValeryZ      SCR 199193 - CSF India - corrected getting TaxCatID from Receipt line - TaxCatID will be getted only if line is Taxable.
+03/16/17 - galinad      SCR 193918 EN-1862 (parent EN-1765) - When users are allowed to change AP invoice Tax Inclusive liability from 'Inclusive' to 'Exclusive' the taxes are supposed to be calculated correctly.
+03/23/17 - ScottH       SCR 193918 - EN-1515 (subtask EN-1577) - Corrected dataset parameter of CreateCorrectionInvoice method to be non-ref.  The method only needs the dataset for informational purposes and the method was not ever designed to return a complete dataset.
+04/06/17 - VladimirD    SCR 167533 - removed useless method used in AP Invoice. Description should be populated from GLAcctDisp table.
+05/03/17 - RosalindaV   SCR 193918 - en-2663 - Regen BO to update labels for ScrDocDedTaxAmt fields (Doc, rpt1, rpt2,rpt3)
+05/04/17 - OscarV		SCR 201086 - APInvoice.cs: Modified methods copyCorrectionInvoiceLines and CreateCorrectionInvoice, removed validation that prevent copying lines that were correction lines.
+05/04/17 - OscarV		SCR 201086 - Code Clean up - Removed some warnings, there are still others pending.
+05/17/17 - OscarV		SCR 201086 - APInvoice.cs: modified method copyCorrectionInvoiceLines, added filter to query to avoid retriving correction lines.
+									 APInvoice.Queries.cs: Old query to retrieve lines was modified to be a func as the standard, also added parameters to avoid retriving all the lines.
+05/18/17 - DEpifanov    CSF-72     - CSF US: Epic 1385 - 1099 User Definable forms - AP Invoice entry provides selection of 1099 Type.
+05/26/17 - JeanetteP    SCR 201694 - APInvoice.cs: Added logic in APInvJobAfterDelete to clear the link between the deleted APInvJob and the EmpExpense.
+06/02/17 - AngelicaM	SCR 202774 - EN-2620 - Add logic to handle legal numbers with manual generation.
+06/09/17 - VladimirD    SCR 190693 - corrected segments population logic in GL Analysis tab. (General issue with GLControl should be fixed in FW).
+06/14/17 - VladimirD    SCR 190693 - fixed issue with paste-update context operation.
+06/20/17 - DPedorenko   CSF-383	   - CSF US	- AP invoice header misc charges now have their own FormTypeID, Code1099ID fields.
+06/23/17 - AngelicaM	SCR 202774 - EN-2620 - set as false requiresUserInput when no Transaction Doc exists. 
+06/23/17 - DPedorenko   CSF-437	   - CSF US - Code refactoring.
+07/10/17 - DMashkov   - CSF-525    - CSF Malaysia - GAF 2.0. Import declaration number processing was modified.
+07/21/17 - AlbertoC   - SCR 205720 - Added link field APInvRecurringCycle.Description
+07/25/17 - DvoretskyA - CSF-243    - CSF Malaysia: Externalization – AP Invoice
+07/28/17 - LuisZ	  - SCR 203254 - Rollback was done incorrectly for SCR 192147. Corrected rollback.
+07/31/17 - OscarV	  - SCR 204794 - APInvoice.cs: Modified method GetAPUninvoicedReceipts(), set row mod of ttAPUninvoicedReceipts to updated, 
+									 since it is a temp table the value need to be setted manually, this was done in the UI but since this is being called as a service, the change is not reflected.
+08/03/17 - KeithW     - SCR 201744 - EN-2199: Add RcvDtl.ExtNonRecoverableCost to RcptTot in PostGRNIClearingInvoices and pass -RcvDtl.ExtNonRecoverableCost into RunPstVar.
+08/03/17 - EricG      - SCR 205263 - Change the calculation for the percentage because of a round up error.
+08/09/17 - calvillo - EN-3222 - Added required fields validation in PrePost to avoid unnecessarily show manual Legal Number Prompt, Default document type on Get GRNI window, Generate Legal Numbers on GRNI's "Post"
+08/10/17 - KeithW     - SCR 195371 - EN-3468: Add Receipt Legal Number to the Available Uninvoiced Receipts grid on the AP Invoice Add Receipt Billing Lines screen.
+08/10/17 - calvillo - EN-3222 - PR correction, included logged invoices and posted invoices validations in ValidateAPInvHedRequiredFields method.
+08/11/17 - DMashkov     CSF-697 - CSF India: Self Invoicing under GST. New fields in AP Invoice.
+08/14/17 - calvillo - EN-3222 - Validation correction
+08/16/17 - SLevchenko SCR 203267 (CSF-686), CSF India, Tax Liability must be based on Purchase Point selected on AP Invoice.
+08/17/17 - SEvdokimov CSF-775 - (CSF India) - Add PortCode to APInvHed.
+08/17/17 - IrvingU    - SCR 204405 - APInvoice.cs: A conditional for the function refreshttAPInvDtl was added to not refresh the ttAPInvDtl.
+08/17/17 - SEvdokimov CSF-775 - (CSF India) - INPortCode field mapped to Local010 table.
+08/18/17 - ADvoretsky - CSF-773 - CSF India: Self Invoicing under GST. New fields in AP Invoice. Stage 2. Value of field PIncHed.Self Invoice is automatically populated  from TranDocType.
+08/21/17 - SEvdokimov - CSF-775 - (CSF India) - INPortCode field changed to Patch Field.
+08/31/17 - IrvingU	  - SCR 204405 - APinvoice.cs Function:  1) APInvDtlAfterGetRows(): A conditional was added to decide if assign ttAPInvHed.InPrice property or 
+																APInvHed.InPrice to ttAPInvDtl.InPrice 
+															 2) refreshttAPInvDtl(): This function was modified to solve the error message "Row has been modified 
+																by another user..."              
+09/01/17 - IrvingU	  - SCR 206108 - APinvoice.cs Function: APInvDtlBeforeUpdate() - A conditional was modified to allow Misc Lines and Unreceived Lines for zero amount.	
+09/05/17 - irinaY     - SCR 205165 - corrected copy/paste gl analysis lines						 
+09/14/17 - VladimirD  - SCR 205165 - additional correction for gl lines with amortization.
+09/19/17 - DEpifanov  - CSF-1011 - Peru CSF: Detractions calculated incorrectly if AP invoice has no lines but has header charges.
+10/02/17 - IrvingU	  - SCR 202547  - APInvoice.cs: The function setReadyToCalculate was removed of CreateCorrectionInvoice method, and new functions to copy AP Invoice Taxes were created. 
+									  APInvocie.Queries.cs New Queries were added for copy correction invoice taxes methods. 
+10/10/17 - JeanetteP  - SCR 208266 - APInvoice.cs/APInvoice.Queries.cs: Added validation to prevent creation of multiple APInvJobs linked to the same Job Misc Charge for non-reimbursable expense in the same invoice.
+10/11/17 - DEpifanov  - CSF-1133 - Peru CSF: It is not possible to enter SUNAT Reference and SUNAT Tax Details in AP Posted Invoice Update for non-resident invoices.
+10/12/17 - ADvoretsky - CSF-927 - CSF India: Self Invoicing under GST. Replace patch field. External Field SelfInvoice was deleted.	
+10/13/17 - IrvingU	  - 207222	-  APInvoice.cs: In the Method copyCorrectionInvoiceAPInvExp a DBExpression compiler was removed to use a correct query from APInvoice.Queries.cs.
+								   APInvoice.Queries.cs: An unused expression was removed.
+10/13/17 - JRIVERA	  - SCR 208319 - Changed to set apply date for a correction invoice from the group's apply date
+10/17/17 - galinad    - SCR 207959 - changes to populate APInvDtl new external field EnableIntrastatDsp which is used on AP Invoice tracker
+10/19/17 - IrvingU	  - SCR	202547 - The function setReadyToCalculate was added again to the CrearteCorrectionInvoice, the functions CopyCorrectionTaxes methods now are executed by setReadyToCalculate.
+10/23/17 - IrvingU    - SCR 192147 - APInvoice.cs Some comparisons were modified to allow to add Doc Misc Charges for non base currencies on header and line level. 
+10/25/17 - IrvingU    - SCR 192147 - Peer Review Changes.
+11/03/17 - DavidC	  - SCR 207222 - Changes rolled back due conflicts with an EPIC (non recoverable taxes) commited by NPD team, however this issue will be covered by their changes.
+11/03/17 - JRIVERA	  - SCR 207130 - Changes to use CompanyTime.Today function in server side instead of sending Datetime.Today from the client.
+11/15/17 - VladimirD  - SCR 202299 - corrected deferred expence GL Account population for multibook transactions.
+11/29/17 - FYudin	  - CSF-1424 (SCR 209587) - CSF Argentina - Allowed to enter AP invoice number with free format.
+11/29/17 - VladimirD  - SCR 202299 - correction. Deleted records should be removed from dataset.
+11/30/17 - galinad    - SCR 206724 - changes in validation of APInvDtlDEASch - Zero amount in any period is acceptable value
+12/06/17 - FYudin	  - CSF-1424 (SCR 209587) - CSF Argentina - Restored GRNIClearing checking.
+12/06/17 - AngelicaM  - SCR 201744 - EN-4138 - Added logic for NRT.
+12/15/17 - JuliaK     - SCR 197783 - ValidateGLAccount(validparam) - Validation logic is implemented in tranglccbo and should be used in every service where glcontrol is calculated.
+12/15/17 - PedroL	  - SCR 171845 - ERP-139 - Added confirmation message when creating an invoice for an Inactive supplier.
+12/27/17 - JuliaK     - SCR 197783 - ValidateGLAccount(validparam) - restored lost call of validation before Post Action.
+12/28/17 - AngelicaM  - SCR 210505 - ERP-195 - Added logic to display error messages generated by Avalara.
+01/12/18 - PedroL	  - SCR 171845 - ERP-371 - The Inactive supplier confirmation message now shows every time a PO for an inactive supplier is entered.
+01/14/18 - SEvdokimov CSF-834 - (CSF India) - GSTR2 Export - remove Patch Field used for INPortCode field in APInvHed table and local tables GSTR2.
+01/16/18 - PedroL	  - SCR 171845 - ERP-371 - Fixed issue when loading a new RefPONum with another supplier already loaded.
+01/19/18 - EDvoretsky - CSF-1672   - CSF Poland. Add PLInvoiceReference to AP Invoice
+01/22/18 - EDvoretsky - CSF-1672   - CSF Poland. Match Invoice with Logged Invoice if exist approved Logged Invoice with the same PL Invoice Reference
+01/23/18 - KeithW	  - SCR 171845 - ERP-374 - Do not display inactive supplier warning for Debit Memos and GRNI Clearing
+01/14/18 - EDvoretsky - CSF-1672   - CSF Poland. Add PLInvoiceReference to AP Invoice
+02/06/18 - SLevchenko - CSF-2001   - CSF Russia, Remove CSF Russia from Epicor 10.
+02/09/17 - JuliaK     - SCR 197783 - Correct Message for invalid glaccount on Header Charge GLAnalysis tab.
+02/10/17 - JuliaK     - SCR 197783 - Correct Message for invalid glaccount added Bookid to message.
+02/14/18 - TatyanaK   - SCR 211854 - Processing GL Control on Invoice Entry AP - Header Charge G/L Account field was corrected.
+02/14/18 - JuliaK     - SCR 197783 - Corrected showing of ExtGLAccount and GLAccount on Amortization row. Dynamic sccounts didn't show properly
+02/19/18 - IrinaY     - SCR 203426 - modified to correct refresh GL Accounts on GL Lines after 'Amortization' data are changed.
+02/19/18 - DavidC	  - SCR 74559  - TranGLC updates GroupId when you transfer an invoice to another group.
+02/21/18 - IrinaY     - SCR 203426 - modified to correct refresh GL Accounts on GL Lines after 'Amortization' data are changed.
+02/26/18 - juliaK     - ERPS-72704 - Should not validate the same glaccounts many times, distinct has been added.
+02/27/18 - juliaK     - ERPS-72704 - typo corrected + 1 warning 
+03/05/18 - IrinaY     - ERPS-76883 - modified to synchronize APInvExpTGLC data with database.
+03/07/18 - ScottR     - ERPS-73100 - Set PayDiscPer and PayDiscDays when matching a logged invoiced
+03/07/18 - AngelicaM  - ERPS-73110 - Taxes for a correction invoices are copied correctly when Tax is on Line level.
+03/14/18 - vmorales   - ERPS-73141 - Modify a validation that was throwing the exception, the validation should only consider receipts, it was added originally as part of the SCR 183683.
+03/15/18 - DPedorenko - ERP-1565   - CSF US - Set line UOM for open invoice to default UOM. Modified APInvDtlAfterUpdate to bypass RunSyncAPInvExp for posted open invoice in US localization (for posted invoice update).
+04/05/18 - KeithW     - ERP-2415   - Display an error when trying to add a Job Misc or Asset line to an invoice when the supplier is inactive.
+04/11/18 - VladimirD  - ERPS-88679 - new line created by keyboard operations now properly recalculates accounts in multicompany setting.
+04/19/18 - SLevchenko - ERP-2534   - CSF UK: CIS Scheme - Company and Supplier changes.
+04/26/18 - EDvoretsky - ERP-2757   - Increase APInvoiceNum to nvarchar(50). Remove obsolete validation length of AP Invoice Number.
+05/07/18 - EDvoretsky - ERP-2757   - Increase AP Invoice Number to 50.
+05/07/18 - IrvingU    - ERPS-88742 - The function adjustRoundingVar was deleted, and other functions were moved to the library Shared to avoid duplicated code between AP Invoice PrePost and AP Invoice BO.
+04/26/18 - EDvoretsky - ERP-2757   - Increase APInvoiceNum to nvarchar(50). Remove obsolete validation length of AP Invoice Number.
+05/08/18 - gcardenas   - ERPS-84461 APInvoiceAdapter.cs GetRowsForTracker
+05/08/18 - IrvingU    - ERPS-88742 - The function adjustRoundingVar was deleted, and other functions were moved to the library Shared to avoid duplicated code between AP Invoice PrePost and AP Invoice BO.
+05/11/18 - galinad    - ERPS-88656 - APInvoice.Queries.cs - Withholding Taxes precalculated for AP Payment are not supposed to be included to AP Invoice Withholding tax totals.
+05/25/18 - EDvoretsky - ERP-3276   - CSF Poland. Remove limitation of Legal Number length
+05/25/18 - DEpifanov  - ERPS-91567 - CSF Peru - Retention in AP PI calculated wrong way in case invoice with manual VAT used.
+05/29/18 - OSaveliev  - ERP-2150   - Deductible Percent for Payment timed tax implemented.
+05/31/18 - EDvoretsky - ERP-3236   - CSF Turkey. Remove CSF Turkey from Epicor 10
+06/05/18 - EDvoretsky - ERP-3275   - Change Error message for requiring invoice. Invoice Number cannot be more then 45 chars.
+06/07/18 - EDvoretsky - ERP-3403   - CSF Turkey. Remove CSF Turkey from Epicor 10
+06/07/18 - JonathanD	ERPS-92162 - Populate CurrencyCode field so decimals are correct when rounding the document amount for uninvoiced drop shipment lines.
+06/08/18 - JonathanD	ERPS-92162 - Code Cleanup.
+06/08/18 - JRIVERA		ERPS-87140 - Taxes will automatically calcualted on AP Invoice Entry when getting it from a GET DMR Debit Memos and Ready To Calculate is true.
+06/14/18 - OSaveliev  - ERP-2150   - Deductible Tax Lines search corrected for APInvHed.
+06/15/18 - OscarV	  - ERPS-87140 -  APInvoices: 
+									   1.-Modified method GetDMRDebitMemos(), added logic to update VendorInvoiceAmt after calculation of taxes.
+									   2.-Modified methods GetDMRDebitMemos() and GetDMRCorrInvRequests(), updated old query format.
+06/19/18 - OSaveliev  - ERP-2150   - GL Allocations corrected for manually added Misc Charge Taxes.
+06/19/08 - galinad    - ERPS-86648 - Tax/Taxable amounts for the tax code records with related Custom tax algorithm manually added by the user should be calculated correctly
+06/15/18 - OscarV	  - ERPS-87140 - APInvoices: Corrected query SelectAPInvHed(), it was incorrectly trying to lock records when it shouldn't
+07/11/18 - JeanetteP  - ERPS-91986 - APInvoice.cs; APInvoice.Queries.cs: Added validation when saving debit memo APInvJob to prevent Job Material Misc Charge to go negative.
+07/17/18 - IrvingU- ERPS-88742 - Performance was improved.
+07/18/18 - DavidC	  - ERPS-94814 - Replaced KeyEquals comparison of hash values with Hasher.VerifyHash method.
+07/23/18 - IrvingU    - ERPS-88742 - Object null reference issue was fixed.
+07/25/18 - ValeryZ    - ERPS-95563 - corrected APIHAPInvExpTGLCRunPE() and APInvExpTGLC_CreateDefault() methods to skip mapped books when creating TranGLC.
+07/24/18 - galinad      ERPS-75615 - Correcting the way how Misc. payment / Prepayment is treated when applied to AP Invoice.
+07/27/18 - galinad      ERPS-75615 - Changes per peer review notes
+08/09/18 - IrvingU    - ERPS-88742 - Additional changes were made to fix issues regarding to variance on Misc Header Charges.
+08/21/18 - galinad    - ERPS-75615 - additional changes for reversing pre-payment taxes
+08/31/18 - galinad    - ERPS-75615 - additional changes for reversing pre-payment taxes - some changes done on 08/21 are removed
+09/03/18 - galinad    - ERPS-75615 - changes to use 'InvoiceAmt' rounding set up for Prepayment fields to ensure the correct rounding
+09/05/18 - VMorales   - ERPS-94574 - APInvoice.cs: Correcting Object Reference exception when allocating a 3rd Party Late Cost
+09/05/18 - VMorales   - ERPS-94574 - Performing some clean up.
+09/06/18 - ABokarev   - ERPS-98212 - CSF Argentina - remove validation CAI/CEA value for foreign supplier, refactoring: move ttBeforeUpdate logic into BeforeUpdate
+09/06/18 - IrvingU    - ERPS-73331 - The TaxExempt and Tax Category values are assigned correctly depending of company configuration and supplier defaults.
+09/10/18 - IrvingU    - ERPS-73331 - Object null reference issue was fixed.
+09/11/18 - VMorales   - ERPS-94574 - APInvoice.cs: Correcting Object Reference exception when the late cost lines have a different supplier than the one stated in the Invoice Head.
+09/12/18 - IrvingU    - ERPS-73331 - No the tax exempt is assigned correctly in the moment to create an Invoice Line from receipt.
+09/13/18 - VMorales   - ERPS-94574 - APInvoice.cs: Adding extra validation requested by PR in order to avoid Object null reference exceptions.
+09/20/18 - IrvingU    - ERPS-73331 - Null reference issue fixed.
+09/27/18 - EDvoretsky - ERPS-99380 - CSF Poland. Refactoring for using Er.Internal.CSF.Poland lib
+10/30/18 - IrvingU    - ERPS-102985 - Allocation amount now is assigned with the correct sign.
+11/06/18 - IrvingU    - ERPS-77342  - Now self assessment field is calculated correctly for taxes generated with use tax (tax connect).
+11/06/18 - IrvingU    - ERPS-102985 - PR recommended changes.
+11/08/18 - VMorales   - ERPS-101615 - APInvoice.cs: Modified the "UpdateVendorQtyRelatedFields" method and also renamed it with a more descriptive name. 
+									  The problem that caused this issue was that RcvDtl.SupplierUnInvcReceiptQty was not being updated when the invoice detail was marked as Final Invoice, therefore the RcvHead.Invoiced was not being updated properly either. So, I made the following modifications to the method.
+										 - RcvDtl.SupplierUnInvcReceiptQty is calculated even when the InvcDtl is marked as Final Invoice, if this is the case the field is always set to Zero, just as it works in "AP Invoice Add Receipt Billing Lines". 
+										 - Deleted the code in the method that was used to calculate PORel.InvoicedQty, this code is not needed as this method is only called from APInvDtlAfterUpdate and the APInvDtl trigger already updates this field, recalculation is not necessary.
+11/09/18 - VMorales   - ERPS-101615 - Code Cleanup.
+11/12/18 - VMorales   - ERPS-101615 - Corrected a parameter in the query "getPackSlipInvoicedQty". Use PurPoint instead of PONum because PurPoint is part of the RcvDtl primary key.
+11/15/18 - VMorales   - ERPS-101615 - Deleting query with no refences.
+11/16/18 - DavidC	  - ERPS-103264 - ScrInvoiceRef will populate when referring another invoice, prior to these changes, it was only populating for Debit Memos and Recurring invoices
+									  On method ChangeInvoiceRef, removed condition for only accept an InvoiceRef in Debit Memos; 
+										added logic to kept CPay and CopyExcRateDM logic exclusive for Debit Memos.
+11/27/18 - VMorales   - ERPS-101615 - Bringing back code that I previously deleted on the method UpdateVendorQtyRelatedFields, I thought it was not needed, but it caused an error by deleting it.
+12/03/18 - Juliak       ERPS-105387 - Have to fill CreateDate and TranDate by default - used in sql partition.in PE Trandate use ApllyDate from Header Rule.
+12/18/18 - galinad    - ERPS-87549 - Changes for tax calculation in case of 'Tax Inclusive Pricing' and 'Less Advance Billing' assigned.
+12/19/18 - galinad    - ERPS-87549 - Changes per Peer Review notes
+12/19/18 - KrisM      - ERPS-92819 - Added UpdateExt.cs to project and added override code to call correct GetNew logic for APInvHed and ApInvDtl.
+01/15/19 - JRIVERA	  - ERPS-107087- Modified UpdateVendorQtyRelatedFields method to fix an object reference error.
+01/15/19 - JRIVERA	  - ERPS-107087- code cleanup
+01/31/19 - galinad    - ERPS-108475 - For AP Invoice Adv. Bill lines the Tax Exempt is defined from corresponding PO line 'Taxable' flag (in case of Company set up to take the Tax defaults from PO)
+02/05/19 - JRIVERA	  - ERPS-73142  - Modified how the setDatesDiscount() method is called inside APInvTaxAfterUpdate() in order to properly set the DueDate according the invoice terms.
+02/10/19 - KrisM      - ERPS-108439 - Refresh ApInvExp.
+02/11/19 - KrisM      - ERPS-108439 - Correct the fix for refreshing ApInvExp.
+02/20/2019 JuliaK     - ERPS-106752 - SetTranDate added for cases when TranGLC are created manually from UI, using cope -paste or manually without PE.GLAllocation.
+02/25/19 - galinad    - ERPS 108422 - In case of 'Tax Inclusive' pricing the tax record should not be deleted if another tax record is changed.
+04/26/19 - IrinaY     - ERPS-76942  - modified to ignore last account value before GetDefault operation.
+05/29/19 - IrinaY     - ERPS-76942  - modified work of GL Controls on AP Invoice
+06/17/19 - JorgeA	  - ERPS-115484 - Set the value of the TaxCatID in the proposed value in "APInvDtl_ColumnChanging" method and the TaxCat.Description in "ChangeTaxCatID" since these were not setted. 
+06/26/19 - IrvingU    - ERPS-114862 - The object null reference now is fixed when multicrrency license is disabled.
+07/05/19 - galinad    - ERPS-73024 - For AP side and not Sale applications Rounding of tax records tax amounts is supposed to be done based on table fields set up (not on Currency master set up)
+08/02/19 - AngelJM	  - ERPS-120278 - APInvoice.Designer.cs: BO Regenerated. New XbSystAPTaxLnLevel and XbSystIsDiscountforDebitM fields and the queries to populate them were created.
+									- Sprocs: _ZFW_APInvoiceAPInvHed_GetBySysRowID.sql, _ZFW_APInvoice_GetByID.sql and _ZFW_APInvoice_GetRows.sql: Added fields APTaxLnLevel and IsDiscountforDebitM from XbSyst.
+08/15/19 - ADvoretsky - ERPS-120051 - CSF India-Tax gets calculated based on new PTC selected, but it still defaults the PTC from PO.  The default values assignment has been moved from the AfterGetRow().
+08/16/19 - JRIVERA	  - ERPS-110777 - Modify the logic in AP Invoice Entry that retrieves the Receipt lines to match the logic in the Receipt Not Invoiced report
+									  Moved SelectRcvHead query to Internal\AP\Shared\ReceiptInv\ReceiptInv.Queries.cs to centralize the code.
+09/02/19 - galinad    - ERPS-115580  - corrected logic that refreshes temp-tables after tax calculation to avoid db conflict error.
+10/04/19 - DMartinez  - ERPS-124250  - Added missing parenthesis ")" on APInvTax querymodifier line.
+10/11/19 - ESchepelina - ERP-20106 - CSF Mexico - IncomeTax functionality removed
+10/14/19 - galinad    - ERPS-125317 - in case if AP Invoice Tax liability has Withholding taxes with Payment timing - changes to avoid additional Tax records creation with Invoice Timing which increases AP Invoice value 
+10/17/19 - aserebrenik  ERP-20327   - Added Transaction Document logic to allow create Cancellation Invoice
+10/18/19 - SergioDL   - ERP-20326   - Added CancellationInv and RefCancelledby fields.
+10/21/19 - AnnaM		ERP-20847 CSF MX - Obsolete Feature. IncomeTaxCode removed (move to Obsolete schema)
+10/24/19 - RVillalobos- ERP-20239   - Added logic for creation of cancellation invoice.
+10/24/19 - RVillalobos- ERP-20401   - Exchange Rate logic for cancellation invoice tested.
+10/28/19 - JorgeA	  - ERPS-121870 - In APIHAPInvMscAfterUpdate() method, modified parameters of APSyncAPInvExp.RunSyncAPInvExp() in order to execute the correct method in the lib.
+10/28/19 - Jorge	  - ERPS-121870 - Code clean-up.
+10/28/19 - Rvillalobos- ERP-20239   - Changed logic of correction and cancel invoice to reduce duplicated code.
+10/30/19 - JonathanD	ERP-20403	- Added logic to update RcvDtl/PORel correctly for Cancellation Invoices.
+10/31/19 - Rvillalobos- ERP-20239   - Changed logic of correction and cancel invoice to reduce duplicated code and moved logic from the afterDelete to the APInvHed Delete trigger.
+11/06/19 - galinad    - ERPS-125317 - Changes to avoid recalculation of AP Invoice Taxes in case if related Tax liability has only WH / payment taxes marked as 'Manual' (no pre-calculations)
+11/12/19 - OscarV	  - ERPS-125770 - APInvoice.cs: Modified method GetDMRDebitMemos(), change logic to only consider DMR invoices of the group instead of all the invoices.
+									  APInvoice.Queries.cs: Added query SelectAPInvHedDMRWithUpdLock() to retrieve all the DMR invoices of the group. 
+11/13/19 - OscarV	  - ERPS-127456 - APInvoice.cs: Modified methods APIHAPInvMscAfterUpdate and APInvMscAfterUpdate, added code to avoid recalculate discount amount if the flag "fixed amount" is selected.
+11/15/19 - SergioS    - ERP-20242   - Added the validation rules for the cancellation invoices.
+11/21/19 - SergioS    - ERP-20242   - Rework, added missing validation rules for the cancellation invoices and changed conditions to validate supported lines and voideded payments.
+11/25/19 - SergioS    - ERP 20242   - Rework, changed logic for Final Invoice validations and moved correction validations to general validations 
+11/25/19 - Rvillalobos- ERP-20240   - Added logic for copy of taxes for cancellation of invoice.
+11/28/19 - OscarV	  - ERPS-127456 - APInvoice.cs: Modified methods ApInvHedChildDeleted() and APInvMscAfterDelete(), added code to avoid recalculate discount amount if the flag "fixed amount" is selected.
+11/29/19 - OscarV	  - ERPS-127456 - APInvoice.cs:
+										1.-Modified methods APIHAPInvMscAfterUpdate(),ApInvHedChildDeleted(),APInvMscAfterDelete() and APInvMscAfterUpdate(), moved logic that calculates discount to a single method.
+										2.-Modified method ChangeManualTaxCalculation(), change logic to use new Compiled query.
+										3.-Added method UpdateHeaderDiscounts(), method will hold duplicated logic for calculation of discount fields.
+									  APInvoice.Queries.cs:
+										1.-Replaced queries ExistsSalesTax2() and SelectAPInvTax2() with single query GetAPInvTaxTotals() that retrieves the tax total amounts.
+										2.-Replaced expression APInvMscExpression3 with compiled query GetAPInvMiscTot()
+										3.-Replaced query PurTermDExpression with compiled query FindFirstPurTermDPartial()
+12/02/19 - ADvoretsky  - ERP-20230    - CSF China - Customs Declaration. Customs Declaration Bill. Added GetListByTranID method.
+12/02/19 - RVillalobos - ERP-21862    - Apinvoice.cs, Strings.resx - Added a couple validations for correction and cancellation invoices.
+12/03/19 - DMartinez   - ERPS-121884  - APInvoice.cs: Modified CreateMtl() method to declare and give a value to Required Qty field from Job Mtl.
+12/03/19 - JonathanD   - ERP-21545    - Regenerated Business Object after adding NettingID column to APInvHed.
+12/04/19 - Aserebrenik - ERP-21838    - Fix validation rules when creating cancellation invoice.
+12/06/19 - DMartinez   - ERPS-121884  - APInvoice.cs: Modified CreateMtl() method changed RequiredQty value and added FixedQty checkbox.
+12/09/19 - Aserebrenik - ERP-21868    - Added validation not to allow cancel invoice with late cost.
+12/09/19 - OscarV	   - ERPS-127396  - APInvoice.cs: Modified method ChangeInvoiceDateEx(), added local variable updatedInvoiceDate to be updated when the invoice date is before the earliest apply date.
+													  When this variable we prevent the InvoiceDate to be incorrectly updated as well, since the earliest apply date should not affect the invoice date.
+12/11/19 - SergioS	   - ERPS-21547  -  APInvoice.cs: Cancellation Invoice amounts are now calculated with the Exchange Rate of the date that is being created.
+12/13/19 - Aserebrenik - ERP-22018   -  APInvoice.cs: Modified logic to correctly reverse Header/Line/Misc taxes on Cancellation invoices
+12/13/19 - Aserebrenik - ERP-21857   -  APInvoice.cs: Add logic to reverse deffered tax amounts on cancellation invoices
+12/20/19 - KrisM       - ERP 21060   - Initial partial check in for DocStar Auto invoice bulk insert Update Ext and PreInvoice 
+12/23/29 - aserebrenik - ERP-22300   - Added validation if invoice used in Netting transaction
+12/23/19 - KrisM       - ERP 21060   - Fix for Update Ext APLnTax
+12/23/19 - IrvingU     - ERPS-130140 - Allocation amount now is correctly calculated from amount assignated by user.
+01/02/20 - galinad     - ERPS-128846 - AP Invoice based on Logged Invoice is supposed to keep the same currency exchange rates as Logged Invoice.
+01/09/20 - KrisM       - ERP 21565   - new method GetAPUninvoicedReceiptsSelectAll to create APInvReceiptsBilling dataset outside of UI, all uninvoiced receipts selected for invoicing.
+01/10/20 - Aserebrenik - ERP-21857   -  APInvoice.cs: Add logic to reverse Rpt.. deffered tax amounts on cancellation invoices
+01/10/20 - DMartinez   - ERPS-121884  - APInvoice.cs: Modified CreateMtl() method. Added new fields and also added a validation to get the BaseUOM since BaseUOM is needed to get BaseRequiredQty.
+01/13/20 - OSaveliev   - ERP-22509    - CSF United Arab Emirates: new Localization for Posted AP Invoice Update.
+01/13/20 - KrisM       - ERP 21565   - fixed method type GetAPUninvoicedReceiptsSelectAll.
+01/10/20 - Aserebrenik - ERP-21857   -  APInvoice.cs: Fixed typo
+01/22/20 - KrisM       - ERP 21060   - additional fixes for vendor validation.
+01/23/20 - JorgeA	   - ERPS-131028 - APInvoice.cs: Modified method CreateNotInvRcptInvoice(), setted value of PurPoint in APInvDtl in order to be able to post GRNI invoices when the receipt has a purchase point asisigned.
+01/23/20 - JorgeA      - ERPS-131028 - Code clean-up.
+01/27/20 - Aserebrenik - ERP-22628   - Added logic to generate legal numbers for Netting only at post
+01/28/20 - JRIVERA	   - ERPS-112714 - Added ExistsPackSlipPartialInvoicedQty() query to check if any quantity from the original receipt was invoiced.
+									 - Modified PostGRNIClearingInvoices() method, added a validation to set LineNet equals to RcpTot to avoid variance calculation when no partial invoices were done and total invoice is the same amount received on inventory.
+01/29/20 - DEpifanov   - ERPS-132371 - AP Posted Invoice Update Unable to modify the 1099 codes in an invoice if PO line is closed.
+01/29/20 - KrisM       - ERP 21060   - fix for InvoiceLine in UpdateExt.
+
+01/30/20 - RVillalobos - ERP-22736   - Added logic to create avalara (tax connect records) for AP cancellation invoices.
+01/30/20 - KrisM       - ERP 21060   - Import for LineType R in UpdateExt.
+01/31/20 - Aserebrenik - ERP-22628   - Modified logic to generate legal numbers for Netting only at post
+02/03/20 - KrisM       - ERP 21060   - changes for LineType R in UpdateExt.
+02/04/20 - RVillalobos - ERP-21797   - Added logic to prevent from creating Amortization data for cancellation invoices (APInvHed.CancellationInv).
+02/06/20 - KrisM       - ERP 21060   - Added validation for ApInvExp in UpdateExt.
+02/11/20 - galinad     - ERPS-128182 - changes to fix the scenario with non-deductible taxes when Logged invoice is matched and new Receipt lines are created.
+02/12/20 - KrisM       - ERP-21060   - Added validation for taxes in UpdateExt.
+02/12/20 - KrisM       - ERP-21060   - Additional validation for UpdateExt.
+02/13/20 - KrisM       - ERP-21060   - Add R Linetype GL to source dataset otherwise it does not show up in returned ds since it wasn't created through standard update.
+02/13/20 - KrisM       - ERP-21060   - Add R Linetype GL to source dataset otherwise it does not show up in returned ds since it wasn't created through standard update.
+02/13/20 - KrisM       - ERP-21060   - Set ApInvDt.UpdateExtCreateLineGL in code instead of passing in from user.
+02/13/20 - Aserebrenik - ERP-22018   - APInvoice.cs: Fix to prevent error
+02/14/20 - KrisM       - ERP-21060   - Manual tax fix for UpdateExt.
+02/15/20 - KrisM       - ERP-21060   - Additional manual tax fixes for UpdateExt.
+02/18/20 - KrisM       - ERP-21060   - Fixes for UpdateExt process for Dropshipments and GL.
+02/20/20 - Aserebrenik - ERP-21546   - Add logic to preserve exchange rate for cancellation invoices if and Rate is Locked 
+02/21/20 - KrisM       - ERP-21060   - Fix for PreInvoice to refresh UpdExt dataset.
+02/25/20 - aserebrenik - ERP-23346   - Fix validation if invoice used in Netting transaction to allow partial netted invoices with remaining balance
+02/25/20 - KrisM       - ERP-23736   - Fix validation in UpdateExt for display GL account.
+02/27/20 - JRIVERA	   - ERPS-112714 - Removed ExistsPackSlipPartialInvoicedQty() query, it was moved to FifoCostNVarLib.
+									 - Modified PostGRNIClearingInvoices() method, removed validation, it was moved to FifoCostNVarLib.
+03/02/20 - KrisM       - ERP-23792   - Fix UpdateExt for external company.
+03/07/20 - KrisM       - ERP-23792   - Fix UpdateExt for external company.
+03/08/20 - KrisM       - ERP-23736   - Fix validation in UpdateExt for header display GL account.
+03/09/20 - KrisM       - ERP-23736   - Additional fix validation in UpdateExt for header display GL account.
+03/09/20 - KrisM       - ERP-23736   - Removed commented code in UpdateExt.
+03/19/20 - YuriR       - ERPS-134295 - APInvoice.cs -  Program lets user to add several records of APInvPB with different Roles;
+03/31/20 - KrisM       - ERP-24419   - UpdateExt, fix upload of R linetype fields.
+04/02/20 - KrisM       - ERP-24558   - UpdateExt, fix upload of R linetype fields for DropShip.
+04/02/20 - JorgeA	   - ERPS-121870 - Rollback changes from changeset 137582.
+04/08/20 - KrisM       - ERP-24421   - UpdateExt fix to run AfterGetRows in PreInvoice.
+04/10/20 - galinad     - ERPS-135699 - changes to use correct variable names in for tax adjustment in case of applying taxable Advance billing in Tax Inclusive pricing environment.
+04/17/20 - JorgeA      - ERPS-121870 - Removed validation for clean the InvExpSeq since the retrieve of the accounts will handle on different way.
+05/21/20 - EDvoretsky  - ERP-24720   - Add APInvHed.FormattedVendorNameAddress external field for Kinetic conversion
+06/11/20 - JorgeA      - ERPS-140625 - APinvoice.cs: Added validation in GetAPUninvoicedReceipts() method in order to avoid set duplicated Receipt headers in the foreach loop.
+06/26/20 - SEvdokimov  - ERP-25772   - CSF EU - Provide the ability of Supplier Tax Id check during AP invoice entry.
+06/29/20 - OscarV	   - ERPS-137991 - APInvoice.cs: Modified method transferInvoice(), added logic to update key3 for EntityTGLC table 
+07/10/20 - YuriR       - ERPS-134295 - Rolled back for the future investigations and new ERPS for subcontract data.
+07/10/20 - JonathanD	 ERPS-142345 - APInvMsc amounts should be rounded according to each currency decimals. Modified getLineTotals so display line amounts are correct in each reporting currency.
+07/15/20 - EDvoretsky  - ERP-24720   - Fix adding APInvHed.FormattedVendorNameAddress external field for Kinetic conversion
+07/16/20 - ESSkibina   - ERP-24719	 - APInvoice.AdditionalMethods.cs file has been created, includes new methods used in Kinetic form.
+07/20/20 - ADvoretsky  - ERP-27852   - CSF China - Customs Declaration. TranDocType should not influence filter of AP/AR Invoice in Customs Declaration Bill CN. Removed custom search method.
+07/21/20 - ESSkibina   - ERP-24719	 - New kinetic-related methods have been developed, including methods to select/deselect lines for receipt Line creation form.
+07/21/20 - DMartinez   - ERPS-137647 - UpdateExt fix to refresh tax rows in PreInvoice.
+07/28/20 - KrisM       - ERP-25989   - remove added invoice validation in UpdateExt.
+07/26/20 - KrisM       - ERP-25987   - UpdateExt fix to refresh APLntax rows in PreInvoice for receipt lines. 
+08/13/20 - JorgeA      - ERPS-143887 - APInvoice.cs: In ValidateAPInvHedRequiredFields() method, change to throw new BLException instead AddBLException in order to avoid an object reference error in POHeader validation.
+08/14/20 - JorgeA      - ERPS-143887 - Small corrections after peer review.
+08/20/20 - OscarV	   - ERPS-144562 - UpdateExt.cs: Modified method OnUpdateExtCopyRowForTable():
+													  1.-Added condition to avoid any processing if we are sending a posting invoice and not updating the header of the invoice. Posted invoices can't only modify the header fields.
+													  2.-Added condition to avoid run validation of fields for posted invoice. Currently only a few fields are allowed to be updated and those fields are validated by the before update
+													     However we still need to copy the extended datasource to the standard one to allow updating records.
+08/27/20 - DMartinez   - ERPS-141557 - UpdateExt.cs: Added AssertNoExceptions() within OnUpdateExtBeforeGetNewForTable() method to display inactive supplier exceptions while executing Preinvoice() method for DocStar.
+09/07/20 - JonathanD	 ERPS-146323 - APInvoice.cs: UpdateAPInvHedForLineTypeR method called by PreInvoice will add all APLnTax records to the returned dataset.
+09/11/20 - VladimirD     ERP-25050   - Fixed supplier address population.
+09/28/20 - KrisM       - ERP-21792   - Add attributes for Receipt lines.
+09/29/20 - EDvoretsky  - ERP-29329   - CSF DE - Updating Z4/Z10 fields in AP Posted Invoice Update
+10/06/20 - galinad     - ERPS-136536 -RMA Credit line option is supposed to be available to create if AP invoice has 'Tax Inclusive Pricing' Tax Liability assigned.
+10/07/20 - JRIVERA	   - ERPS-147847 - APInvoice.Queries.cs: Modified FindFirstFSCallhd() query it was removed unnecessary LockHint.UpdLock.
+10/07/20 - JonathanD	 ERPS-136294 - TranGLC copied from Logged Invoice will be removed if overriden. Posting rules should generate all required TranGLC for overriden matched invoices.
+10/09/20 - galinad     - ERPS-141528 - Non-Deductible tax is supposed to be refreshed for all lines when the taxes are re-calculated. PathFld table is removed from the query.
+10/13/20 - ESSkibina   - ERP-24719	 - Code CleanUp.
+10/13/20 - VDenisov    - ERP-24719   - Fixed issue with address format after UpdateMaster Call.
+10/19/20 - JorgeA      - ERPS-149422 - APInvoice.cs: Added logic in UpdateGLForLineTypeR() method in order to refresh the APInvDtl of dataset correctly.
+10/19/20 - galinad     - ERPS-147939 - Cancellation Invoice created for AP Invoice with Self-Assessment taxes is supposed to have the taxes copied properly to allow the Cancellation invoice to be posted correctly.
+10/19/20 - JorgeA      - ERPS-149422 - APInvoice.cs: Modified logic in UpdateGLForLineTypeR() to get APInvDtl record from DB and refresh the ttAPInvDtl.
+10/20/20 - JorgeA      - ERPS-149422 - APInvoice.cs: Added missing Foreing_Links methods.
+10/20/20 - JRIVERA	   - ERPS-137453 - APInvoice.cs: Added UpdateMasterExt() method. It wraps the UpdateExt to refresh and return up-to-date invoice data.
+10/21/20 - galinad     - ERPS-147939 - additional change - removed non-used query
+10/28/20 - DMartinez   - ERPS-147858 - APInvoice.Queries.cs: Modified existsRcvDtlNotInvoiced() and existsRcvDtlNotInvoiced2() queries.
+															 Added VendorNum into query validation in order to filter PackSlips properly when no PO is referenced.
+10/30/20 - galinad     - ERPS-149441 - Changes to assign AP Invoice line ext. cost correctly in case if AP Invoice Receipt line does not have related Purchase order and Tax Inclusive Pricing to avoid incorrect tax calculations and line total.
+10/30/20 - DMartinez   - ERPS-150419 - APInvoice.cs: Modified CreatettAPInvDtlFromReceipt() method.
+														      1. Added dropShip parameter into method signature to use it to validate whether the receipt line is a DropShip or not.
+															  2. Added validation to decide whether to run DropShip or RcvDtl logic.
+									   UpdateExt.cs: Modified OnUpdateFromUpdateExt() method. Defined new variable dropShip, to be used CreatettAPInvDtlFromReceipt() method.
+11/5/20 - galinad     - ERPS-141530 - changes for the correct treatment of the manually changed deductible tax amount on tax record.
+11/06/20 - KrisM      - ERP-25787   - UpdateExt added validation for APInvMsc percentage.
+11/10/20 - DMartinez  - ERPS-149948 - APInvoice.cs: Modified FormatNameAddress() method.
+													1. Added a null validation for VendorNumCountry to properly fill the vendorAddress string and maintain consistency among fields.
+													2. Added Trim() method to prevent saving the vendorAddress string with white-space characters at the end.
+11/11/20 - KrisM      - ERP-25787   - Refresh APIHAPINvMsc for UpdateExt.
+11/12/20 - VladimirD  - ERP-24719   - Corrected multicompany behavior for new rows sequence.
+11/14/20 - IEgorov    - ERPS-150441 - CSF Taiwan - Added initialization of GUI fields when creating AP Invoice from Logged Invoice.
+11/20/20 - DMartinez  - ERPS-150599 - UpdateExt.cs: Modified OnUpdateExtCopyRowForTable() method. Added new validation for ApplyDate.
+01/07/21 - galinad    - ERPS-141170 - Changes to allow users to add WH tax with Payment timing  to the Invoice manually if Company option 'Withholding Taxes posted through Interim Account' is set to true.
+01/13/21 - DJY          - ERP-29297 - add AttributeSetID/AttributeSetDescription/AttributeSetShortDescription to APInvDtl and add NumberOfPieces to DropShipDtl - regen related objects and cleanup UI grids as a result
+01/19/21 - JorgeA     - ERPS-153387 - APInvoice.cs: In GetAPUninvoicedReceiptLines() method added null validation for a query in order to avoid an object reference error.
+01/20/21 - JorgeA     - ERPS-153387 - APInvoice.cs: Added changes per peer review.
+01/20/21 - KarenR	  - ERPS-153351 - APInvoice.Queries.cs: Modified the SelectSumAllAPInvDtl query in order to calculate LineTotal correctly when the same invoice number is used for more than one supplier.
+01/21/21 - JRIVERA	  - ERPS-150973 - Added onlyUpdateDiscount flag to SetDatesDiscount() method to only update discount when this method is called from APInvTaxAfterUpdate() method.
+01/25/21 - JorgeA     - ERPS-154343 - APInvoice.cs: In APInvExpBeforeCreate() method added InvExpSeq parameter into the FindLastAPInvExp query in order to retrieve correctly the rows with their respective sequence.
+									  APInvoice.Queries.cs: Created a new overload of the FindLastAPInvExp query in order to handle the sequences correctly.
+01/26/21 - JorgeA     - ERPS-154343 - APInvoice.Queries.cs Used Order By Descending and FirstOrDefault() method in order to avoid use LastOrDefault() method.
+01/28/21 - JorgeA     - ERPS-154343 - APInvoice.Queries.cs Modified FindLastAPInvExp() query, added InvExpSeq variable to the orderby function in order to sort by the sequence correctly.
+01/29/21 - galinad    - ERPS-143829 - New field ARTaxRoundOption is added to APInvHed table, APInvoice service is re-generated
+02/17/21 - galinad    - ERPS-143829 - changes to round the tax amounts of tax records manually added by users according AP Invoice Tax Round option
+03/10/21 - DMartinez  - ERPS-157285 - APInvoice.cs: Modified GetAPUninvoicedReceiptsSelectAll() method. Added some validations to properly set InPrice flag for the new temp AP Invoice
+									  APInvoce.Queries.cs: 1. Added FindFirstPOTaxRegionCode() partial query to extract the Tax Region Code (Tax Liability) from Purchase Order.
+														   2. Added FindFirstInPriceTaxRegionCode () partial query to extract the InPrice flag from TaxRgn table. 
+03/10/21 - DMaritnez  - ERPS-157285 - APInvoice.cs: Added extra validation. In case a PO has no Tax Liability defined, takes Vendor Tax Liability for InPrice definition.
+03/18/21 - galinad    - ERPS-157529 - APInvoice.cs - AP Tax Round option is supposed to be defaulted from the Company set up as soon as AP Invoice is created.
+03/19/21 - galinad    - ERPS-157293 -APInvoice.cs  - When AP Tax Round option is changed by the user all taxes are supposed to be re-calculated by the system. 
+04/12/21 - PElagin    - ERP-31116   - CSF Germany - Add UD Code Description for DEPayStatCode, DEDenomination.
+04/12/21 - VDenisov   - ERPS-159267 - corrected server response for Update method. Now only 1 record with the same SysRowID and empty RowMod should be returned from the server.
+04/16/21 - PElagin    - ERP-31118   - CSF Germany - Posted Invoice Update - Fixed logic for saving z4/z10 fields.
+05/03/21 - JorgeA     - ERPS-160336 - APInvoice.cs: Modified GlbAPIETGLCBeforeCreate() method, modified validation in order to avoid assign BookID in a external company TranGLC row.
+05/17/21 - JorgeA     - ERPS-159847 - APInvoice.cs: Modified method GetAPUninvoicedReceiptLines(), added new parameters in the APUninvoicedReceipts LinQ Query in order to retrieve the correct Uninvoiced receipt row when multiples purchase orders are processing.
+05/17/21 - JorgeA     - ERPS-159847 - APInvoice.cs: Modified GetAPUninvoicedReceiptLines() method, added validation in order to review the origin of the call and run the correct query.
+05/24/21 - EDvoretsky - ERP-35169	- CSF UK - Add HMRC Tax ID Validation
+05/24/21 - Aserebrenik  ERPS-159277 - Disable Void Legal number for locked group
+06/02/21 - Aserebrenik  ERPS-159277 - Disable Add Debit Memo for locked group/Invoice in Kinetic
+06/03/21 - JorgeA     - ERPS-149015 - APInvoice.cs: Modified copyInvoiceHeader() method, added Fiscal Period value to the excluded fields to copy in order to not rewrite the current fiscal period with the old one. 
+07/08/21 - EDvoretsky - ERPS-164477 - CSF SE, FI - Allow empty Bank Reference Number for document created by Netting Transaction Entry
+07/08/21 - KrisM        - ERP-35557   - Add Site (APInvHed.SourcePlant) to header.
+07/23/21 - KrisM        - ERP-35665   - Add Site filter to Invoices GetRow for Kinetic.
+08/16/21 - OscarV	    - ERPS-166713 - Modified method DeselectSelectedRcptLines(), change filter of dataset for receipt totals to consider all rows that are changed (updated and added).
+08/17/21 - RVillalobos  - ERP-37033   - Added parameter opCurrencyID to DecodeISRCodeLinemethod.
+09/08/21 - OscarV		- ERPS-160409 - APInvoice.cs: Modified method InvoiceSelectedLines(), added logic to thrown an exception when a drop shipment line was selected and the invoice is a GRNI. 
+										APInvoce.Queries.cs: Added query IsGRNIInvoice() to determine if an invoice is GRNI.
+										Resources/Strings.resx: Added exception message.
+09/09/21 - JonathanD	- ERPS-170949	APInvoice.cs: APUninvoicedReceipts from drop shipments should have RowMod as U.
+09/17/21 - OSaveliev    - ERPS-171484 - CSF Vietnam - New Intercept for CanUpdateInvoice (Posted AP Invoice Update).
+09/28/21 - OSaveliev    - ERPS-171484 - CSF Vietnam: slight refactoring of canUpdateInvoice( ).
+10/15/21 - SLevchenko   - ERP-31385   - CSF Thailand Localization APInvoiceForm_App.APInvoiceEntry.APInvoiceForm.
+11/8/21 - DanielR		- ERP-38228 - Added new server methods for Late Cost feature. 
+11/08/21 - ADvoretsky   - ERP-38236 - CSF Australia – AP e-Invoice. AP Invoice.
+11/18/21 - JorgeA       - ERPS-175685 - APInvoice.cs: Modified GetAPUninvoicedReceiptLines() method, changed validation in order to handle correctly the purchase orders in REST API and ERP UI side.
+11/22/21 - OscarV       - ERPS-172017 - APInvoice.cs: Modified method calcGRNIvalues(), added safe division for calculation of amount.
+11/24/21 - Aserebrenik  - ERPS-173032 - Added temp-table to the BO to MetaUI context menu on Correction/Cancellation invoice panels
+11/30/21 - SLevchenko   - ERP-31385 - CSF Thailand Localization APInvoiceForm_App.APInvoiceEntry.APInvoiceForm.
+11/30/21 - JonathanD	- ERPS-166946	Unchecking the Manual tax checkbox will properly recalculate its amounts.
+12/02/21 - VladimirD    - ERP-38420 - added Multi-Site related filtering.
+12/03/21 - DanielR		- ERP-38365 - Minor changes to the GetAPLateCostsLines method for correct APInvMsc charge creation
+12/10/21 - VladimirD    - ERP-38191 - Apply Debit Memo Multi-Site functionality implementation.
+12/13/21 - DanielR		- ERP-38228 - APLateCosts changed query for getting container header rows, added validation to prevent selected lines to be created again as unselected lines
+12/15/21 - VladimirD    - ERP-38420 - APInvExp TranGLC data filtered base on Multi-Site settings.
+12/20/21 - FrancoG      - ERPS-175957 - Remove unnecessary items when selecting/deselecting receipt lines
+12/13/21 - DanielR		- ERP-38228 - APLateCosts added extra validations on some queries and minor changes to createaplatecosts method
+12/21/21 - JorgeA       - ERPS-162859 - APInvoice.cs: Added changes for the correct treatment of the manually changed tax amount on tax record.
+01/11/22 - JonathanD	- ERPS-166946	Manually added tax lines will not be validated against the Tax Category.
+01/14/21 - PElagin      - ERP-38954 - CSF Netherlands - International Trade Statistical Declarations - Enable extra trade transactions for AP Invoice.
+01/27/22 - DanielR		- ERP-39254 - GetAPLateCosts method: Added validation to prevent late costs rows creation from PO Receipts when searching a specific Container.
+01/31/22 - VladimirD    - ERP-39401 - Fixed issue with where criteria for Plant field.
+02/02/22 - JonathanD	- ERPS-177735 Skip Tax ID validation for Employee Expense invoices.
+02/09/22 - DanielR		- ERP-39341 - SelectAllLateCostsContainerHeaderWithContainerID Query: Added validation for containerHeader where ShipStatus = RECEIVED for received containers
+02/15/22 - ADvoretsky	- ERP-38239 - CSF Australia – AP e-Invoice. Stabilization. UpdateExt: added APInvHedMscTax processing.
+02/20/22 - DanielR		- ERP-39157 - Fixed issue with multi currency on AP Late Costs methods.
+02/20/22 - DanielR		- ERP-39157 - Changed CalcDocAmt to CalcBaseAmt on AP Late Cost lines method.
+02/24/22 - DanielR		- ERP-40133 - DeselectSelectedLateCosts method: Added extra validation when re-adding a line to the APLateCosts ds to check if current LateCost matches deselected line.
+02/24/22 - AlanCab		- ERPS-153552 - SaveBeforeSyncAPInvExp method corrected.
+										Process to refresh rows in GL Analysis from APLnTax, APInvTax, APInvHedMscTax and APInvLnMscTax.
+										Removed unnecessary ExistsAPInvHedMscTaxNonDed validation and query from APInvHedMscTaxAfterUpdate.
+02/24/22 - JonathanD	- ERPS-177430	When refreshing tax records in the dataset only clear the ones associated to the invoice being updated.
+02/25/22 - AlanCab		- ERPS-153552	Validation to query in SaveBeforeSyncAPInvExp method corrected.
+03/02/22 - JRIVERA		- ERPS-178958 - Modified APInvDtlBeforeDelete() method to avoid delete lines from posted invoices when calling the UpdateExt() method.
+03/08/22 - JorgeA       - ERPS-174138 - APInvoice.cs: Added new public method UpdateDocsExt(), it wraps twice UpdateExt to refresh, recaulcule and return up-to-date the original seted ExtCost invoice data.
+03/08/22 - JorgeA       - ERPS-174138 - APInvoice.cs: Modified SetReadyToCalc() method, added validations in order to avoid refresh APInvDtl when this table is null and is not called by UpdateExt.
+03/16/22 - JorgeA       - ERPS-174138 - APInvoice.cs: Modified PreInvoice() and UpdateDocsExt() methods, refactored some queries and searches in order to obtain better performance.
+													  Added UpdateAPInvHedAndDtl() private method, in order to update APInvHed and APInvDtl before the rows are used by the next UpdateExt() call.
+										UpdateExt.cs: Corrected some APInvDtl onChange validations.
+03/17/22 - JorgeA       - ERPS-174138 - APInvoice.cs: Modified PreInvoice() method, corrected validation adding not null condition.
+03/17/22 - JorgeA       - ERPS-174138 - APInvoice.cs: Modified PreInvoice() and UpdateDocsExt() methods, was changed parameter name recalculateExtCost to recalculateByExtCost.
+													  Added new flag called updateFlag, in order to avoid run twice updateExt if none change was done in APInvDtl.
+													  Added new validation in order to avoid recalculate invoice lines without ExtCost.
+03/18/22 - OscarV		- ERPS-179085 - APInvoice.cs: Modified method createInvoice(), simplified logic to know if a cancellation has payments not voided, also to make it the same as in APinvGrp and AP_InovicePrePost logic.
+									    APInvoice.Queries.cs: Removed queries SelectAPTranPartial() and ExistsAPTranVoid() and replaced them with ExistsAPTranNotVoided().
+03/22/22 - MarcoM       - ERP-40100   - APInvoice.cs: Removed Unnecessary line to clear a APLateCostTotals dataset where are the selected lines in order to avoid clear the value expected.
+03/23/22 - AlanCab		- ERPS-181602 - APInvoice.cs: Removed Rounding field from cRFieldList in recalcInvoiceAmounts method.
+													  Added AP invoice amounts in Lines, Taxes (header level) and Misc (Line and header levels) for correct rounding recalculation in recalcInvoiceAmounts method.
+03/23/22 - JorgeA       - ERPS-174138 - APInvoice.cs: Modified PreInvoice() method, corrected problem that GL records are not generated when a input receipt line does not have ExtCost.
+													  Removed UpdateDocsExt() method and transfered his logic to UpdateMasterExt() method.
+04/05/22 - JonathanD	- ERPS-185309	APInvoice.cs: When using line level taxes, APInvTax should not be recalculated when changing the apply date.
+04/15/22 - jstevermer   - ERP-40818 - Track Inventory by Revision Enhancement: new columns, regen only
+04/21/22 - JRIVERA		- ERPS-183099 - APInvoice.cs: Modified CopyInvoiceAPInvExp() method to properly set TranGLC.SysGLControlCode
+05/06/22 - DMartinez	- ERPS-186329 - APInvoice.cs: 1. Added GLCreateGLAcctDisp internal reference to get access to methods to create GLAcctDisp.
+													  2. Modified GlbAPIETGLCBeforeUpdate(), APInvExpTGLCBeforeUpdate() and APIHAPInvExpTGLCBeforeUpdate() methods.
+														 Added logic to create a GLAcctDisp record correspondent to the GLAccount entered in the ds through REST.
+													  3. Added new method TrimGLAccount method() to trim GL Account end empty segments. 
+										UpdateExt.cs: 1. GlbAPIETGLC, APInvExpTGLC and APIHAPInvExpTGLC switch cases. Removed GLAcctDisp validations.It will now only be take in count GL Account when passed into the ds while doing a REST call.
+													  2. Added a call to TrimGLAccount method() in each switch case above to trim GL Account end empty segments.
+05/11/22 - DMartinez	- ERPS-174138 -	APInvoice.cs: Modified PreInvoice() and UpdateMasterExt() methods.
+													  Moved validation inside APDtlsWithVariance logic to prevent InvTax tables cleansing in case there is no variance to recalculate.
+05/13/22 - ADvoretsky	- ERPS-172001 - CSF India - Netting Transaction Posting error: PROCESS TERMINATED ABNORMALLY: Commodity Code should be set. Commodity Code should not be not validated when a line is being created from Netting Routine.
+05/18/22 - DMartinez	- ERPS-186329 - APInvoice.cs: 1. Added logic into APInvDtlTGLCBeforeUpdate to create a GLAcctDisp record correspondent to the GLAccount entered in the ds through REST.
+													  2. Removed typo in TrimGLAccount() method summary.
+										UpdateExt.cs: Partial rollback. Added back into GlbAPIETGLC, APInvExpTGLC and APIHAPInvExpTGLC switch cases GLAcctDisp validations to get GLAccount from GLAcctDisp.
+05/23/22 - AndresO      - ERPS-190183 - APInvoiceSvcFacade.cs: Service Regeneration for the APInvoice dataset on the AdditionalForms_ParametersView table to change the SelectedInvoiceNum and SelectedInvoiceNumForCorrection to x(50)
+05/30/22 - JRIVERA	    - ERPS-116012 - APInvoice.cs: Added logic to properly calculate SupplierUnInvcReceiptQty and Invoiced columns in RcvDtl table when creating a correction invoice.
+05/30/22 - DMartinez	- ERPS-190851 - APInvoice.cs: Moved refreshttAPInvExp() call from APInvExpTGLCBeforeUpdate() to APInvExpTGLCAfterUpdate() to prevent issues while changing GL Account in G/L Analysis tab.
+05/30/22 - DMartinez    - ERPS-186329 - UpdateExt.cs: Added extra validations to prevent GLAccount to be overwritten in case it is not found by GLAcctDisp.
+06/01/22 - JShay		- ERPS-181234 - Service Regeneration for the APInvoice dataset on the AdditionalForms_ParametersView table to include the SelectedVendorNumForCorrection and VendorNumToCorrect field to avoid errors when opening the Context Menu because VendorNum is part of the AlternateKeyFields.
+06/14/22 - PElagin      - ERP-40813 - Plastic Packaging Tax costing.
+07/20/22 - DiegoG       - ERP-41916 - Inventory by Revision, added columns PORevisionNum and RcptRevisionNum to APInvDtl table. Added code to populate new columns. Regen service. 
+08/12/22 - DMartinez	- ERPS-196070 - APInvoice.cs: 1. Modified UpdateAPInvHedForLineTypeR() method. Changed query to execute specific logic for APInvTax.
+													  2. Modified APInvTaxAfterUpdate() method. Added missing columns for reversal when CollectionType is >= 2.
+09/06/22 - AAndrade     - ERPS-199638 - Set row ids in GetAPInvcRecurr in order to show recurrent invoices in kinetic.
+09/14/22 - MauricioT    - ERP-43511   - The server rule "Queries must be company specific." was applied.
+09/22/22 - KeithW       - ERP-43614   - Add public method GetAPInvoiceRelationshipMap
+09/28/22 - DMartinez	- ERPS-204977 - APInvoice.cs: Modified PreInvoice() and UpdateMasterExt() methods.
+													  1. Modified BufferCopy to copy the information except for the SysRevID to prevent updated row issue.
+													  2. Added validation for ExtCost assignations in order to set only when coming a value from request body.
+10/20/22 - OscarV	    - ERPS-194298 - APInvoice.cs: Modified method APIHAPInvMscAfterDelete(), added logic to delete all RcvMisc records related to a late cost deleted.
+										APInvoice.Queries.cs: Added query SelectRcvMiscWithUpdLock() to retieve all the RcvMisc records related to a particular late cost of an invoice.
+11/23/22 - JShay		- ERPS-210165 - APInvoice.cs: Modified the APInvHedAfterGetRows method to populate the NextInvoiceDate field for recurring invoices.
+12/12/22 - ADvoretsky   - ERP-45199 - CSF Vietnam - unable to save Posted AP Invoice Line when PO Line is Advance or Unreceived line.
+01/03/23 - OscarV		- ERPS-195449 - APInvoice.cs:
+											1.-Modified method AllocateLateCost(), added validation to prevent allocate a cost if it makes the packslip amounts in RcvMisc table to go to negative amounts.
+											2.-Added public method ValidateRcvMiscSumBeforeDeleteLateCost() to validate if deleting a late cost will make the sum of amounts in RcvMisc table goes to negative.
+											3.-Added public method ValidateRcvMiscBeforeDeleteLateCost() to validate if deleting an allocated late cost will make the sum of amounts in RcvMisc table goes to negative.
+											4.-Added private method IsLateCostValid() to do the calculations used by the validations added.
+										APInvoice.Queries.cs:
+											1.-Added query SelectRcvMiscPartial() to retrieve all records in RcvMisc table related to an specific misc. charge of an invoice.
+											2.-Added query FindFirstRcvMscPartial() to retrieve a record in RcvMisc table related to an misc. charge an sequence of an invoice.
+										Strings.resx:
+										   1.-Added messages CannotApplyLateCost,CannotDeleteLateCost and WantToContinue to indicate the user that deleting a late cost will make the amounts go to negative.
+										Regen BO
+01/18/23 - ADvoretsky   - ERPS-213526 - CSF Taiwan – System does not automatically assign legal number for AP Cancellation Invoice.  
+01/31/23 - AnnaM		- ERP-45927 merge of ERP-44616   - CSF Switzerland - QR Payment - AP Invoice - DB & UI (Kinetic) Changes.
+02/08/23 - OscarV		- ERPS-195449 - APInvoice.cs:
+											1.-Modified method AllocateLateCost(), removed previously added validation to create a new method instead.
+											2.-Added new method ValidateLateCostBeforeAllocate(), to make sure that none late cost will create a negative record in RcvMisc table and send a warning in case it happens.
+										APInvoice.Queries.cs: Added query FindFirstAPInvMiscPartial() to retrieve DocMiscAmt of the APInvMisc table.
+										Regen BO
+02/09/23 - OscarV		- ERPS-195449 - APInvoice.cs:Modified method ValidateLateCostBeforeAllocate(), modified message and logic to only display 1 message for any change in late cost.
+										Strings.res: 1.-Removed string CannotApplyLateCost, since it won't be used anymorer
+													 2.-Added string NegativeLateCost to display new warning message to user.
+02/15/23 - OscarV		- ERPS-185770 - UpdateExt.cs: Modified OnUpdateExtCopyRowForTable method to validate when there are changes between sourceRow and targetRow by calling ValidateRow.HasChanges
+													  and changed the return logic to validate base.OnUpdateExtCopyRowForTable or overrideHasChanges
+03/01/23 - JorgeA       - ERPS-116343 - APInvoice.cs: Added method ValidateUnreceivedLineForPOBeforeChangePOLine() in order to check if the current PO line already has an unreceived line Invoice created and send a warning message if so.
+										Strings.res:  Added string ThePurchaseOrderAlreadyHasAnUnreceivedLineInv to display a new warning message to user.
+										APInvoice.Queries.cs: Added query ExistUnreceivedLineForPO() to review the existence of unreceived line Invoices for the PO.
+03/01/23 - JorgeA       - ERPS-116343 - Code clean up.
+03/02/23 - scottr       - ERPS-218263 - GetRowsForTrackerInternal: When multi site is enabled and a site is not selected, include invoices where SourcePlant is blank
+03/07/23 - scottr       - ERPS-217861 - Properly refresh APInvExp records when line miscellaneous charges are updated
+03/14/23 - JorgeA       - ERPS-217889 - APInvoice.cs: Added null validation for APInvExp tableset in order to avoid Value cannot be null. (Parameter 'fromItem') error.
+03/16/23 - JorgeA       - ERPS-218770 - APInvoice.cs: Added public method ValidateCreateCancellationInvoice() to handle the validations of central payment and intercompany cancellation invoices in server.
+04/16/23 - JorgeA       - ERPS-188169 - APInvoice.cs: Modified GetAPUninvocedReceipts() method, added correct validation in order to avoid duplicated uninvoicedReceipts rows.
+04/21/23 - scottr       - ERP-47976   - Allow change of invoice number on recurring invoices.
+04/25/23 - JorgeA       - ERPS-215236 - APInvoice.cs: Added public method ValidateWBSPhase() to validate if the WBS is active or not.
+04/25/23 - JorgeA       - ERPS-215236 - APInvoice.cs: Modified logic of the validation in ValidateWBSPhase() method.
+04/25/23 - JorgeA       - ERPS-215236 - APInvoice.cs: Changes per peer review.
+										APInvoice.Queries.cs: Created new FindFirstJobHead query.
+04/25/23 - JorgeA       - ERPS-215236 - Code Clean-up
+05/24/23 - AAlejos		- ERPS-214245 - CreateAmortizations.cs - Logic for debit memo was implemented to replicate AP Invoice amount's calculations if partially deductible Tax is used.
+05/24/23 - JRIVERA		- ERPS-155331 - APInvoice.cs: Modified GetAPUninvoicedReceiptsSelectAll() to use Vendor's currency as Invoice Currency.
+													  Modified GetAPUninvoicedReceiptLines(), added logic to calculate and set DocVendorUnitCost, VendorUnitCost, DocInVendorUnitCost, InVendorUnitCost fields.
+													  Modified GetAPUninvoicedDropShipmentLines(), added logic to calculate and set DocVendorUnitCost, VendorUnitCost, DocInVendorUnitCost, InVendorUnitCost fields.
+05/25/23 - OscarV		- ERPS-220353 - APInvoice.cs: Modified APInvDtlAfterCreate(), change logic to prevent create APInvExp record if it was sent to the API using the UpdateExt method.
+05/26/23 - SudhindraA	- ERP-46050 - 11.2.400 - CSF Switzerland - QR Payment - Migration Script from Patch Field table to the real one (APInvHed.CHQRIBAN, APInvHed.CHQRReference)				
+05/29/23 - AAlejos		- ERPS-214245 - CreateAmortizations.cs - PeerReview changes: Logic for APInvDtlDEASch table was back as it was, formulas for debit memo stayed the same and formulas for validate posting were fixed for debitmemo.
+05/30/23 - AAlejos		- ERPS-214245 - CreateAmortizations.cs - PeerReview changes:Code was simplified for amortization calculations for debit memo and for a AP Invoice.
+06/01/23 - SudhindraA	- ERP-46050 - 11.2.400 - CSF Switzerland - QR Payment - Migration Script from Patch Field table to the real one (APInvHed.CHQRIBAN, APInvHed.CHQRReference)	- addressing review comments.			
+06/15/23 - PELagin      - ERPS-225369 - CSF Taiwan - Manual GRNI Clearing invoice: exclude validation of "GUI Format Code", "GUI Tax Type Code", "GUI Deduct Code".
+06/16/23 - JorgeA       - ERPS-223524 - APInvoice.cs: Modified ValidateAPInvHedRequiredFields() method, added discounts fields to the cFieldsAllowed chain if the invoice is open payable.
+06/21/23 - AlanCab      - ERPS-225918 - Changing Exchange Rate value according to Lock Rate flag.
+06/28/23 - JorgeA       - ERPS-224860 - APInvoice.cs: Modified GetAPUninvoicedDropShipmentLines(), the logic for calculating the DocLineAmount was modified to make it consistent with how it is calculated in the purchase order.
+06/29/22 - AAndrade     - ERP-155544 - Adding EDIInvoice field.
+07/04/23 - JorgeA       - ERPS-223524 - APInvoice.cs: Modified ValidateAPInvHedRequiredFields() method, added missed discounts fields to the cFieldsAllowed chain if the invoice is open payable.
+07/05/23 - KeithW       - ERP-155574  - APInvHedBeforeDelete/createttAPInvHed/createttManualGRNIClearing: Prevent new or delete when group locked to another user.

@@ -1,0 +1,393 @@
+﻿scr 114351 04/30/2013 nzirbes - implemented several changes to support multi-level config.  No FXCop errors were found at this time.
+scr 114351 05/06/2013 nzirbes - Added check on configid
+scr 105035 05/20/2013 nzirbes - Fixed query for configsequenceds.PcStruct to include rowmod check;added partexists and partrevexists
+scr 105035 05/30/2013 nzirbes - implemented PCE10_PC, changed method signature to SaveMultiConfiguration, corrected query in SaveMultiConfiguration - include rowMod otherwise the wrong version of the row was selected;
+                                New public method to handle part creation; new private methods to support part creation;new public method to suggest smart string;
+								New queries to support part creation
+scr 105035 05/30/2013 nzirbes - Enhanced the smartstring logic 
+scr 105035 06/03/2013 nzirbes - updated the logic for pce10-pc; Added logic to create a new configuration
+scr 114379 06/03/2013 vdavila - Change position for run Document rules when Save configuration instead in loading
+scr 110537 07/24/2013 nzirbes - Added server side syntax checking
+08/06/13 - BrockM SCR105051 - Modified for EQM 2012R conversion
+08/14/13 - BrockM SCR105051 - Additional changes for EQM 2012R conversion
+scr 110537 08/15/2013 nzirbes - changed method signature for CheckServerSyntax to handle configuration server events
+scr - 116587 08/15/2013 chkollasch - Changes for EQM pass/fail override.
+scr - 116587 08/16/2013 chkollasch - More Changes for EQM pass/fail override.
+08/19/13 - BrockM SCR105051 - Modified error displayed when target entity not found for inspection plan configurations
+scr 121377 08/28/2013 nzirbes - Added/modified SIValues logic
+scr 123603 08/30/2013 nzirbes - new method signature on SuggestSmartString
+scr 114350 09/04/2013 - chkollasch - user defined functions.
+scr 114350 09/05/2013 - chkollasch - more user defined functions.
+scr 123603 08/10/2103 - nzirbes - cleaned up SIValues/partcreation logic;Modified method signature to SuggestSmartString; updated smart string logic
+scr 122851 09/16/2013 - nzirbes - Implemented GetSmartString logic.  Added table PcStrComp to the ConfigurationSequence tableset since this information is needed for getSmartSTring processing for each struct row.
+scr 122851 09/18/2013 - nzirbes - Updated for GetSmartString Document rules
+scr 116587 09/25/2013 - chkollasch - Added new context properties to table for EQM.
+scr 124860 09/26/2013 - nzirbes - ConfigurationRuntime.cs -> modified method suggestSmartString
+scr 124333 09/27/2013 - nzirbes - ConfigurationRuntime.cs -> modified method suggestsmartstring for zero filling of seq and ord types
+scr 124773 09/27/2013 - nzirbes - ConfigurationRuntime.cs-> modified updateorder and updatequote
+scr 123840 09/27/2013 - nzirbes - ConfigurationRuntime.cs -> method signature change to PartExists
+09/27/13 - BrockM - SCR110542 - Modified for document pricing
+scr 116587 09/30/2013 chkollasch - Changes to params for runtime calls.
+scr 124894 10/03/2013 - nzirbes - account for empty part during part creation.
+scr 129686 10/09/2013 - nzirbes - modified CheckServerSyntax to use the new args class
+SCR 126604 10/09/2013 - MContreras - Modified argument sent as InputsPublishToDoc to use configParams values
+scr 124322 10/10/2013 - nzirbes - ConfigurationRuntime.cs -> modified to check for rules before testing them and if none exist display a user friendly exception to the user.
+SCR 110542 10/18/2013 BrockM - Additional changes for document pricing
+SCR 110542 10/21/2013 - brockm - Additional changes for document pricing expressions
+SCR 130427 10/23/2013 - VDavila - ConfigurationRuntime.cs Move txScope.Complete(); to always complete transaction scope to avoid runtime errors
+SCR 130959 10/24/2013 - BrockM - ConfigurationRuntime.cs - Modified to resolve error message when testing inputs and configuring inspection plans.
+SCR 130668 11/04/2013 - psiller - Changed validation to enabled/disabled test inputs.
+SCR 131223 11/07/2013 - BrockM - Rework - Component Pricing wasn't being calculated for any document
+scr 125931 11/07/2013 - nzirbes - ConfigurationRuntime.cs -> new public method DeleteAssembliesInTestMode to clean up server side test assemblies (created out of TestInputs)
+scr 131702 11/07/2013 - nzirbes - ConfigurationRuntime.cs and strings.resx - modified prestartconfiguration to check the PcStatus to see if it is approved
+scr 131914 11/11/2013 - nzirbes - ConfigurationRuntime.cs - removed Dictionary type from public method SuggestSmartSTring because dictionary types are NOT serializable.
+scr 130495 11/13/2013 - psiller - ConfigurationRuntime.cs - Added an additional validation to check if PcStatus is null before checking for inputs avoid error in configured components.
+11/15/2013 - BrockM SCR127322 - Added configurator Group Sequence functionality
+SCR 132630 - 11/20/2013 - MContreras - Added code to avoid checking for Document Rules for Test Plans
+SCR 125950 - 12/16/2013 - PSiller - Added code to show smart strings in Test Inputs.
+scr 133992 - 01/06/2014 - nzirbes - ConfigurationRuntime.cs -> Modified method SaveConfiguration so it can be used by EWA.  Changed the method signature to pass the confiugrationRuntimeTables by ref, 
+                                                               added logic to find the correct ttPcStruct row using the structTag that is passed in ConfigParams.tgtStructTag,
+															   modified the find of ttPcValueGrp to use rowMod, updated the logic to include part creation.  Needed to set rowMOd to Deleted because
+															   the PcValueGrp Group SEq column changes from 0 to the appropriate value and without removing the original row the UI had 2 rows.
+															   Cleaned up some issues in method UpdateQuote.  Exceptions were being thrown when configuring a QuoteAsm because the logic was still
+															   following the old way of only including the GroupSeq on the QuoteDtl.
+															   Modified method SuggestSmartString.  In a multi-level configuration where child configurations have part creation enabled, the
+															   suggested smart string when partnumber+sequential number is used, for the child suggested the parent part.  Added logic to use the struct tag to find
+															   the correct ttPcStructRow instaed of the savedGroupSeq and SaveHeadNum.  Since SavedGroupSeq and SaveHeadNum are no longer used in this method I updated
+															   the method signature.
+01/08/13 - BrockM    SCR 134323 - Wasn't generating configuration sequence record or getting details correctly for subassembly configured parts
+01/13/14 - nzirbes scr 129686 - ConfigurationRuntime.cs - implemented new client syntax args class
+01/21/14 - vdavila scr 131732 - Add PcECCOrderDtl to context properties
+01/22/14 - vdavila scr 123423 - ConfigurationRuntime.cs ProcessDocumentRules get the correct PcStruct record cause didnt have the value in NewPartNum, Add method before and  after ProcessDocRules in this case only updates OrderDtl 
+								but leave the method as general in case we need to add logic for the other tables. Add UpdatePO when a new part is created
+01/22/14 - vdavila scr 123423 - ConfigurationRuntime.cs ProcessDocumentRules Modify order of logic and modify update XRevision when SaveInputValues is true according to E9 process
+01/28/14 - nzirbes scr 134214 - ConfigurationRuntime.cs -> Modified method CreatePart to interrogate ResponseAutoCreatepart.  When saving input values, method CreatePart needs to update the Saved Input values PCValueGrp with
+                                                           the new partRev SysRowID. 
+														   UpdateQuote logic nees to use the savedGroupSeq for finding the QuoteDtl and not the SaveInputs GroupSeq otherwise the user cannot review pcvalues
+														   for an already Quote Line (QuoteDtl).
+														   UpdateJob cannot assume that the target being configured is the Jobhead and throw an exception when it is not found using incorrect values.  
+								ConfigurationRunTime.Queries.cs -> corrected a poorly formed query, findFirstPartRevAltQuery so it does not throw a null exception.  This was found by configuring a purchased material
+								                                   on a job.  Added a few additional queries.
+								Strings.resx -> new strings
+scr 136425 - nzirbes - scr 136425 - ConfigurationRuntime.cs -> modified method CreatePart.  If part creation is not valid for the current configuration return from this method.
+02/11/14 - brockm  - scr 136077 - Enterprise configurator change - Modified for save input values and part creation
+scr 132988 02/13/2014 - vdavila - ConfigurationRuntime.cs Assign the GroupSeq to PartRevision and the PartRevision.SysRowID to PcValueGroup
+scr 131633 02/18/2014 - nzirbes - ConfigurationRunTime.cs -> prevent create configuration logic to run since product owner decided to remove the option until the functional requirements are thoroughly defined.
+                                                             corrected the retrieval of the PartRev SIValue row so it uses the correct value for GroupSeq
+															 Modified Quote logic to only update the base part num and base revision num if the QuoteDtl is the entity being configured.
+                                  ConfigurationRuntime.queries.cs -> updated a query 
+02/19/14 - brockm  - scr 136077 - Rework - Not all parts created in sales company were getting created in manufacturing company
+02/20/14 - BrockM  - SCR 136921 - Enterprise Configurator change - Removed some part creation functionality when configuring in the external sales company
+02/21/14 - psiller - scr 135040 - Added method GetTargetEntityValues to obtain necessary values before the configuration is saved for the first time.
+03/13/14 - BrockM  - SCR 127328 - Modified for EDI import configurator functionality
+03/14/14 - vdavila - SCR 136838 - Add method to process Keep When rules
+03/17/14 - nzirbes - scr 138264 - ConfigurationRuntime.cs -> modified method PreStartConfiguration - replaced the obsolete ConfiguratorUtil.FindByEntityKey with actual table queries.  The two types of 
+                                  source rows impacted by this are PartRev and PcStatus (test inputs).
+03/20/14 - vdavila - scr 138782 - ConfigurationRuntime.cs - Add comment in case CreateConfig is enable see memos in scr
+03/25/14 - chkollasch - no scr - Had to regen service after framework drop.  Some file were checked out so it was skipped by build team.
+03/28/14 - chkollasch - scr139003 Changes for some context functions to return integers.
+03/28/14 - nzirbes - scr 138576 - ConfigurationRuntime.cs ->modified the part creation logic for the creation of the PcSTruct rows wto prevent a duplicate key issue.
+                                  ConfigurationRuntime.Queries.cs -> new queries 
+04/09/14 - nzirbes - scr 139789 - ConfigurationRuntime.cs -> added erp call context processing to prevent configuration data from being deleted during the update of the entity during a configuration session
+                                  when setPartNumOnly option is selected
+04/17/2014 - chkollasch - scr 139228 - Added new columns to the FieldProperties Table.
+04/21/14 - vdavila - scr 136823 - ConfigurationRuntime.cs - In method PreStartConfiguration validate if is test rules to generate the sequence multi-level. 
+								  Remove exception when no test rules exists this validation will be handle by Configurator rules in method BeforeStartTestRules
+								  In method DeleteAssembliesInTestMode receive as a param confgSequence to delete all configurators.
+								  In method testMethodRules receive as a param confgSequence to send it to PC/TestRules instead of generate again the sequence
+SCR 140599 - 04/25/2014 - brucer - Changes to transport config runtime on save through standard FW.
+scr 140816 - 04/28/2014 - nzirbes - ConfigurationRuntime.cs -> added logic to start configuration to delete any lingering test server dlls that may be out there due to a system crash or some other fatal error
+SCR 141289 - 05/14/2014 - vdavila - ConfigurationRuntime.cs - Multi-Level Test Rules - Modify method testMethodRules to receive new parameter structTag, remove initialization of TestRulesDataset now will be handle by Test Rules library
+SCR 141289 - 05/14/2014 - vdavila - ConfigurationRuntime.cs - Multi-Level Test Rules - Add Tables to TestRulesTableSet and delete a validation from dataset
+SCR 141406 - 05/29/2014 - vdavila - ConfigurationRuntime.cs - SavePcValueConfiguration/SaveConfiguration/SaveMultiConfiguration Remove document rule engine logic now will be called only by UI on ProcessDocumentRules method
+scr 141830 - 05/30/2014 - nzirbes - ConfigurationRuntime.cs -> Added logic to support the configuration summary screen
+                                    ConfigurationRuntime.Queries.cs ->  new queries to support configuration summary screen
+									strings.resx - new strings
+									Generated service in the SD to pick up zdata changes to table PcInputValues and ConfigurationSummary
+05/30/2014 - BruceR - SCR 141167 - Initial changes to start configuration through standard FW.
+06/02/2014 - nzirbes - scr 141830 - Set the Use Current company flag in SD, generated and made corresponding code changes
+06/09/14 - psiller - scr 142669 - Fixed configurations not opening when global variables were assigned. Added new validations for Quote Entry and Sales Kit parts.
+06/11/2014 - vdavila - SCR 141569 - ConfigurationRuntime.cs - Modified createPart add parameters to search relatedRow and foreignRow for RunPCE10_PC/RunProcessKeepWhen. Modified ProcessDocumentRules add validation to run doc rules only when the Top part is configured. Modified ProcessKeepWhen receive pcValueDS instead of serializedData and receive also configParams to be avail to Resolve configuration
+06/18/2014 - psiller - SCR 139372 - Implemented Test Rules for Sales Kits 
+08/19/2014 - nzirbes - scr 141929 - Configurationruntime.cs -> initial changes for MRC type configurators.  Added new external column ConfigType to PcStatus.  Code for MRC processing is temporarily 
+                                    commented so I can check in the changes to the contract and make this file available to other developers.
+06/19/2014 - brockm  - scr 141970 - Modified to include BasePartNum field when checking if document rules should be processed
+06/20/2014  nzirbes  - scr 141929 - ConfigurationRuntime.cs -> prevent MRC types from being started     
+06/20/2014 - psiller - SCR 141669 - Improved performance and cleaned up configuration runtime queries.    
+06/25/2014 - MContrers - SCR 141541 - Added previously removed line.
+SCR 142924 - 06/30/2014 - SCR 142924 - ConfigurationRuntime.cs: Modified PreStartConfiguration Move validations using PcStatus after validate if is different than null
+07/07/2014 - nzirbes  - scr 141929 - ConfigurationRuntime.cs -> Added ability to run test rules for MRC type s(TestMRCRules).  
+                                     Strings.resx - new strings
+07/09/2014 - psiller - SCR 133671 - Added input pricing.
+07/15/2014 - nzirbes - scr 143957 - ConfigurationRuntime.cs -> modified method TestMRCRules to set additional configparams
+07/17/2014 - chkollasch - scr 143122 - ConfigurationRuntime.cs -> Added call in to Quote to get QTY Breaks and Calc New price when part is changed via PartCreation.
+07/17/2014 - chkollasch - scr 143173 - ConfigurationRuntime.cs -> Added a check to make not only if the part has been created but also the proper revision.
+07/18/2014 - nzirbes  - scr 144976 - ConfigurationRuntime.cs -> added logic to TestMRCRules to clean up generated test assemblies
+07/25/2014 - nzirbes - scr 143360 - Configurationruntime.cs -> Added logic to support the use of BasePartNumber and BaseREvisionNumber when part creation is involved and the user reconfigures the item
+07/29/2014 - psiller - SCR 143304 - Implemented incoming smart string functionality.
+08/01/14 - chkollsch - scr 142206 - Add changes to the way UDMethods are created, no longer using static on client side and now pass PcData back and forth.  Moved the Page Load
+                                    event from client to server so Entities aer available.
+08/01/14 - psiller - scr 143304 - Enhanced EDIValidateSmartString method to parse values correctly and use dynamic lists.
+08/04/2014 - nzirbes - scr 143360 - ConfigurationRuntime.cs -> modified method UpdateQuote to use ForeignTableName when determiing if the basepartNum and BaseRevisionNum are to be updated.
+08/06/2014 - chkollasch - scr 142206 removed on used method from Configration Runtime.
+08/06/2014 - chkollasch - scr 142625 Added Logic for Bill while I had file checked out.
+08/08/2014 - psiller - SCR 144087 - Added Text property to Combobox control.
+08/13/2014 - psiller - SCR 144087 - Changed property's name from Text to "Description".
+08/21/2014 - psiller - SCR 143716 - Added validation in ProcessDocumentRules to avoid object reference error when ECORev was used.
+08/28/2014 - andreaP - scr 145791 - ConfigurationRuntime.cs - making calculations for BookDtl.BookValue consistent.
+09/04/2014 - psiller - SCR 136871 - Added picture box control Part 3: Runtime.
+09/08/2014 - vdavila - SCR 143460 - ConfigurationRuntime.cs, ConfigurationRuntime.Queries.cs: Add validation to get base partnum configuration sequence for cases when reconfigure and part creation is enable. Correct SourceSysRowID from PcValueHead with new part revision after part creation
+09/09/2014 - vdavila - SCR 143460 - ConfigurationRuntime.cs: Add validation to identify if source is PartRev because for Test Inputs source is PcStatus
+09/18/2014 - psiller - SCR 136871 - psiller - Changed logic that used HashTable structure to List<Key,Value> to make it compatible with EWA.
+09/24/2014 - nzirbes - SCR 146302 - ConfigurationRuntime.cs - added on demand PcInValue conversion logic
+09/25/2014 - nzirbes - scr 146302 - ConfigurationRuntime.cs -> restructured On Demand logic in PreStartconfiguration
+09/28/2014 - vdavila - SCR 143298 - Fix update part from rules. Use struct ID to find the correct configuration. Delete all configurations are not keep it
+09/29/2014 - nzirbes - scr 146302 - ConfigurationRuntime.cs and Queries.cs -> added query ExistsPcValueSet
+10/23/2014 - vdavila - SCR 143298 - ConfigurationRuntime.cs Find the correct last configurator kept add structID when get the PcStruct in SuggestSmartString
+10/23/2014 - psiller - SCR 147917 - Check-in #2: Added dynamic image changing in runtime.
+10/27/2014 - chkollasch - scc 148985 - Switched all public methods to no longer use ConfigurationRuntimeParams class.  Now using temp tables to pass in params.
+10/27/2014 - psiller - SCR 147917 - Check-in #3: Added persistance of dynamic changes between pages.
+10/28/2014 - SCR 147917 - psiller - Check-in #4: Load saved images.
+10/29/2014 - SCR 148985 - chkollasch - Need to undirty the row when we are down processing the ConfigurationParamsRecord.
+11/05/2014 - vdavila    - SCR 149813 - Applied phantom logic changes to TestRules
+11/07/2104 - nzirbes    - scr 148505 - ConfigurationRuntime.cs - > implemented KeyEquals in the in memory query in method SavePcValueConfiguration
+11/19/2014 - nzirbes    - scr 152177 - ConfigurationRuntime.cs -> Added logic to use foreignRow in PreStartConfiguration to determine the current part number and revision otherwise we could end up calling GetConfigurationSequence with the wrong part.
+                                                               -> If the PcSTatus is null, we are in a configuration on the fly scenario, consequently we must set RowMod in ttPcConfigurationparams to row state unchanged, otherwishe
+															   when StartPcValueConfiguration begins the correct row will not be found and a 'Struct tag' exception is thrown.
+11/19/2014 - vdavila    - SCR 145978 - ConfigurationRuntime.cs - Fix Generate Methods to Create Alternative Methods in Part Creation
+11/21/2014 - nzirbes    - scr 142943 - ConfigurationRuntime.cs -> Moved the PcInValue table from CurrentFullTableset and added it to the ConfigurationSummary tableset.  Removed the update to
+                                                                  CurrentfullTableset.PcInvalue from AfterGetRows.
+																  Updated the method signature to the methods that populated the summary tables.
+																  Added method buildSummaryValues.  This method contains logic similar to what was in AfteRGetRows.  We retrieve all of the value head rows for
+																  a configuration so sub configurator data is available in the display.
+12/08/2014 - nzirbes     - scr 152877 - ConfigurationRuntime.cs -> implemented a property testMode that users can include in their expressions to bypass logic when running TestInputs/TestRules
+12/08/2014 - nzirbes     - scr 151116 - ConfigurationRuntime.cs -> Modified prestartconfiugration -> take QuoteMtl into consideration when setting curRevisionNum; removed the check on StructTag.KeyEquals("/0")
+                                                                   because PreStartConfiguration is only called one time and it is called for the parent.  When a configuration on the fly is sold/quoted/etc. the
+																   struct tag will not be /0 but PreStart still needs to determine if the PcInValue rows need to be converted.
+12/10/2014 - chkollasch - scr 152122 - Made changes to not pass params in an object array for server side UD Methods but use a new table created in the PcValue DataSet.
+12/12/2014 - vdavila    - SCR 152578 - ConfigurationRuntime.cs: Update SIPcValueGrp and SIPcValueHead when needs to assign cPartRev.SysRowID
+12/22/2014 - psiller    - SCR 150533 - Fixed rules not displaying correctly in test rules.
+01/09/2015 - psiller    - SCR 154398 - Fixed test mode not working correctly in page load.
+01/09/2015 - vdavila    - SCR 143298 - ConfigurationRuntime.cs: catch syntax message and change it to make it understandable to the user when is updating ECOMtl.PartNum
+01/20/2015 - psiller    - SCR 152453 - Fixed test rules not working correctly with sales kit.
+01/22/2015 - psiller    - SCR 154398 - Added missing lines for test mode.
+01/29/2015 - psiller    - SCR 147917 - Changed image references to point to new projects (Image replaced FileStore). Removed old projects.
+02/05/2015 - nzirbes    - SCR 155349 - ConfigurationRunTime.cs -> new method to run document rules for MRC configurators.  Generated in SD.
+02/05/2015 - vdavila    - SCR 143298 - Added parameters to ProcessKeepWhen
+02/10/2015 - nzirbes    - scr 155349 - ConfigurationRuntime.cs -> In method PrestartConfiguration, the check for PartRev not updated in E9 also needs to compare BasePartNum to PartNum before
+                                       setting curPartNum, curREvisionNum and configID since base part num is updated even when part creation is not done. 
+02/11/2015 - nzirbes    - scr 156854 - ConfigurationRuntime.cs -> rename MRC to NIC including changing a public method name.  Generated in SD.
+02/17/2015 - nzirbes    - scr 156854 - ConfigurationRuntime.cs -> renamed LoadMRCConfiguration to LoadNICConfiguration; Added a find on foreign row so PCvalueHead rows for NIC types are updated completely.
+03/04/2015 - psiller    - scr 158032 - ConfigurationRuntime.cs -> changed validation to allow document rule execution for new non-configured parts.
+03/13/2015 - nzirbes    - SCR 158799 - Configurationruntime.cs -> modified StartConfiguration for the EWA team.
+03/17/2015 - nzirbes    - SCR 158799 - Configurationruntime.cs -> additional change to STartConfiguration for the EWA team - removed duplicate call to LoadConfiguration
+04/01/2015 - vdavila    - SCR 160372 - Configurationruntime.cs -> Fixed to take BasePartNum from foreing rows when are not empty
+04/10/2015 - vdavila    - SCR 160953 - Configurationruntime.cs -> Fixed identify assembly belongs from a configuration when Get Details from lower levels
+04/14/2015 - vdavila    - SCR 160953 - Configurationruntime.cs -> Fixed Warnings and Lazy loads
+05/12/2015 - chkollasch - SCR 162573 - Changes to the key for ContextProperties added the column CompanyID and checked the primary box.
+05/21/2015 - vdavila	- SCR 159261 - Configurationruntime.cs -> Assigned correctly state type when calling UDMethodServers
+05/26/2015 - psiller	- SCR 153444 - Configurationruntime.cs -> Fixed summary grid not displaying information.
+05/26/2015 - vdavila	- SCR 160953 - Configurationruntime.cs -> Add validation to get the revision from sourcerow when is quotemtl
+06/02/2015 - miguelc	- SCR 161311 - ConfigurationRuntime.cs -> Added missing Db.BookDtl.Insert logic at afterProcessDocRules method.
+06/07/2015 - chkollasch - scr 162498 - ConfigurationRuntime.cs -> Switched logic on for determining use base to take into account GenerateMethod and CreateRevision
+06/11/2015 - psiller    - SCR 162520 - Fixed base part numbers retrieving child's configurator values.
+06/18/2015 - nzirbes    - SCR 164081 - ConfigurationRuntime.cs -> removed ConfiguratorUtil.nStructID, updated method signature to GetConfigurationSequence, implemented testRulesMessage since
+                                       the configuratorUtil static property no longer exists
+06/22/2015 - chkollasch - SCR 161798 - Added the erp context to the ResolveGroupSeq method in ConfigUtls and add a check for group seq when checking for use base.
+06/29/2015 - chkollasch - scr 162359 - We want to preserver BasePartNum and BasePartRev even if we are not creating an configured part.
+07/06/2015 - vdavila    - SCR 163753 - ConfigurationRuntime.cs -> Move PartRev.BasePartNum to PcE10-PC
+07/07/2015 - vdavila    - SCR 163753 - Clean up code
+07/08/2015 - nzirbes    - scr 165690 - Configurationruntime.cs -> moved methods related to CreatePart to new assembly Erp.Internal.PC.CreatePart.
+07/10/2015 - psiller    - scr 166722 - Configurationruntime.cs -> Added validation to avoid null reference exception in configurations on the fly.
+10/07/2015 - psiller    - scr 171453 - Enhanced EpiPcPictureBox Control.
+10/09/2015 - mcontreras - scr 172659 - Set DecimalValue at PcUserDefinedMethodParam table to 8 decimals for DecimalValue field, to avoid rounding errors with ud methods.
+10/19/2015 - nzirbes    - scr 173388 - ConfigurationRuntime.cs -> modified method PreStartConfiguration.  Added logic for 'set part num only' scenarios to set the correct value of 
+                                       curPartNum and curRevisionNum so reconfigure scenarios work.  Created 2 methods to handle the setting of curPartNum and curRevisionNum.  Intentionally did not implement
+									   calls to that method in other places at this time due to the 400 code cut date.  
+10/22/2015 - n zirbes   - scr 173589 - ConfigurationRuntime.cs -> use the related to row when reconfiguring a part that was created as a non-configurable part to determine the ConfigID
+                                       Strings.resx -> added a new string - UnableToResolveConfigID
+10/26/2015 - nzirbes    - scr 173589 - Strings.resx - removed UnableToResolveConfigID since it is not needed
+                                       ConfigurationRuntime.cs -> removed the exception being thrown in PreStartConfiguration if we have a ConfigID that is null or empty.  Configurations on the fly will not have
+									   a configID and that is correct.  The processing needs to continue.  We will identify the configID in GetConfigurationSequence so an exception should not be thrown at this time.
+10/26/2015 - nzirbes    - scr 173589 -  ConfigurationRuntime.cs -> resolved null exception in PreStartConfiguration when processing a configuration on the fly and there is no PcStatus.
+10/29/2015 - mcontreras - scr 170203 - ConfigurationRuntime.cs -> Relocate afterProcessDocRules to OrderDtl write trigger, to update the BookDtl values after OrderDtl is modified by the Configurator
+11/5/2015 - nzirbes     - scr 174951 - ConfigurationRuntime.Queries.cs -> updated query  FindFirstImage to include company in the join statement
+11/12/2015 - vdavila    - SCR 173176 - ConfigurationRuntime.cs: Modified PreStartConfiguration took sourceRow values
+12/08/2015 - vdavila    - SCR 173579 - ConfigurationRuntime.cs: Modified PreStartConfiguration to took correct PartNum and RevisionNum from foreign row
+01/05/2016 - nzirbes    - SCR 177503 - ConfigurationRuntime.cs -> added logic to compare the PCConv905 conversion run date to the product owner specified target entity date
+                                                              to determine if the call to the converPcInValue logic should be executed.  This prevents unnecessary calls to that assembly for those target
+															  entities that were created after the database was converted.
+															  Cleaned up warnings.  Created scr 178432 for a query that has a warning so further research can be done.
+									   ConfigurationRuntime.Queries.cs -> new query findCnvProgsQuery, modified ExistsPcInputs to .Any from .Count per warnings,new query findPOOrderDateQuery,
+                                                                          modified selectQuoteMtlQuery to use assemblySeq_ex in the where clause instead of row.AssemblySeq = quoteLine_ex 
+										AssemblyInfo.cs -> checked in for Unit Test purposes
+01/07/2016 - psiller    - SCR 176617 - Changed method signature from object to byte for EWA compliance.
+01/07/2016 - psiller    - SCR 176184 - Part 2: Readonly configuration session on trackers.
+01/12/2016 - psiller    - SCR 176184 - Rolled back accidentally removed code from SCR 175503
+01/20/2016 - BrockM     - SCR 170203 - Removed method and calls to beforeProcessDocumentRules since the after logic was moved to the OrderDtl write trigger and it's no longer needed.
+01/26/2016 - psiller	- SCR 176184 - Peer review changes.
+02/03/2016 - psiller	- SCR 176625 - Fixed OnLoad event being executed twice.
+02/03/2016 - CCORTEZ    - SCR 178559 - Adding a RowMod value to PCConfigurationparams so PreStartConfiguration method can read it.
+02/23/2016 - vdavila    - SCR 181262 - Updated PreStartConfiguration added validation for No Separator
+03/07/2016 - psiller    - SCR 163336 - Code clean up.
+									   Create Configurator from Part Creation was removed in clean up.
+03/16/2016 - nzirbes    - SCR 182442 - ConfigurationRuntime.cs -> added new method GetAllPictureBoxImages that is responsible for retrieving all of the images for a page in a configurator in one
+                                       trip to the server.  
+									   Resolved code analysis warnings. 
+									   Modified the new method so it can be unit tested.
+03/17/2016 - nzirbes    - SCR 182442 - ConfigurationRuntime.cs -> changed the Dictionary type to List<KeyValuePair<string, byte[]>> because EWA cannot support type Dictionary because the xmlSerializer
+                                       does not have an equality comparer.
+04/01/2016 - psiller    - scr 153271 - Changed datalookup methods to have defined parameters instead of a string array.
+04/04/2016 - psiller    - scr 153271 - Peer review changes. Fixed typo and added description to method's parameters.
+04/07/2016 - psiller    - SCR 163336 - Removed unused references.
+06/02/2016 - vdavila    - SCR 180421 - Load IncomingSmartString from PreStartConfiguration
+06/02/2016 - nzirbes    - SCR 182025 - ConfigurationRuntime.cs -> added method PopulatePcConfigSmartString.  This method builds the temp table that contains the configuration level smart string options that are needed in the
+                                       SystemFunctionsLib to support GetSmartString();
+									   NOTE: ZData changes were made in the SD for this service.  See scr resolution notes for the details.  New table PcConfigSmartString.
+06/21/2016 - vdavila    - SCR 185725 - Added method leaveDocumentRules to validate if will run document rules
+07/19/2016 - vdavila    - SCR 187743 - Added logic to identify the PcStatus
+08/16/2016 - JShay		- SCR 189988 - ConfigurationRuntime.cs: Added validation to PreStartConfiguration method to don't try to identify the PcStatus with the BasePartNum if IsTestPlan is true to avoid object reference error.
+08/23/2016 - JShay		- SCR 190578 - ConfigurationRuntime.cs: Modified leaveDocumentRules and ProcessNICDocumentRules to create the PCValue records for NIC subassemblies and allow run the method rules, according with SCR 185725 document rules are not executed for subassemblies.
+10/07/2016 - MContreras - SCR 192134 - ConfigurationRuntime.cs: Split main transaction into several smaller blocks.
+10/11/2016 MContreras SCR 192134 - PartCreation.cs - Peer Review corrections to include Test Rules in transaction scope
+10/26/2016 - nzirbes    - SCR 193312 - ConfigurationRuntime.Queries.cs -> new query to retrieve the Byte[] for the QBuild drawings
+                                       ConfigurationRuntime.cs -> new public method to retrieve all images and drawings in one trip to the server
+11/01/2016 - nzirbes    - SCR 193312 - ConfigurationRuntime.cs -> restructured method GetAllImagesAndDrawings to return a tableset instead of 2 out KVP parameters due to
+                                       a limitation in EWA.
+11/30/2016 - nzirbes    - SCR 193318 - ConfiguraitonRuntime.cs -. updated the drawing and images logic to support run time changes
+12/14/2016 - nzirbes    - scr 193317 - ConfigurationRuntime.cs -> added logic to redisplay the configured drawing
+01/06/2017 - nzirbes    - scr 193317 - ConfigurationRuntime.cs -> added HeadNum to method GetAllImagesAndDrawings.
+01/11/2017 - nzirbes    - scr 193317 - ConfigurationRuntime.cs -> Modified GetAllImagesAndDrawings method and removed the Drawing logic since the PcConfiguredDrawings table handles both the configure and reconfigure (tracker too) scenarios.
+                                       Renamed the method to GetAllImages so it reflects what it actually does.  This method was added as part of the QBuild project so this is not a SIC change.
+									   ConfigurationRuntTime.Queries.cs -> removed unused query per CA warning.
+01/31/2017 - nzirbes    - EN 10111   - Generated in the SD to pick up the new external column on PcConfiguredDrawings -> QBuildObjExist
+03/22/2017 - mvillarreal - SCR 200045 - ConfigurationRuntime.cs: Modified EDIValidateSmartString to trim in input value when the data type is string.
+04/08/2017 - JShay		 - SCR 199754 - ConfigurationRuntime.cs: Send paremeter to the ChangePartNum method in order to refresh the part and quantities.
+06/13/2017 - JShay		 - SCR 203733 - ConfigurationRuntime.cs: Modified exportPartCreationInfo to complete the transaction scope before return if part is not found.
+06/22/17   - BillE       - SCR 203076 - EN-2844 - Added new column QtyPerCycle and regenerated service.
+08/31/2017 - JShay		 - SCR 200046 - ConfigurationRuntime.cs: Modified EDIValidateSmartString method to validate segments of the incoming smart string that correspond to combo boxes with the List Items property when they do not have dynamic list. In addition, segments that correspond to character inputs are validated with the valid list property.
+										ConfigurationRuntime.Queries.cs: Modified query to verify if the combo box has dynamic lists.
+										Strings.resx: Added new string to be displayed when segments of the incoming smart string that correspond to combo boxes are not valid.
+11/15/17 - mvillarreal - SCR 207610   - ConfigurationRuntime.cs: Modified SavePcValueConfiguration method to not set an argument in ChangePartNum
+11/30/17 - jstevermer  - SCR 209602   - (EN-4446) - New quote columns for dealer portal and regen
+12/11/2017 nzirbes erp-127 scr 210309 - Added a validation in the PreStartConfiguration to prevent the deploying of PCEMF configurators.
+12/11/2017 jstevermer - SCR 209602 (ERP-89, ERP-98) - New quote columns for dealer portal and regen
+12/19/2017 nzirbes erp-125 scr 310309 - MaintTransaction.cs -> PreStartConfiguration: In an attempt to make things as easy as possible for EMF added logic
+                                        to handle a null or empty SourceTable and update the configparams part/revision with the details from
+										the relatedToRow and use those values to find the partRev unless TestID is not Guid.Empty then we use PcStatus.
+										  Note: if emf needs an alternate rev then the configParams must be updated. 
+									    Added a validation and exception if sourceRow is null.  We must always have a source row in	order to configure.
+										When the ttPcValueGrp is created during the prestart logic set RowMod so EMF does not have to
+12/20/2017 jstevermer  SCR 209602 - ERP-90: Implemented new DealerNetworkManagement license
+01/05/2018 nzirbes     scr 210309 ERP-166: EMF support.  Added a column ConfigType to ConfigurationParams.   Restructured the PreStartConfiguration method and moved the logic needed by Win client and
+                                           EMF to new method ValidateAndBuildConfigurationData. In the new validateAndBuild method added logic to update the params ConfigType and to return
+										   when win client calls prestart for a PCEMF configurator.  The logic to launch an EMF configurator has been centralized in the client 
+										   config run time engine.  In order to do this, an initial call to PreStart is needed in order to identify the config type.  I did this to avoid an 
+										   additional round trip to the server just to launch a configurator and to avoid adding ConfigType to every possible target entity.  
+										   Modified GetPCTransportTableset to call the new ValidateAndBuildConfigurationData method.  Corrected typo on config type. 
+01/08/2018 - mvillarreal SCR 209746	  -  ConfigurationRuntime.cs: Modified SavePcValueConfiguration method to defines the target entity when creates a new part
+01/09/2018 - nzirbes scr 210309 erp-166 - changes per peer review suggestions
+01/19/2018 - nizrbes scr 207810 - Modified method buildSummaryValues to use the correct property for company in the query
+01/24/2018 - nzirbes - scr 210309 ERP 636 - added logic to update partAttrValues for PublishToDocument processing
+01/26/2018 - nizrbes - scr 210309 ERP 636 - corrected the logic in prestart that addresses EMF.
+01/29/2018 - nzirbes - scr 210309 ERP854 - added check for null pcstatus in pre start logic; update EMFConfiguratorURL based upon company setting.
+01/31/2018 - nzirbes - scr 210309 ERP999 - Configurations on the fly do not have a PcStatus therefore the validation to make sure one was found only applies when
+                                           configID is not null or empty.
+02/22/2018 - JShay	 - SCR 209746 - Added condition to avoid execute ChangePartNum after PartCreation if the new part does not exists in the database because if it does not exists the current details should be retained.
+03/07/2018 - nzirbes - ERP-1744 - MaintTransaction.cs : modified GetPcValueTransportTableset to execute the correct DealerNetwork check.
+03/09/2018 - nzirbes - ERP-1823 - MaintTransaction.cs : modified method VallidateAndBuildConfigurationData to check for calledFromWinClient to be true.
+                                         This field is used to determine if EMF called the configurator or WinClient.  It helps prevent unnecessary
+										 processing because once we find out we are starting a PCEMF configurator we need to return back to win
+										 client and launch the iFrame that will open the EMF configurator.
+03/21/2018 - JShay - ERPS-74396 - Changes to allow execute new document rule actions that are related with part creation and only affect the Part table in top and lower levels:
+									Modified SavePcValueConfiguration method to execute ProcessDocumentRules for lower levels when part creation was executed and the part exists in the database.
+									Modified leaveDocumentRules to avoid return from ProcessDocumentRules when the configuration is linked to a subassembly.
+									Modified ProcessDocumentRules: get the PcStruct based on the TgtStructTag of the parameters, get the foreignRow if it is not null to correctly execute resolve for configurations that are linked to a subassembly and fill the OnlypartCreationRules argument to execute only the new document rules actions for lower levels.
+03/30/2018 -  nzirbes ERP-2299 - ConfigurationRuntime.cs -> corrected the dealer net license check in method SavePCTransportConfiguration
+04/11/2018 - aserebrenik ERP-1076 Implement check for Advance Configurator license
+05/07/2018 - aserebrenik ERP-2283 Conversion for Part attribute to Dynamic Attribute
+05/08/2018 - mcontreras ERP-2506 Return null ConfigurationSequenceTableset for PreStartConfiguration if pcValueGrpRow is null, instead of throwing an exception.
+05/09/2018 - mcontreras ERP-2506 Peer review correction. Check for ConfigType param and return when EMF is found.
+05/14/2018 - nzirbes ERP-3108 - ConfigurationRunTime.cs -> Modified PreStartConfiguration to first  the ttPcConfigurationParams row and then call ValidateAndBuild to eliminate an exception
+                                                           when processing a configuration-on-the-fly.  When a config-on-the-fly is processed the RowMod for the params row is set to string.empty
+														   therefore finding it in prestart AFTER the call to validateAndBuild fails.
+05/16/2018 - nzirbes ERP-2668 - ConfigurationRuntime.cs -> added logic to check for a layered image input and throw an exception if one exists and the user is trying to deploy to EWA
+05/22/2018 - nzirbes ERP-3249 - ConfigurationRuntime.Queries.cs -> corrected indexOf clause in query ExistsPcInputLayeredImage; resolved CA warning and several informational message warnings
+05/31/2018 - nzirbes ERP-2658 - ConfigurationRuntime -> Added a check for the PCStatus to be approved to prevent configuration when calling from REST or a user written UI.
+06/07/2018 - nzirbes ERP-3436 - Added logic to call SynchronizationUtilities from GetPcTransportTableset.
+07/11/2018 - nzirbes ERP-3513 - 
+07/13/2018 - csharma ERP-3513 - renamed all references of PCEMF and mobile to and web respectively.
+07/19/18 - mcontreras -ERP-2657 - Implemented Image Layering engine.
+07/20/2018 - nzirbes - ERP-3513 - updated pcConfigParams column
+07/20/2018 - mcontreras - PR Corrections and CI Build Fix corrections
+08/07/2018 - brund - ERP-6118 - Added public service method EWCReadAllBytesIfNewer for EWC runtime support.
+08/08/2018 - brund - ERP-6118 - Added public service method EWCWriteOrCreateAllBytes for EWC generator support.
+08/08/2018 - mcontreras - ERP-4513 - Added public method ExecuteGenerateFullImageLayerScriptCode to call Image Layering functionality
+09/13/2018 - brund - Added EWCInitializeRuntime public method to initalize EWC runtime files if newer.
+09/26/2018 - nzirbes - ERP-7066 - skip the check for EWC updates when in Test Inputs mode;added logic to delete the test inputs file store entries
+10/01/2018 - nzirbes - ERP-7432 - Update ttPcConfigurationParams.SourceTable to support Test Rules from EWC
+10/04/2018 - mcontreras - ERP-7314 - Added layerSeq parameter to ExecuteGenerateSingleImageLayerScriptCode and Removed needsBase parameter from it.
+10/15/18 - nzirbes - ERP-6187 - removed patch fields for ewc urls
+10/24/2018 - NZIRBES erp-8004 - Added logic to prevent EWC from being processed by EDI
+10/25/2018 - nzirbes - ERP-7286 - modified the resyncREquired logic to take Enterprise Configurator into consideration.  
+10/31/2018 - nzirbes - ERP-7570 - Added logic to support TestRules for EWC.  Added serialize logic to store the results dataset in the filestore since the EWC side cannot send that dataset back to the client.
+11/27/2018 - nzirbes - ERP-8697 - Added logic to support Smart String for EWC.  Due to how EWA and REST pass data EWC cannot support the PCKeyValuePair type.  Implemented a new endpoint for EWC to call
+                                  that uses the generic type they can support.  Refactored the shared logic between the original method and this new one so we do not have duplicate code.  
+								  Intentionally did not change the type on the original method since that would be a SIC change and would break EWA.  
+								  In a future release we should consider obsoleting the original method and using the new one in all places.
+								  I am intentionally not adding this new endpoint to the adapter since it is not intended to be called from Win client.
+11/27/2018 - nzirbes - ERP-8697 - PR suggestions
+11/28/2018 - nzirbes - ERP-8697 - Correct if statement in SmartStringFromInputs
+12/14/2018 - nzirbes - ERP-8829 - added logic to deploy to EWC when in the sales company when the zip file is not found.  This has been added to address the situation where something timesout
+                                  during the Enterprise Configuration logic where the zip file was not created but all rows were transferred.  The PO decided at this time to not provide a process to
+								  mass deploy the enterprise configurator in the sales companies.
+03/08/2019 - nizrbes - ERP-10909 - minor code quality improvements to method EWCInitializeRuntime which is currently not used by the EWC team per Kalpesh.
+04/01/2019 - mvillarreal - ERPS-112177 - ConfigurationRuntime.cs: Modified formatStartString method to validate the start/end  length to be equal or greater than 0
+10/30/2019 - mvillarreal - ERPS-119046 - ConfigurationRuntime.cs: Modified ValidateAndBuildConfigurationData method to change data type from PcStatus to PcStatusResult and replaced FindFirstPcStatus by FindFirstPcStatusResult
+																  Modified PopulatePcConfigSmartString method to change data type from PcStatus to PcStatusResult 
+																  Modified SavePcValueConfiguration method to validate if exists PcInputsPublishToDocParams
+																  Modified PcInputsPublishToDocParams method to change data type from PcStatus by PcStatusEntResult  
+										 ConfigurationRuntime.Queries.cs: Added query FindFirstPcStatusResult and FindFirstPcStatusEntResult
+11/11/2019 - JShay		- ERPS-124047 - ConfigurationRuntime.cs: I applied the next changes to improve the performance for check syntax and test inputs/rules when the configurator is linked to many revisions:
+																	* Modified the next methods to invoke the DeleteConfigurationAndMethodRuleEngine method when the ConfigStatus is Test and SourceTableName of PcStruct is PartRev, that method deletes the Server assembly and the assembly generated for the Method Rule Engine: StartPcValueConfiguration, StartConfiguration, SavePcValueConfiguration, SaveConfiguration, SaveMultiConfiguration, and DeleteAssembliesInTestMode.
+																		- When the SourceTableName of the PcStruct is PartRev and the ConfigStatus is Test, it means that Test Rules invoked those methods and generated the Server assembly and the one for Method Rule Engine, that's why we need to delete both. Test Inputs doesn't not generate the assembly for Method Rule Engine.
+																	* I modified the DeleteAssembliesInTestMode method also to do the foreach through the PcStruct rows that have a RowMod in order to avoid trying to delete the assemblies for a PcStruct twice.
+																	* Modified TestNICRules method to invoke DeleteConfigurationAndMethodRuleEngine instead of DeleteConfiguration because NIC can only do Test Rules which generates the assemblies for Server and Method Rule Engine, so both needs to be deleted at the end.
+01/13/2020 - JesusC     - ERPS-130375 - ConfigurationRuntime.cs: Modified method SavePcValueConfiguration to receive the boolean value from CreatePart and with that value use the condition to refresh or not the part values.
+03/19/2020 - mvillarreal - ERPS-134643 - ConfigurationRuntime.cs: Modified StartPcValueConfiguration,StartConfiguration, SavePcValueConfiguration SaveConfiguration,SaveMultiConfiguration and DeleteAssembliesInTestMode to call DeleteDocumentRuleEngine when configurator is running on test mode
+04/09/20 - DJY        - ERP-25078 - regenerate due to making an Advanced UOM related column obsolete that existed in this BO
+05/25/2020 - JShay		- ERPS-138953 - Created a new private method called InvokeDocRuleEngine that has the logic to resolve and invokes the DocRuleEngine. The method was created to avoid duplicate code.
+										Modified the EDIDemandConfiguration method to invoke the new private method that executes the document rule engine when processing an EDI file.
+07/01/2020 - JShay	  - ERPS-116231 - Regenerated service to include the column GenerateMethod to the PcStruct table.
+07/14/2020 - JShay	  - ERPS-121580 - ConfigurationRuntime.cs: Added new public method called ExecuteUserDefinedWithArrayReturn to execute UD methods that will return an array, this new method executes the same logic as ExecuteUserDefined method but it returns an object[] instead of a simple object to avoid a runtime error when the server tries to return the array of objects to the client.
+06/03/2021 - JShay	  - ERPS-139928 - ConfigurationRuntime.cs: Created a new private method called EDIGetInputValue, which gets the input values of the current configurator parsed to strings.
+															   Modified the EDIDemandConfiguration method to invoke the new private method to get the input values, send those values to the internalSuggestSmartString method to creates the Smart String, and invoke the CreatePart method of the PartCreation library after saving to create the new part using the built smart string.
+06/04/2021 - JShay	  - ERPS-139928 - ConfigurationRuntime.cs: Modified the EDIDemandConfiguration method to invoke the ChangePartNum method after creating the new part. If the new part exists, its information should be retrieved, like in Demand Entry.
+06/11/2021 - jstevermer - ERP-35560 - Renamed external columns OrderDtl.AttributeSetID and QuoteDtl.AttributeSetID to InventoryAttributeSetID
+06/16/2021 - jstevermer - ERP-35560 - New db columns OrderDtl.AttributeSetID and QuoteDtl.AttributeSetID, regen only
+06/16/2021 - jstevermer - ERP-35224 - Convert Product Configurator dynamic attributes to attribute sets
+08/24/2021 - RossE		- ERP-36182 - KBMax Configurator type should not be configurable from the Kinetic Configurator.
+09/07/2021 - RossE		- ERP-37378 - Rename all cosmetic names/labels from KBMax -> CPQ within Kinetic.
+09/24/2021 - jstevermer - ERP-37573 - New column JobHead.KBConfigProdID regen only
+11/05/2021 - mvillarreal - ERPS-173048 - Strings.resx:
+										 - Added string ConfigurationTypeMustBeEWC
+										 ConfigurationRuntime.cs:
+										 - Modified StartPcValueConfiguration method to validate when the configurator runs in test or production mode to clean the cache from previous configurator version.						
+										 - Modified ExecuteUserDefined and ExecutePageOnLoadEvents to use PcStatusCache when run in production and use PcStatus when run in test
+										 - Modified EWCInitializeRuntime method to validate the last modification date on EWC zip file
+										 - Added GetTenantID method to return the tenant id based on the company
+										 - Modified GetPCTransportTableset (This method is used only by EWC), the logic was refactored to run just 1 query to validate the PCStatus and if the project requires to be sync.
+										 - Modified PrepareEWCRequirements method to use a Boolean query instead to retrieve a value that is not used. 
+										 ConfigurationRuntime.Queries,cs
+										 - Added new Query FindFirstPcStatusEWCResult to validate the PCStatus and the EWC Details
+										 - Modified findEnterprisePcStatusQuery query to returns a boolean value and it was renamed to ExistsEnterprisePcStatus
+03/17/2022 - JShay		- ERPS-183488 - ConfigurationRuntime.cs: Added new public method used by Kinetic screens to process no input configurators.
+03/25/2022 - jstevermer - ERP-40216 – New column KBConfigProdID regen only
+04/08/2022 - JSuarez - ERPS-179747 - ConfigurationRuntime.cs: added logic to handle ecc data to build the parameters to launch MetaUI configuration on ECC. 
+04/15/2022 - jstevermer - ERP-40818 - Track Inventory by Revision Enhancement: new columns, regen only
+04/19/2022 - JSuarez - ERPS-179747 - ConfigurationRuntime.cs: ProcessEccContextAndBuildSetup() get appServerURL from ECC data returned to build configuratorURL parameter.
+05/10/2022 - JSuarez - ERPS-179747 - ConfigurationRuntime.cs: Changes to retrieve ecc configurator parameters to initialize view.
+06/15/2022 - JSuarez - ERPS-179747 - ConfigurationRuntime.cs: Removed unnecesary parameters and added exceptions to methods.
+06/23/2022 - JSuarez - ERPS-179747 - ConfigurationRuntime.cs: Added documentation comments.
+06/24/2022 - JSuarez - ERPS-179747 - ConfigurationRuntime.cs: ProcessEccContextAndBuildSetup() changes to get AppServer URL.
+12/01/2022 - Sachin -  KNTC 15412  - ConfigurationRuntime.cs: Added SavePcValueConfigurationMulti method to handle multilevel configurator in Kinetic

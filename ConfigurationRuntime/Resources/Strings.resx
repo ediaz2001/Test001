@@ -1,0 +1,327 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ConfiguratorHasNoInputs" xml:space="preserve">
+    <value>At least one input control should exist in the configurator design.</value>
+  </data>
+  <data name="InputPositionCharacter" xml:space="preserve">
+    <value>Input {0} - Position  {1} - Character '' - {2} - {3}</value>
+  </data>
+  <data name="JobDoesNotExist" xml:space="preserve">
+    <value>Job does not exist.</value>
+  </data>
+  <data name="MissingPartRev" xml:space="preserve">
+    <value>Part Revision for newly created part {0} was not found.</value>
+  </data>
+  <data name="MustBeADigit" xml:space="preserve">
+    <value>Must be a digit.</value>
+  </data>
+  <data name="MustBeALetter" xml:space="preserve">
+    <value>Must be a letter.</value>
+  </data>
+  <data name="MustBeALetterOrDigit" xml:space="preserve">
+    <value>Must be a letter or digit</value>
+  </data>
+  <data name="NewConfigPartIsEmpty" xml:space="preserve">
+    <value>When saving input values, configuration cannot be saved unless a part number is entered.  Unable to save configuration.</value>
+  </data>
+  <data name="NewConfPartMustDifferBasePart" xml:space="preserve">
+    <value>The new configured part number must differ from the base part number when saving input values.</value>
+  </data>
+  <data name="NoRulesToTest" xml:space="preserve">
+    <value>There are no rules to test.</value>
+  </data>
+  <data name="OrderDoesNotExist" xml:space="preserve">
+    <value>Order does not exist.</value>
+  </data>
+  <data name="OrderLineDoesNotExist" xml:space="preserve">
+    <value>Order line does not exist</value>
+  </data>
+  <data name="PartCreateNotValid" xml:space="preserve">
+    <value>Part Creation is not valid for Configurator {0}</value>
+  </data>
+  <data name="PartCreateNotValidForTarget" xml:space="preserve">
+    <value>Part creation is not valid for target {0} of Configurator {1}</value>
+  </data>
+  <data name="PartRevNotFound" xml:space="preserve">
+    <value>Part Revision {0}, {1} not found.  Cannot check syntax.</value>
+  </data>
+  <data name="PcStatusNotApproved" xml:space="preserve">
+    <value>Configuration {0} is not approved.  Cannot configure.</value>
+  </data>
+  <data name="PcStatusNotFound" xml:space="preserve">
+    <value>Configuration '{0}' does not exist.</value>
+  </data>
+  <data name="PcStructNofFoundInTS" xml:space="preserve">
+    <value>Configuration was not found in the configuration sequence table, a valid StructTag is required.</value>
+  </data>
+  <data name="PcTargetEntityNotFound" xml:space="preserve">
+    <value>Target entity '{0}' was not found defined in configuration '{1}'. Cannot start configuration for this entity.</value>
+  </data>
+  <data name="PcValueGrpNotFound" xml:space="preserve">
+    <value>No ttPcValueGrp record was found, at least one ttPcValueGrp record is needed.</value>
+  </data>
+  <data name="PcValueGrpNotFound1" xml:space="preserve">
+    <value>PcValueGroup {0} was not found.</value>
+  </data>
+  <data name="PcValueHeadNotFound" xml:space="preserve">
+    <value>PcValueHead {0} was not found.</value>
+  </data>
+  <data name="QuoteDoesNotExist" xml:space="preserve">
+    <value>Quote does not exist</value>
+  </data>
+  <data name="QuoteLineDoesNotExist" xml:space="preserve">
+    <value>Quote Line does not exist.</value>
+  </data>
+  <data name="RelatedToRowNotFound" xml:space="preserve">
+    <value>Related information was not found with table name '{0}' and SysRowID '{1}'.</value>
+  </data>
+  <data name="TargetEntityNotFound" xml:space="preserve">
+    <value>Target entity {0} was not found. </value>
+  </data>
+  <data name="UnableToResolveConfiguration" xml:space="preserve">
+    <value>Unable to resolve configuration '{0}', configuration was not loaded.</value>
+  </data>
+  <data name="JobAsmblDoesNotExist" xml:space="preserve">
+    <value>JobAsmbl does not exist</value>
+  </data>
+  <data name="JobMtlDoesNotExist" xml:space="preserve">
+    <value>JobMtl does not exist</value>
+  </data>
+  <data name="CanConfigureOnce" xml:space="preserve">
+    <value>CanConfigureOnce</value>
+  </data>
+  <data name="DemandHeadNotFound" xml:space="preserve">
+    <value>Demand header not found for given demand line.</value>
+  </data>
+  <data name="DemandOneTimeOnly" xml:space="preserve">
+    <value>Attempted to reconfigure this line but the line is set to be configurable one time only.</value>
+  </data>
+  <data name="EDIDecEnd" xml:space="preserve">
+    <value>Invalid smart string value at starting position {0}, ending position {1}: A valid value is required.</value>
+  </data>
+  <data name="EDIDecIncr" xml:space="preserve">
+    <value>Invalid smart string value at starting position {0}, ending position {1}: Value must increment by {2}.</value>
+  </data>
+  <data name="EDIDecMinMaxIncr" xml:space="preserve">
+    <value>Invalid smart string value at starting position {0}, ending position {1}: Value must have a minimum value of {2}, a maximum value of {3}, and increment by {4}.</value>
+  </data>
+  <data name="EDIInvalidDateRange" xml:space="preserve">
+    <value>Invalid smart string value at starting position {0}, ending position {1}: Value must have a minimum date value of {2} and a maximum date value of {3}.</value>
+  </data>
+  <data name="EDIInvalidDateValue" xml:space="preserve">
+    <value>Invalid smart string value at starting position {0}, ending position {1}: Unable to convert value to date type input {2}</value>
+  </data>
+  <data name="EDIInvalidDecimalValue" xml:space="preserve">
+    <value>Invalid smart string value at starting position {0}, ending position {1}: Unable to convert value to decimal type input {2}</value>
+  </data>
+  <data name="EDIStringValList" xml:space="preserve">
+    <value>Invalid smart string value at starting position {0}, ending position {1}: Value not found in valid value list for input {2}.</value>
+  </data>
+  <data name="EDIValidSmartStringRequired" xml:space="preserve">
+    <value>A valid smart string is required.</value>
+  </data>
+  <data name="InvalidDemandLine" xml:space="preserve">
+    <value>Invalid Demand Line.</value>
+  </data>
+  <data name="SmartStringValidation" xml:space="preserve">
+    <value>SmartStringValidation</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="PODetailNotFound" xml:space="preserve">
+    <value>Invalid Purchase Order Line</value>
+  </data>
+  <data name="POHeadNotFound" xml:space="preserve">
+    <value>Invalid Purchase Order</value>
+  </data>
+  <data name="ConfigIDRequired" xml:space="preserve">
+    <value>Configuration ID is required</value>
+  </data>
+  <data name="NoPartRevTestRules" xml:space="preserve">
+    <value>Part Revision was not found.  Cannot Test Rules.</value>
+  </data>
+  <data name="ResolverError" xml:space="preserve">
+    <value>Cannot resolve the configuration.</value>
+  </data>
+  <data name="NoSavedPcValueSetFound" xml:space="preserve">
+    <value>No PcValueSet data was found for Configuration {0} Target key {1}, source key {2}</value>
+  </data>
+  <data name="PcConfigurationNoParams" xml:space="preserve">
+    <value>No ttPcConfigurationParams record was found, at least one ttPcConfigurationParams record is needed.</value>
+  </data>
+  <data name="UnableToUpdECOMtlPartNum" xml:space="preserve">
+    <value>Unable to update ECOMtl.PartNum from method rules, please select the correct column: "ECOMtl.MtlPartNum"</value>
+  </data>
+  <data name="PcValueGrpRecordNotFound" xml:space="preserve">
+    <value>No PcValueGrp record was found.</value>
+  </data>
+  <data name="PcStatusNotApprovedTracker" xml:space="preserve">
+    <value>Configuration {0} is not approved.  Cannot review.</value>
+  </data>
+  <data name="EDIStringListItems" xml:space="preserve">
+    <value>Invalid smart string value at starting position {0}, ending position {1}: Value not found in list items for input {2}.</value>
+  </data>
+  <data name="CannotDeployEWC" xml:space="preserve">
+    <value>Epicor Web configurators cannot be deployed to EWA</value>
+  </data>
+  <data name="NoSavedPcValueGrpFound" xml:space="preserve">
+    <value>Configuration values were not found, no PcValueGrp record was found for Configuration '{0}' on entity '{1}' from '{2}'.</value>
+  </data>
+  <data name="ConfigurationParamsRequired" xml:space="preserve">
+    <value>Configuration Params were not found.  Cannot proceed with the configuration session.</value>
+  </data>
+  <data name="EpicorWebOnly" xml:space="preserve">
+    <value>Only Epicor Web configurators can be processed by this method.</value>
+  </data>
+  <data name="SourceRowIsNull" xml:space="preserve">
+    <value>Cannot find the target being configured.</value>
+  </data>
+  <data name="CannotDeployLayeredImage" xml:space="preserve">
+    <value>EWA does not support the Layered Image Input.  Cannot deploy.</value>
+  </data>
+  <data name="EDIDemandConfigNotValidForEWC" xml:space="preserve">
+    <value>Cannot process an Epicor Web Configurator using EDI Demand.  Configuration ID {0} bypassed.</value>
+  </data>
+  <data name="EWCTestRulesFileStoreFoundWhenItShouldNotExist" xml:space="preserve">
+    <value>Error processing Test Rules.  Unable to continue.  Please try again.</value>
+  </data>
+  <data name="EWCTestRulesResultsNotFound" xml:space="preserve">
+    <value>Test Rules result data was not found for Configuration {0}, Part {1}, Revision {2}.</value>
+  </data>
+  <data name="KBMaxConfiguratorTypeCannotBeConfigured" xml:space="preserve">
+    <value>CPQ Configurator Type cannot be configured outside of the CPQ embedded slider.</value>
+  </data>
+  <data name="ConfigurationTypeMustBeEWC" xml:space="preserve">
+    <value>The configuration type is invalid for Epicor Web.  Cannot process.</value>
+  </data>
+  <data name="ECCCfgURLResolverError" xml:space="preserve">
+    <value>Unable to resolve configuration URL.</value>
+  </data>
+  <data name="ECCBuildParamsError" xml:space="preserve">
+    <value>An error ocurred while getting parameters to launch Configurator.</value>
+  </data>
+  <data name="ECCCfgTokenError" xml:space="preserve">
+    <value>An error ocurred while getting access Token.</value>
+  </data>
+  <data name="ECCCSSURLResolverError" xml:space="preserve">
+    <value>Unable to resolve CSS URL.</value>
+  </data>
+</root>
